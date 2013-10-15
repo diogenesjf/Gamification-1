@@ -1,0 +1,70 @@
+--- Gamification API v1 ---
+---
+Welcome to our Gamification API documentation.
+---
+
+-- Users Resources --
+
+List of your gamified application users.
+GET /application/users
+< 200
+< Content-Type: application/json
+{ "users": [
+  { "url": "/application/users/1", "id": 1 "name": "doe", "surname": "john", "nickname": "john.doe" }
+  { "url": "/application/users/2", "id": 2 "name": "stark", "surname": "tony", "nickname": "tony.start" }
+] }
+
+Save a new application user by passing his representation.
+POST /application/users
+> Accept: application/json
+{ "name": "doe", "surname": "john", "nickname": "john.doe", "password": "john.doe$6" }
+< 201
+< Content-Type: application/json
+{ "url": "/application/users/3", "id": 3 }
+
+Get an application user through his id.
+GET /application/users/{id}
+< 200
+< Content-Type: application/json
+{ "url": "/application/users/1", "id": 1, "name": "doe", "surname": "john", "nickname": "john.doe" }
+
+Update an application user through is id and a new representation.
+PUT /application/users/{id}
+> Accept: application/json
+{ "name": "doe", "surname": "john", "nickname": "john.doe", "password": "john.doe$6" }
+< 204
+{}
+
+Get success aquired by an application user.
+GET /application/users/{id}/success
+< 200
+< Content-Type: application/json
+{ "success": [
+    { "id": 1, "url": "/application/success/1", "name": "get 1000 points", "badge": "badges/cool.png" }
+    { "id": 2, "url": "/application/success/2", "name": "lost 1000 points", "badge": "badges/bad.png" }
+] }
+
+Get actions preformed by an application user.
+GET /application/users/{id}/actions
+< 200
+< Content-Type: application/json
+{ "actions": [
+    { "id": 1, "url": "/application/actions/1", "name": "post a comment", "points": 100, "description": "post a new comment to a thread" }
+    { "id": 2, "url": "/application/actions/2", "name": "delete a comment", "points": -100, "description": "delete a comment from a thread" }
+] }
+
+-- LeaderBoard Resource --
+
+Get the Leaderboard of your application. The Leaderboard contains all users of your application
+ranked by the total value of their acquired success.
+GET /application/leaderboard
+< 200
+< Content-Type: application/json
+{ "rankedusers": [
+  { "rank": 1, 
+    "user": [ { "url": "/application/users/1", "id": 1 "name": "doe", "surname": "john", "nickname": "john.doe" } ]
+  }
+  { "rank": 2, 
+    "user": [ { "url": "/application/users/2", "id": 2 "name": "stark", "surname": "tony", "nickname": "tony.start" } ]
+  }
+] }
