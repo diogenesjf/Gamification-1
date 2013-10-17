@@ -1,6 +1,5 @@
 package ch.heigvd.gamification.rest;
 
-import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
@@ -15,10 +14,12 @@ public class RESTAPI extends Application {
 
   @Override
   public Set<Class<?>> getClasses() {
-    final Set<Class<?>> classes = new HashSet<Class<?>>();
+    final Set<Class<?>> classes = new HashSet<>();
     // register root resources/providers
     classes.add(ApplicationExceptionMapper.class);
-    classes.add(EmployeesResource.class);
+    classes.add(AppUserResource.class);
+    classes.add(UserActionResource.class);
+    classes.add(SuccessResource.class);
     return classes;
   }
 }
