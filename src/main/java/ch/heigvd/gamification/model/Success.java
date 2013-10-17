@@ -1,14 +1,14 @@
 package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 /**
@@ -27,17 +27,19 @@ public class Success implements Serializable {
   
   private String badge;
   
-  @ManyToMany(mappedBy="success")
-  private List<AppUser> users;
+  @ManyToMany(mappedBy="success", fetch = FetchType.LAZY)
+  private final List<AppUser> users;
   
   public Success() {
     name = "UNDEF";
     badge = "UNDEF";
+    users = new LinkedList<>();
   }
 
   public Success(Success successData) {
     name = successData.name;
     badge = successData.badge;
+    users = successData.users;
   }
   
   public Long getId() {
@@ -62,6 +64,14 @@ public class Success implements Serializable {
   
   public void setBadge(String badge) {
     this.badge = badge;
+  }
+  
+  public List<AppUser> getUsers() {
+    return users;
+  }
+  
+  public void addUser(AppUser user) {
+    users.add(user);
   }
   
   @Override

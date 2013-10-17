@@ -11,8 +11,8 @@ import javax.ejb.Local;
 @Local
 public interface ISuccessTOService {
 
-  public SuccessTO buildUserTO(Success source);
+  public SuccessTO buildSuccessTO(Success source);
 
-  public void updateUserEntity(Success existingEntity, SuccessTO newState);
+  public void updateSuccessEntity(Success existingEntity, SuccessTO newState);
 
 }

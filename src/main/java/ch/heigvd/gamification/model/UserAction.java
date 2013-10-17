@@ -1,9 +1,11 @@
 package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,11 +29,28 @@ public class UserAction implements Serializable {
   
   private Integer points;
   
-  @ManyToMany(mappedBy="actions")
-  private List<AppUser> users;
+  //Load only on demand, is not the owner, so if we had a user to the list, it
+  //will not be registered into association table between UserAction and AppUser
+  //In good use, we have to add both AppUser and UserAction to respective Lists
+  @ManyToMany(mappedBy="actions", fetch = FetchType.LAZY)
+  private final List<AppUser> users;
   
   //TODO actiontype
 
+  public UserAction() {
+    title = "UNDEF";
+    description = "UNDEF";
+    points = 0;
+    users = new LinkedList<>();
+  }
+  
+  public UserAction(UserAction userActionData) {
+    title = userActionData.title;
+    description = userActionData.description;
+    points = userActionData.points;
+    users = userActionData.users;
+  }
+  
   public Long getId() {
     return id;
   }
@@ -62,6 +81,14 @@ public class UserAction implements Serializable {
   
   public void setPoint(Integer points) {
     this.points = points;
+  }
+  
+  public List<AppUser> getUsers() {
+    return users;
+  }
+  
+  public void addUser(AppUser user) {
+    users.add(user);
   }
   
   @Override

@@ -11,8 +11,8 @@ import javax.ejb.Local;
 @Local
 public interface IUserActionsTOService {
 
-  public UserActionTO buildUserTO(UserAction source);
+  public UserActionTO buildUserActionTO(UserAction source);
 
-  public void updateUserEntity(UserAction existingEntity, UserActionTO newState);
+  public void updateUserActionEntity(UserAction existingEntity, UserActionTO newState);
   
 }

@@ -1,14 +1,13 @@
 package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,15 +20,6 @@ import javax.persistence.NamedQuery;
         @NamedQuery(
                 name = "findAllUsers",
                 query = "select u from AppUser u"
-        ),
-        //Prepared Statements ?
-        @NamedQuery( //TODO paramètrage ?
-                name = "findAllUserSuccess",
-                query = "select s from Success s"
-        ),
-        @NamedQuery( //TODO paramètrage ?
-                name = "findAllUserActions",
-                query = "select s from Success s"
         )
 })
 
@@ -38,7 +28,6 @@ public class AppUser implements Serializable {
 
   @Id                                               //ID field
   @GeneratedValue(strategy = GenerationType.AUTO)   //Auto-increment
-  @Column(name="ID")                                //Column name
   private Long id;
 
   private String name;
@@ -49,19 +38,21 @@ public class AppUser implements Serializable {
 
   private String password;
   
-  //TODO qui est coneptuellement le owner ?
-  @ManyToMany
-  private List<Success> success;
+  //Load success only on demand
+  @ManyToMany(fetch = FetchType.LAZY)
+  private final List<Success> success;
   
-  //TODO qui est conceptuellement le owner ?
-  @ManyToMany
-  private List<UserAction> actions;
+  //Load actions only on demand
+  @ManyToMany(fetch = FetchType.LAZY)
+  private final List<UserAction> actions;
 
   public AppUser() {
     name = "UNDEF";
     surname = "UNDEF";
     nickname = "UNDEF";
     password = "UNDEF";
+    success = new LinkedList<>();
+    actions = new LinkedList<>();
   }
 
   public AppUser(AppUser userData) {
@@ -69,6 +60,8 @@ public class AppUser implements Serializable {
     surname = userData.surname;
     nickname = userData.nickname;
     password = userData.password;
+    success = userData.success;
+    actions = userData.actions;
   }
 
   public Long getId() {
@@ -111,6 +104,18 @@ public class AppUser implements Serializable {
     this.password = password;
   }
 
+  public List<Success> getSuccess() {
+    return success;
+  }
+  
+  public List<UserAction> getActions() {
+    return actions;
+  }
+  
+  public void addAction(UserAction action) {
+    actions.add(action);
+  }
+  
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;

@@ -13,12 +13,16 @@ import javax.ejb.Stateless;
 public class SuccessTOService implements ISuccessTOService {
 
   @Override
-  public SuccessTO buildUserTO(Success source) { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
+  public SuccessTO buildSuccessTO(Success source) {
+    return new SuccessTO(
+            source.getId(),
+            source.getName(),
+            source.getBadge()
+    );
   }
 
   @Override
-  public void updateUserEntity(Success existingEntity, SuccessTO newState) { //TODO
+  public void updateSuccessEntity(Success existingEntity, SuccessTO newState) { //TODO
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
