@@ -1,0 +1,101 @@
+--- Gamification API v1 ---
+---
+Welcome to our Gamification API documentation.
+---
+
+-- Actions Resources --
+
+Get all actions.
+GET /application/actions
+< 200
+< Content-Type: application/json
+{ }
+
+Add a new action.
+POST /application/actions
+> Accept: application/json
+{ "nameaction": "giveComment", "description": "Mettre un commentaire" }
+< 201
+< Content-Type: application/json
+{ }
+
+
+Get an application user through his id.
+GET /application/actions/{id}
+> Accept: application/json
+{ « id »: « 1 » }
+< 200
+< Content-Type: application/json
+{ }
+
+Update an application user through is id and a new representation.
+PUT /application/actions/{id}
+> Accept: application/json
+{ « id »: « 1 », « nameaction »: « toto », « description »: « Comms »}
+< 204
+{}
+
+Delete an action by passing its ID
+DELETE /application/actions/{id}
+< 200
+< Content-Type: application/json
+{}
+
+
+
+
+-- ActionsType --
+
+Get all actions types.
+GET /application/actionstypes
+< 200
+< Content-Type: application/json
+{ }
+
+Post an new action type.
+POST /application/actionstypes
+> Accept: application/json
+{ "type": "giveComment", "description": "Ajouter un commentaire" }
+< 201
+< Content-Type: application/json
+{ "url": "/application/actiontype/3", "id": 3 }
+
+
+
+Get an application user through his id.
+GET /application/actionstypes/{id}
+< 200
+< Content-Type: application/json
+{ }
+
+Update an application user through is id and a new representation.
+PUT /application/actionstypes/{id}
+> Accept: application/json
+{ }
+< 204
+{}
+
+Delete an action by passing its ID
+DELETE /application/actionstypes/{id}
+> Accept: application/json
+{ « id »: « 1 » }
+< 200
+< Content-Type: application/json
+{}
+
+Get all actions of an actiontype
+GET /application/actionstypes/{id}/actions
+> Accept: application/json
+{ « id »: « 1 » }
+< 200
+< Content-Type: application/json
+{ }
+
+Get all rules of an actiontype.
+GET /application/actionstypes/{id}/rules
+> Accept: application/json
+{ « id »: « 1 » }
+< 200
+< Content-Type: application/json
+{ }
+
