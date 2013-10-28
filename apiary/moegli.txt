@@ -1,42 +1,51 @@
 --- Gamification API v1 ---
 ---
 Welcome to our Gamification API documentation.
+
+Partie Thomas Moegli
 ---
 
--- Actions Resources --
+-- Actions --
 
 Get all actions.
 GET /application/actions
 < 200
 < Content-Type: application/json
-{ }
+{ "actions": [
+  { "url": "/applications/actions/1", "id": 1, "title": "Titre", "points": 42, "description": "descr"}
+  { "url": "/applications/actions/2", "id": 2, "title": "Titre2", "points": 36, "description": "descr2"}
+ ]
+}
+
 
 Add a new action.
 POST /application/actions
 > Accept: application/json
-{ "nameaction": "giveComment", "description": "Mettre un commentaire" }
+{ "title": "giveComment", "points": "42", "actionType": "1", "description": "description" }
 < 201
 < Content-Type: application/json
-{ }
+{ "id": 1 }
 
 
-Get an application user through his id.
+Get an action identified by its id.
 GET /application/actions/{id}
 > Accept: application/json
-{ « id »: « 1 » }
+{ "id": 1 }
 < 200
 < Content-Type: application/json
-{ }
+{ "url": "/applications/actions/1", "id": 1, "title": "Titre", "points": 42, "description": "descr" }
 
-Update an application user through is id and a new representation.
+Update an action identified by its id.
 PUT /application/actions/{id}
 > Accept: application/json
-{ « id »: « 1 », « nameaction »: « toto », « description »: « Comms »}
+{ "id": 1, "title": "giveComment", "points": "42", "description": "description"}
 < 204
 {}
 
 Delete an action by passing its ID
 DELETE /application/actions/{id}
+> Accept: application/json
+{ "id": 1 }
 < 200
 < Content-Type: application/json
 {}
@@ -50,35 +59,41 @@ Get all actions types.
 GET /application/actionstypes
 < 200
 < Content-Type: application/json
-{ }
+{ "actionstypes": [
+  { "url": "/applications/actionstypes/1", "id": 1, "name": "Titre" }
+  { "url": "/applications/actionstypes/2", "id": 2, "name": "Titre2" }
+ ]
+}
 
 Post an new action type.
 POST /application/actionstypes
 > Accept: application/json
-{ "type": "giveComment", "description": "Ajouter un commentaire" }
+{ "name": "Titre" }
 < 201
 < Content-Type: application/json
 { "url": "/application/actiontype/3", "id": 3 }
 
 
 
-Get an application user through his id.
+Get an action type identified by its ID.
 GET /application/actionstypes/{id}
+> Accept: application/json
+{ "id": 1 }
 < 200
 < Content-Type: application/json
-{ }
+{ "url": "/applications/actiontype/1", "id": 1, "name": "toto"}
 
-Update an application user through is id and a new representation.
+Update 
 PUT /application/actionstypes/{id}
 > Accept: application/json
-{ }
+{ "id": 1, "name": "toto"}
 < 204
 {}
 
 Delete an action by passing its ID
 DELETE /application/actionstypes/{id}
 > Accept: application/json
-{ « id »: « 1 » }
+{ "id": 1 }
 < 200
 < Content-Type: application/json
 {}
@@ -86,16 +101,23 @@ DELETE /application/actionstypes/{id}
 Get all actions of an actiontype
 GET /application/actionstypes/{id}/actions
 > Accept: application/json
-{ « id »: « 1 » }
+{ "uniqueID": 1 }
 < 200
 < Content-Type: application/json
-{ }
+{ "actions": [
+  { "url": "/applications/actions/1", "id": 1, "title": "Titre", "points": 42, "description": "Description" }
+  { "url": "/applications/actions/2", "id": 2, "title": "Titre2", "points": 36, "description": "Description2" }
+ ]
+}
 
 Get all rules of an actiontype.
 GET /application/actionstypes/{id}/rules
 > Accept: application/json
-{ « id »: « 1 » }
+{ "uniqueID": 1 }
 < 200
 < Content-Type: application/json
-{ }
+{ "rules": [
+  { "url": "/applications/rules/1", "id": 1, "aquiredpoints": 42, "name": "toto", "description": "descr"}
+ ]
+}
 
