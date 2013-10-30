@@ -1,21 +1,13 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+package ch.heigvd.gamification.services.to.interfaces;
 
-package ch.heigvd.gamification.services.to;
-
-import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.to.PublicRuleTO;
-import javax.ejb.Local;
+import ch.heigvd.gamification.model.ActionType;
+import ch.heigvd.gamification.to.PublicActionTypeTO;
 
 /**
  *
  * @author Gaël Jobin
  */
-@Local
-public interface RulesTOServiceLocal {
+public interface IActionTypesTOService {
     /**
      * This method builds a TO instance from a JPA entity instance. In this particular
      * case, the only thing that we do is get rid of the salary property (which is
@@ -24,7 +16,7 @@ public interface RulesTOServiceLocal {
      * @param source the JPA entity
      * @return the TO
      */
-    public PublicRuleTO buildPublicRuleTO(Rule source);
+    public PublicActionTypeTO buildPublicActionTypeTO(ActionType source);
     
     /**
      * This method updates an existing JPA entity by merging the state of the
@@ -34,6 +26,5 @@ public interface RulesTOServiceLocal {
      * @param newState a TO that contains new state (subset of the entity state)
      * @return the updated employee entity
      */
-    public void updateRuleEntity(Rule existingEntity, PublicRuleTO newState);
-    
+    public void updateActionTypeEntity(ActionType existingEntity, PublicActionTypeTO newState);
 }

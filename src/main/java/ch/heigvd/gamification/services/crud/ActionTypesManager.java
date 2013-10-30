@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ch.heigvd.gamification.services.crud;
 
+import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.ActionType;
+import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.model.UserAction;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -21,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Gaël Jobin
  */
 @Stateless
-public class ActionTypesManager implements ActionTypesManagerLocal {
+public class ActionTypesManager implements IActionTypesManager {
     
      @PersistenceContext(unitName = "Gamification")
     private EntityManager em;
@@ -62,7 +56,7 @@ public class ActionTypesManager implements ActionTypesManagerLocal {
     }
     
     @Override
-    public List<UserAction> findAllActions() { //TODO
+    public List<Event> findAllActions() { //TODO
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

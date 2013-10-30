@@ -1,5 +1,6 @@
 package ch.heigvd.gamification.services.crud;
 
+import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
@@ -13,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @author Gaël Jobin
  */
 @Stateless
-public class RulesManager implements RulesManagerLocal {
+public class RulesManager implements IRulesManager {
     
     @PersistenceContext(unitName = "Gamification")
     private EntityManager em;

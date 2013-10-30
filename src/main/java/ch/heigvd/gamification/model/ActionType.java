@@ -1,16 +1,27 @@
 package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Gaël Jobin
  */
-
+@NamedQueries({
+        @NamedQuery(
+                name = "findAllActionTypes",
+                query = "select e from ActionType e"
+        )
+})
 @Entity
 public class ActionType implements Serializable {
     
@@ -19,14 +30,26 @@ public class ActionType implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String name;
+    private String title;
+    private int points;
+    private String description;
+    
+    //Load success only on demand
+    @ManyToMany(fetch = FetchType.LAZY)
+    private final List<Rule> rules;
     
     public ActionType() {
-        name = "UNDEF";
+        title = "UNDEF";
+        points = -1;
+        description = "UNDEF";
+        rules = new LinkedList<>();
     }
     
     public ActionType(ActionType actionTypeData) {
-        this.name = actionTypeData.name;
+        this.title = actionTypeData.title;
+        this.points = actionTypeData.points;
+        this.description = actionTypeData.description;
+        this.rules = actionTypeData.rules;
     }
     
     public Long getId() {
@@ -37,12 +60,32 @@ public class ActionType implements Serializable {
         this.id = id;
     }
     
-    public String getName(){
-        return this.name;
+    public String getTitle(){
+        return this.title;
     }
     
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public int getPoints(){
+        return this.points;
+    }
+    
+    public void setPoints(int points) {
+        this.points = points;
+    }
+    
+    public String getDescription(){
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public List<Rule> getRules() {
+        return rules;
     }
     
     @Override

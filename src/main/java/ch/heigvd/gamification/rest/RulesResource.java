@@ -1,16 +1,10 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
-
 package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.services.crud.RulesManagerLocal;
-import ch.heigvd.gamification.services.to.RulesTOServiceLocal;
+import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
+import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
 import ch.heigvd.gamification.services.to.interfaces.ISuccessTOService;
 import ch.heigvd.gamification.to.PublicRuleTO;
 import ch.heigvd.gamification.to.SuccessTO;
@@ -45,23 +39,23 @@ public class RulesResource {
     private UriInfo context;
     
     @EJB
-    RulesManagerLocal rulesManager;
+    IRulesManager rulesManager;
     
     @EJB
-    RulesTOServiceLocal rulesTOService;
+    IRulesTOService rulesTOService;
     
     @EJB
     ISuccessTOService successTOService;
     
     /**
-     * Creates a new instance of EmployeesResource
+     * Creates a new instance of RulesResource
      */
     public RulesResource() {
     }
     
     /**
-     * Creates a new Employee resource from the provided representation
-     * @return an instance of PublicEmployeeTO
+     * Creates a new Rule resource from the provided representation
+     * @return an instance of PublicRuleTO
      */
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
@@ -74,8 +68,8 @@ public class RulesResource {
     }
     
     /**
-     * Retrieves a representation of a list of Employee resources
-     * @return an instance of PublicEmployeeTO
+     * Retrieves a representation of a list of Rule resources
+     * @return an instance of PublicRuleTO
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -89,9 +83,9 @@ public class RulesResource {
     }
     
     /**
-     * Retrieves representation of an Employee resource
+     * Retrieves representation of an Rule resource
      * @param id
-     * @return an instance of PublicEmployeeTO
+     * @return an instance of PublicRuleTO
      * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
      */
     @GET
@@ -104,8 +98,8 @@ public class RulesResource {
     }
     
     /**
-     * Updates an Employee resource
-     * @return an instance of PublicEmployeeTO
+     * Updates an Rule resource
+     * @return an instance of PublicRuleTO
      */
     @PUT
     @Path("{id}")
@@ -119,8 +113,8 @@ public class RulesResource {
     
     
     /**
-     * Deletes an Employee resource
-     * @return an instance of PublicEmployeeTO
+     * Deletes an Rule resource
+     * @return an instance of PublicRuleTO
      */
     @DELETE
     @Path("{id}")
@@ -129,6 +123,12 @@ public class RulesResource {
         return Response.ok().build();
     }
     
+    /**
+     * Retrieves representation of a list of SuccessTO linked to a specific Rule
+     * @param id
+     * @return a list of SuccessTO
+     * @throws EntityNotFoundException 
+     */
     @GET
     @Path("{id}/success")
     public List<SuccessTO> getUserSuccess(@PathParam("id") long id) throws EntityNotFoundException {

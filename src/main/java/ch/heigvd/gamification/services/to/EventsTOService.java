@@ -35,7 +35,7 @@ public class EventsTOService implements IEventsTOService {
     return new EventPublicTO(
         event.getId(),
         event.getUser().getName(),
-        event.getActionType().getName(),
+        event.getActionType().getTitle(),
         event.getTimestamp()
     );
   }
