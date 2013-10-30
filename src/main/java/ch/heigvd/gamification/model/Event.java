@@ -34,18 +34,18 @@ public class Event implements Serializable {
   @ManyToOne(fetch=FetchType.EAGER)
   private ActionType actionType;
   
-  private long eventtimestamp;
+  private long evenTimestamp;
   
   public Event() {
     user = null;
     actionType = null;
-    eventtimestamp = -1;
+    evenTimestamp = -1;
   }
   
   public Event(Event event) {
     user = event.user;
     actionType = event.actionType;
-    eventtimestamp = event.eventtimestamp;
+    evenTimestamp = event.evenTimestamp;
   }
   
   public Long getId() {
@@ -73,11 +73,11 @@ public class Event implements Serializable {
   }
   
   public long getTimestamp() {
-    return eventtimestamp;
+    return evenTimestamp;
   }
   
   public void setTimestamp(long timestamp) {
-    this.eventtimestamp = timestamp;
+    this.evenTimestamp = timestamp;
   }
   
   @Override

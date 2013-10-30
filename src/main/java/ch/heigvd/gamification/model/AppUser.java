@@ -21,15 +21,6 @@ import javax.persistence.OneToMany;
         @NamedQuery(
                 name = "findAllUsers",
                 query = "select u from AppUser u"
-        ),
-        @NamedQuery(
-                name = "getRankedUsers",
-                query = "select u, sum(at.points) as points "
-                      + "from AppUser u "
-                        + "inner join u.events e "
-                        + "inner join e.actiontype at "
-                      + "group by u "
-                      + "order by points desc"
         )
 })
 

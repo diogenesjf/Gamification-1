@@ -44,7 +44,7 @@ public class AppUsersTOService implements IAppUsersTOService {
   }
 
   @Override
-  public RankedAppUserTO buildRankedUserTO(AppUser source, Long points) {
+  public RankedAppUserTO buildRankedUserTO(AppUser source, Integer points) {
     return new RankedAppUserTO(
             source.getId(),
             points,

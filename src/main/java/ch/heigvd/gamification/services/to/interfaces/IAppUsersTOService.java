@@ -26,7 +26,7 @@ public interface IAppUsersTOService {
   
   public AppUserTO buildUserTO(AppUser source);
   
-  public RankedAppUserTO buildRankedUserTO(AppUser source, Long points);
+  public RankedAppUserTO buildRankedUserTO(AppUser source, Integer points);
   
   /**
    * This method updates an existing JPA entity by merging the state of the
