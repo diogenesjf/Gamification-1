@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -20,6 +21,15 @@ import javax.persistence.NamedQuery;
         @NamedQuery(
                 name = "findAllUsers",
                 query = "select u from AppUser u"
+        ),
+        @NamedQuery(
+                name = "getRankedUsers",
+                query = "select u, sum(at.points) as points "
+                      + "from AppUser u "
+                        + "inner join u.events e "
+                        + "inner join e.actiontype at "
+                      + "group by u "
+                      + "order by points desc"
         )
 })
 
@@ -42,9 +52,9 @@ public class AppUser implements Serializable {
   @ManyToMany(fetch = FetchType.LAZY)
   private final List<Success> success;
   
-  //Load actions only on demand
-  @ManyToMany(fetch = FetchType.LAZY)
-  private final List<UserAction> actions;
+  //Load events only on demand
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+  private final List<Event> events;
 
   public AppUser() {
     name = "UNDEF";
@@ -52,7 +62,7 @@ public class AppUser implements Serializable {
     nickname = "UNDEF";
     password = "UNDEF";
     success = new LinkedList<>();
-    actions = new LinkedList<>();
+    events = new LinkedList<>();
   }
 
   public AppUser(AppUser userData) {
@@ -61,7 +71,7 @@ public class AppUser implements Serializable {
     nickname = userData.nickname;
     password = userData.password;
     success = userData.success;
-    actions = userData.actions;
+    events = userData.events;
   }
 
   public Long getId() {
@@ -108,12 +118,12 @@ public class AppUser implements Serializable {
     return success;
   }
   
-  public List<UserAction> getActions() {
-    return actions;
+  public List<Event> getEvents() {
+    return events;
   }
   
-  public void addAction(UserAction action) {
-    actions.add(action);
+  public void addEvent(Event event) {
+    events.add(event);
   }
   
   @Override
@@ -133,7 +143,7 @@ public class AppUser implements Serializable {
 
   @Override
   public String toString() {
-    return "ch.heigvd.gamification.model.User[ id=" + id + " ]";
+    return "ch.heigvd.gamification.model.AppUser[ id=" + id + " ]";
   }
 
 }

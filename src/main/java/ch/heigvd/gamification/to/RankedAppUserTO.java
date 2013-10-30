@@ -1,32 +1,35 @@
 package ch.heigvd.gamification.to;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Alexandre Perusset
  */
-public class AppUserTO {
-
+@XmlRootElement(name="user")
+public class RankedAppUserTO {
+  
   private long id;
-
+  
+  private long points;
+  
   private String name;
-
+  
   private String surname;
-
+  
   private String nickname;
-
-  private String password;
-
-  public AppUserTO() {
+  
+  public RankedAppUserTO() {
   }
-
-  public AppUserTO(long id, String name, String surname, String nickname, String password) {
+  
+  public RankedAppUserTO(long id, long points, String name, String surname, String nickname) {
     this.id = id;
+    this.points = points;
     this.name = name;
     this.surname = surname;
     this.nickname = nickname;
-    this.password = password;
   }
-
+  
   public long getId() {
     return id;
   }
@@ -35,6 +38,14 @@ public class AppUserTO {
     this.id = id;
   }
 
+  public long getPoints() {
+    return points;
+  }
+  
+  public void setPoints(long points) {
+    this.points = points;
+  }
+  
   public String getName() {
     return name;
   }
@@ -58,13 +69,5 @@ public class AppUserTO {
   public void setNickname(String nickname) {
     this.nickname = nickname;
   }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
+  
 }

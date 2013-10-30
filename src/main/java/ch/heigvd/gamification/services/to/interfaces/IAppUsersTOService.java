@@ -1,7 +1,9 @@
 package ch.heigvd.gamification.services.to.interfaces;
 
 import ch.heigvd.gamification.model.AppUser;
+import ch.heigvd.gamification.to.AppUserPublicTO;
 import ch.heigvd.gamification.to.AppUserTO;
+import ch.heigvd.gamification.to.RankedAppUserTO;
 import javax.ejb.Local;
 
 /**
@@ -18,10 +20,14 @@ public interface IAppUsersTOService {
    * communicated to clients).
    *
    * @param source the JPA entity
-   * @return the UserTO
+   * @return the AppUserPublicTO
    */
+  public AppUserPublicTO buildPublicUserTO(AppUser source);
+  
   public AppUserTO buildUserTO(AppUser source);
-
+  
+  public RankedAppUserTO buildRankedUserTO(AppUser source, Long points);
+  
   /**
    * This method updates an existing JPA entity by merging the state of the
    * provided TO instance. We do not touch the password property, but replace
@@ -31,5 +37,6 @@ public interface IAppUsersTOService {
    * @param newState a TO that contains new state (subset of the entity state)
    */
   public void updateUserEntity(AppUser existingEntity, AppUserTO newState);
+   
 
 }

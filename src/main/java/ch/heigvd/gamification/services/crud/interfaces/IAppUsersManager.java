@@ -2,8 +2,6 @@ package ch.heigvd.gamification.services.crud.interfaces;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
-import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.model.UserAction;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -23,8 +21,5 @@ public interface IAppUsersManager {
   public AppUser findById(long id) throws EntityNotFoundException;
 
   public List<AppUser> findAll();
-  
-  public List<Success> findAllSuccess();
-  
-  public List<UserAction> findAllUserActions();
+
 }

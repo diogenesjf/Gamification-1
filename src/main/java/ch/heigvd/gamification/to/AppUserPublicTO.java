@@ -1,10 +1,13 @@
 package ch.heigvd.gamification.to;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Alexandre Perusset
  */
-public class AppUserTO {
+@XmlRootElement(name="user")
+public class AppUserPublicTO {
 
   private long id;
 
@@ -14,17 +17,14 @@ public class AppUserTO {
 
   private String nickname;
 
-  private String password;
-
-  public AppUserTO() {
+  public AppUserPublicTO() {
   }
 
-  public AppUserTO(long id, String name, String surname, String nickname, String password) {
+  public AppUserPublicTO(long id, String name, String surname, String nickname) {
     this.id = id;
     this.name = name;
     this.surname = surname;
     this.nickname = nickname;
-    this.password = password;
   }
 
   public long getId() {
@@ -57,14 +57,6 @@ public class AppUserTO {
 
   public void setNickname(String nickname) {
     this.nickname = nickname;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
 }

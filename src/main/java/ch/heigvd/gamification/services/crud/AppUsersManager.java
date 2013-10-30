@@ -2,8 +2,6 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
-import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.model.UserAction;
 import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -29,7 +27,7 @@ public class AppUsersManager implements IAppUsersManager {
 
   @Override
   public void update(AppUser newState) throws EntityNotFoundException {
-    AppUser userToUpdate = findById(newState.getId());
+    findById(newState.getId());
     em.merge(newState);
   }
 
@@ -50,16 +48,6 @@ public class AppUsersManager implements IAppUsersManager {
   @Override
   public List<AppUser> findAll() {
     return em.createNamedQuery("findAllUsers").getResultList();
-  }
-
-  @Override
-  public List<Success> findAllSuccess() { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public List<UserAction> findAllUserActions() { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 
 }

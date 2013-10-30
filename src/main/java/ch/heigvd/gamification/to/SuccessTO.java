@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Alexandre Perusset
  */
-@XmlRootElement
+@XmlRootElement(name="success")
 public class SuccessTO {
 
   private long id;
