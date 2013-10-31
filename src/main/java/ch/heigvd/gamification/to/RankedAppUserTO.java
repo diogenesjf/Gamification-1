@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Alexandre Perusset
  */
-@XmlRootElement(name="user")
+@XmlRootElement(name="rankeduser")
 public class RankedAppUserTO {
   
   private long id;

@@ -3,6 +3,7 @@ package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,6 +36,8 @@ public class AppUser implements Serializable {
 
   private String surname;
 
+  //If we don't want a nullable field
+  @Column(nullable=false)
   private String nickname;
 
   private String password;

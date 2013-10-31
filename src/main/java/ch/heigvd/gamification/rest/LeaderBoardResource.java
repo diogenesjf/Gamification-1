@@ -5,7 +5,6 @@ import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
 import ch.heigvd.gamification.to.RankedAppUserTO;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

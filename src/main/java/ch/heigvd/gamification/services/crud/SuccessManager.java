@@ -14,6 +14,8 @@ public class SuccessManager implements ISuccessManager {
 
   @Override
   public long create(Success successData) { //TODO
+    //ne pas oublier, APRES le em.persist, d'ajouter manuellement le succès à la
+    //liste des succès de l'utilisateur
     throw new UnsupportedOperationException("Not supported yet.");
   }
 

@@ -2,7 +2,6 @@ package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +16,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
         @NamedQuery(
                 name = "findAllEvents",
-                query = "select e from Event e"
+                query = "select e from Event e order by e.evenTimestamp desc"
         )
 })
 
@@ -28,10 +27,10 @@ public class Event implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)   //Auto-increment
   private Long id;
   
-  @ManyToOne(fetch=FetchType.EAGER)
+  @ManyToOne
   private AppUser user;
   
-  @ManyToOne(fetch=FetchType.EAGER)
+  @ManyToOne
   private ActionType actionType;
   
   private long evenTimestamp;
