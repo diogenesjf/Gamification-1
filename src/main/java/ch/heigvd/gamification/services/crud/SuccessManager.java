@@ -5,43 +5,49 @@ import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.ISuccessManager;
 import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
  * @author Alexandre Perusset
  */
+@Stateless
 public class SuccessManager implements ISuccessManager {
 
+  @PersistenceContext(unitName = "Gamification")
+  private EntityManager em;
+     
   @Override
-  public long create(Success successData) { //TODO
-    //ne pas oublier, APRES le em.persist, d'ajouter manuellement le succès à la
-    //liste des succès de l'utilisateur
-    throw new UnsupportedOperationException("Not supported yet.");
+  public long create(Success successData) {
+      Success newSuccess = new Success(successData);
+      em.persist(newSuccess);
+      return newSuccess.getId();
   }
 
   @Override
-  public void update(Success newState) throws EntityNotFoundException { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void update(Success newState) throws EntityNotFoundException {
+    Success successToUpdate = findById(newState.getId());
+    em.merge(newState);
   }
 
   @Override
-  public void delete(long id) throws EntityNotFoundException { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
+  public void delete(long id) throws EntityNotFoundException {
+      Success successToDelete = findById(id);
+      em.remove(successToDelete);
   }
 
   @Override
   public Success findById(long id) throws EntityNotFoundException { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
+      Success existingSuccess = em.find(Success.class, id);
+      if(existingSuccess == null)
+          throw new EntityNotFoundException();
+      return existingSuccess;
   }
 
   @Override
-  public List<Success> findAll() { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
+  public List<Success> findAll() {
+        return em.createNamedQuery("findAllSuccess").getResultList();
   }
-
-  @Override
-  public List<AppUser> findAllUsers() { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-  
 }

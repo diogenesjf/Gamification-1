@@ -22,7 +22,6 @@ public class RESTAPI extends Application {
     classes.add(EventsResource.class);
     classes.add(LeaderBoardResource.class);
     classes.add(RulesResource.class);
-    classes.add(SuccessResource.class);
     classes.add(ActionTypesResource.class);
     return classes;
   }

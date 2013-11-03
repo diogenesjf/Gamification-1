@@ -3,14 +3,14 @@ package ch.heigvd.gamification.services.crud;
 import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.model.Success;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * 
+ * 
  * @author Gaël Jobin
  */
 @Stateless
@@ -52,10 +52,5 @@ public class RulesManager implements IRulesManager {
     public List<Rule> findAll() {
         List rules = em.createNamedQuery("findAllRules").getResultList();
         return rules;
-    }
-    
-    @Override
-    public List<Success> findAllSuccess() { //TODO
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

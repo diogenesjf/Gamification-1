@@ -3,11 +3,13 @@ package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,7 +37,8 @@ public class Rule implements Serializable {
     private int acquiredPoints;
     
     //Load success only on demand
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinTable(name="RULE_SUCCESS")
     private final List<Success> success;
     
     public Rule() {

@@ -19,6 +19,4 @@ public interface IRulesManager {
     Rule findById(long id) throws EntityNotFoundException;
     
     List<Rule> findAll();
-    
-    List<Success> findAllSuccess();
 }

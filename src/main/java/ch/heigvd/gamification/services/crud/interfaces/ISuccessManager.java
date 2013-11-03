@@ -21,7 +21,5 @@ public interface ISuccessManager {
 
   public Success findById(long id) throws EntityNotFoundException;
 
-  public List<Success> findAll();
-  
-  public List<AppUser> findAllUsers();
+  public List<Success> findAll();  
 }
