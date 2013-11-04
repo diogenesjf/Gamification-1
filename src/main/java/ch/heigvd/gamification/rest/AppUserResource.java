@@ -7,7 +7,7 @@ import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
 import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
-import ch.heigvd.gamification.services.to.interfaces.ISuccessTOService;
+import ch.heigvd.gamification.services.to.interfaces.ISuccessesTOService;
 import ch.heigvd.gamification.to.AppUserPublicTO;
 import ch.heigvd.gamification.to.AppUserTO;
 import ch.heigvd.gamification.to.EventPublicTO;
@@ -48,7 +48,7 @@ public class AppUserResource {
   IAppUsersTOService usersTOService;
 
   @EJB
-  ISuccessTOService successTOService;
+  ISuccessesTOService successesTOService;
   
   @EJB
   IEventsTOService eventsTOService;
@@ -138,11 +138,11 @@ public class AppUserResource {
    */
   @GET
   @Path("{id}/success")
-  public List<SuccessTO> getUserSuccess(@PathParam("id") long id) throws EntityNotFoundException {
+  public List<SuccessTO> getUserSuccesses(@PathParam("id") long id) throws EntityNotFoundException {
     //If we want another order, use a parametrized NamedQuery
     List<SuccessTO> successTO = new LinkedList<>();
-    for (Success success : usersManager.findById(id).getSuccess()) {
-      successTO.add(successTOService.buildSuccessTO(success));
+    for (Success success : usersManager.findById(id).getSuccesses()) {
+      successTO.add(successesTOService.buildSuccessTO(success));
     }
     return successTO;
   }

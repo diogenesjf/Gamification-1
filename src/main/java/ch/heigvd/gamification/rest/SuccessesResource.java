@@ -5,10 +5,10 @@ import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
-import ch.heigvd.gamification.services.crud.interfaces.ISuccessManager;
+import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
 import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
-import ch.heigvd.gamification.services.to.interfaces.ISuccessTOService;
+import ch.heigvd.gamification.services.to.interfaces.ISuccessesTOService;
 import ch.heigvd.gamification.to.AppUserPublicTO;
 import ch.heigvd.gamification.to.GenericOnlyIDTO;
 import ch.heigvd.gamification.to.PublicRuleTO;
@@ -38,19 +38,19 @@ import javax.ws.rs.core.UriInfo;
  */
 @Stateless
 @Path("success")
-public class SuccessResource {
+public class SuccessesResource {
     
     @Context
     private UriInfo context;
     
     @EJB
-    ISuccessManager successManager;
+    ISuccessesManager successManager;
     
     @EJB
     IRulesManager rulesManager;
     
     @EJB
-    ISuccessTOService successTOService;
+    ISuccessesTOService successTOService;
     
     @EJB
     IRulesTOService rulesTOService;
@@ -61,7 +61,7 @@ public class SuccessResource {
     /**
      * Creates a new instance of SuccessResource
      */
-    public SuccessResource() {
+    public SuccessesResource() {
     }
         
      /**
@@ -159,14 +159,11 @@ public class SuccessResource {
     @POST
     @Path("{id}/rules")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response linkRuletoSuccess(List<GenericOnlyIDTO> idsTO, @PathParam("id") long id) throws EntityNotFoundException {
+    public Response linkRuletoSuccess(GenericOnlyIDTO idTO, @PathParam("id") long id) throws EntityNotFoundException {
         Success success = successManager.findById(id);
-        List<Rule> rules = new LinkedList<Rule>();
-        for(GenericOnlyIDTO idTO : idsTO) {
-            rules.add(rulesManager.findById(idTO.getId()));
-        }
-        success.addRules(rules);
-        successManager.update(success);
+        Rule rule = rulesManager.findById(idTO.getId());
+        rule.addSuccess(success);
+        success.addRule(rule);
         return Response.ok().build();
     }
     

@@ -5,7 +5,7 @@ import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
-import ch.heigvd.gamification.services.to.interfaces.ISuccessTOService;
+import ch.heigvd.gamification.services.to.interfaces.ISuccessesTOService;
 import ch.heigvd.gamification.to.PublicRuleTO;
 import ch.heigvd.gamification.to.SuccessTO;
 import java.net.URI;
@@ -45,7 +45,7 @@ public class RulesResource {
     IRulesTOService rulesTOService;
     
     @EJB
-    ISuccessTOService successTOService;
+    ISuccessesTOService successesTOService;
     
     /**
      * Creates a new instance of RulesResource
@@ -131,11 +131,11 @@ public class RulesResource {
      */
     @GET
     @Path("{id}/success")
-    public List<SuccessTO> getUserSuccess(@PathParam("id") long id) throws EntityNotFoundException {
+    public List<SuccessTO> getUserSuccesses(@PathParam("id") long id) throws EntityNotFoundException {
         //If we want another order, use a parametrized NamedQuery
         List<SuccessTO> successTO = new LinkedList<>();
-        for (Success success : rulesManager.findById(id).getSuccess()) {
-            successTO.add(successTOService.buildSuccessTO(success));
+        for (Success success : rulesManager.findById(id).getSuccesses()) {
+            successTO.add(successesTOService.buildSuccessTO(success));
         }
         return successTO;
     }

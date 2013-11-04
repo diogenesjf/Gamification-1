@@ -3,7 +3,7 @@ package ch.heigvd.gamification.services.crud;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.services.crud.interfaces.ISuccessManager;
+import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @author Alexandre Perusset
  */
 @Stateless
-public class SuccessManager implements ISuccessManager {
+public class SuccessesManager implements ISuccessesManager {
 
   @PersistenceContext(unitName = "Gamification")
   private EntityManager em;

@@ -36,10 +36,10 @@ public class Success implements Serializable {
   
   private String badge;
   
-  @ManyToMany(cascade=CascadeType.MERGE, mappedBy="success", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy="successes", fetch = FetchType.LAZY)
   private final List<Rule> rules;
   
-  @ManyToMany(mappedBy="success", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy="successes", fetch = FetchType.LAZY)
   private final List<AppUser> users;
   
   public Success() {
@@ -88,8 +88,8 @@ public class Success implements Serializable {
     return rules;
   }
   
-  public void addRules(List<Rule> newRules) {
-    rules.addAll(newRules);
+  public void addRule(Rule rule) {
+    rules.add(rule);
   }
   
   public void addUser(AppUser user) {

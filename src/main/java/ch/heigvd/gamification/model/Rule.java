@@ -37,22 +37,21 @@ public class Rule implements Serializable {
     private int acquiredPoints;
     
     //Load success only on demand
-    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinTable(name="RULE_SUCCESS")
-    private final List<Success> success;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private final List<Success> successes;
     
     public Rule() {
         name = "UNDEF";
         description = "UNDEF";
         acquiredPoints = -1;
-        success = new LinkedList<>();
+        successes = new LinkedList<>();
     }
     
     public Rule(Rule ruleData) {
         this.name = ruleData.name;
         this.description = ruleData.description;
         this.acquiredPoints = ruleData.acquiredPoints;
-        this.success = ruleData.success;
+        this.successes = ruleData.successes;
     }
     
     public Long getId() {
@@ -89,8 +88,13 @@ public class Rule implements Serializable {
         this.acquiredPoints = acquiredPoints;
     }
     
-    public List<Success> getSuccess() {
-        return success;
+    public List<Success> getSuccesses() {
+        return successes;
+    }
+    
+    public void addSuccess(Success success)
+    {
+        successes.add(success);
     }
     
     @Override
