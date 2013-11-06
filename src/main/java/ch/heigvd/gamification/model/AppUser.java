@@ -3,6 +3,7 @@ package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,15 +22,6 @@ import javax.persistence.OneToMany;
         @NamedQuery(
                 name = "findAllUsers",
                 query = "select u from AppUser u"
-        ),
-        @NamedQuery(
-                name = "getRankedUsers",
-                query = "select u, sum(at.points) as points "
-                      + "from AppUser u "
-                        + "inner join u.events e "
-                        + "inner join e.actiontype at "
-                      + "group by u "
-                      + "order by points desc"
         )
 })
 
@@ -44,13 +36,15 @@ public class AppUser implements Serializable {
 
   private String surname;
 
+  //If we don't want a nullable field
+  @Column(nullable=false)
   private String nickname;
 
   private String password;
   
   //Load success only on demand
   @ManyToMany(fetch = FetchType.LAZY)
-  private final List<Success> success;
+  private final List<Success> successes;
   
   //Load events only on demand
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -61,7 +55,7 @@ public class AppUser implements Serializable {
     surname = "UNDEF";
     nickname = "UNDEF";
     password = "UNDEF";
-    success = new LinkedList<>();
+    successes = new LinkedList<>();
     events = new LinkedList<>();
   }
 
@@ -70,7 +64,7 @@ public class AppUser implements Serializable {
     surname = userData.surname;
     nickname = userData.nickname;
     password = userData.password;
-    success = userData.success;
+    successes = userData.successes;
     events = userData.events;
   }
 
@@ -114,8 +108,8 @@ public class AppUser implements Serializable {
     this.password = password;
   }
 
-  public List<Success> getSuccess() {
-    return success;
+  public List<Success> getSuccesses() {
+    return successes;
   }
   
   public List<Event> getEvents() {
