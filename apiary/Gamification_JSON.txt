@@ -1,0 +1,203 @@
+--- Gamification API v1 ---
+---
+Welcome to our Gamification API documentation.
+
+---
+
+--
+ActionType Resources
++ **title** (string) : Action title
++ **points** (int) : value of this action
++ **description** (string) : Description of this action
+--
+
+Get all actions types.
+GET /application/actionstypes
+< 200
+< Content-Type: application/json
+{ "actionstypes": [
+  { "url": "/applications/actionstypes/1", "id": 1, "name": "Titre" }
+  { "url": "/applications/actionstypes/2", "id": 2, "name": "Titre2" }
+ ]
+}
+
+Post an new action type.
+POST /application/actionstypes
+> Accept: application/json
+{ "name": "Titre" }
+< 201
+< Content-Type: application/json
+{ "url": "/application/actiontype/3", "id": 3 }
+
+
+
+Get an action type identified by its ID.
+GET /application/actionstypes/{id}
+> Accept: application/json
+{ "id": 1 }
+< 200
+< Content-Type: application/json
+{ "url": "/applications/actiontype/1", "id": 1, "name": "toto"}
+
+Update 
+PUT /application/actionstypes/{id}
+> Accept: application/json
+{ "id": 1, "name": "toto"}
+< 204
+{}
+
+Delete an action by passing its ID
+DELETE /application/actionstypes/{id}
+> Accept: application/json
+{ "id": 1 }
+< 200
+< Content-Type: application/json
+{}
+
+Get all rules of an actiontype.
+GET /application/actionstypes/{id}/rules
+> Accept: application/json
+{ "uniqueID": 1 }
+< 200
+< Content-Type: application/json
+{ "rules": [
+  { "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
+ ]
+}
+
+
+
+--
+Rules Resource
+To manage the rules that will give success to your users.
+
++ **name** (string): The name of the rule.
++ **description** (string): The description of the rule to know what it does.
++ **acquiredPoints** (integer): The number of points that need to be reached to trig the rule.
+--
+
+List of your gamified rules.
+GET /application/rules
+< 200
+< Content-Type: application/json
+[
+  { "url": "/application/rules/1", "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
+  { "url": "/application/rules/2", "id": 2, "name": "level2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250 }
+]
+
+Save a new rule by passing its representation.
+POST /application/rules
+> Accept: application/json
+{ "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100  }
+< 201
+< Content-Type: application/json
+{ "url": "/application/rules/3", "id": 3 }
+
+Get a rule through its id.
+GET /application/rules/{id}
+< 200
+< Content-Type: application/json
+{ "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
+
+Update a rule through its id and a new representation.
+PUT /application/rules/{id}
+> Accept: application/json
+{ "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100  }
+< 204
+{}
+
+Delete a rule through its id.
+DELETE /application/rules/{id}
+< 200
+< Content-Type: application/json
+{}
+
+Get all success given by a specific rule.
+GET /application/rules/{id}/success
+< 200
+< Content-Type: application/json
+[
+    { "id": 1, "url": "/application/success/1", "name": "get 1000 points", "badge": "badges/cool.png" }
+    { "id": 2, "url": "/application/success/2", "name": "lost 1000 points", "badge": "badges/bad.png" }
+]
+
+--
+Success Resources
+To manage the success that can be won by users.
+
++ **name** (string): The name of the success.
++ **badge** (string): An URL to the picture representing the success.
+--
+
+List of the success.
+GET /application/success
+< 200
+< Content-Type: application/json
+[
+    { "id": 1, "url": "/application/success/1", "name": "get 1000 points", "badge": "badges/cool.png" }
+    { "id": 2, "url": "/application/success/2", "name": "lost 1000 points", "badge": "badges/bad.png" }
+]
+
+Add a new success
+POST /application/success
+> Accept: application/json
+{ "name": "get 1000 points", "badge": "badges/cool.png" }
+< 201
+< Content-Type: application/json
+{ "url": "/application/success/3", "id": 3 }
+
+Get success through its id.
+GET /application/success/{id}
+< 200
+< Content-Type: application/json
+{"id": 1, "name": "get 1000 points", "badge": "badges/cool.png" }
+
+Update a success throught its id and a new representation.
+PUT /application/success/{id}
+> Accept: application/json
+{ "name": "get 1000 points", "badge": "badges/cool.png" }javascript:UserVoice.showPopupWidget();
+< 204
+{}
+
+Delete a success through its id.
+DELETE /application/success/{id}
+< 200
+< Content-Type: application/json
+{}
+
+Get all the rules needed to be achieved to obtain a specific success.
+GET /application/success/{id}/rules
+< 200
+< Content-Type: application/json
+[
+  { "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
+  { "id": 2, "name": "level2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250 }
+]
+
+Add one or more rules to a specific success.
+POST /application/success/{id}/rules
+> Accept: application/json
+[
+    { "id": 1}
+    { "id": 2}
+]
+< 201
+< Content-Type: application/json
+{}
+
+Delete a rule from a specific success. The rule is NOT deleted, just unlinked from the success.
+DELETE /application/success/{id}/rules/{idRule}
+< 200
+< Content-Type: application/json
+{}
+
+Get all users that have obtained the specific success.
+GET /application/success/{id}/users
+< 200
+< Content-Type: application/json
+[
+  { "id": 1 "name": "doe", "surname": "john", "nickname": "john.doe" }
+  { "id": 2 "name": "stark", "surname": "tony", "nickname": "tony.start" }
+]
+
+

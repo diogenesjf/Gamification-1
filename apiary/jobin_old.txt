@@ -16,10 +16,10 @@ List of your gamified rules.
 GET /application/rules
 < 200
 < Content-Type: application/json
-{ "rules": [
+[
   { "url": "/application/rules/1", "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
   { "url": "/application/rules/2", "id": 2, "name": "level2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250 }
-] }
+]
 
 Save a new rule by passing its representation.
 POST /application/rules
@@ -33,7 +33,7 @@ Get a rule through its id.
 GET /application/rules/{id}
 < 200
 < Content-Type: application/json
-{ "url": "/application/rules/1", "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
+{ "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
 
 Update a rule through its id and a new representation.
 PUT /application/rules/{id}
@@ -52,10 +52,10 @@ Get all success given by a specific rule.
 GET /application/rules/{id}/success
 < 200
 < Content-Type: application/json
-{ "success": [
+[
     { "id": 1, "url": "/application/success/1", "name": "get 1000 points", "badge": "badges/cool.png" }
     { "id": 2, "url": "/application/success/2", "name": "lost 1000 points", "badge": "badges/bad.png" }
-] }
+]
 
 --
 Success Resources
@@ -69,10 +69,10 @@ List of the success.
 GET /application/success
 < 200
 < Content-Type: application/json
-{ "success": [
+[
     { "id": 1, "url": "/application/success/1", "name": "get 1000 points", "badge": "badges/cool.png" }
     { "id": 2, "url": "/application/success/2", "name": "lost 1000 points", "badge": "badges/bad.png" }
-] }
+]
 
 Add a new success
 POST /application/success
@@ -86,7 +86,7 @@ Get success through its id.
 GET /application/success/{id}
 < 200
 < Content-Type: application/json
-{ "url": "/application/success/1", "id": 1, "name": "get 1000 points", "badge": "badges/cool.png" }
+{"id": 1, "name": "get 1000 points", "badge": "badges/cool.png" }
 
 Update a success throught its id and a new representation.
 PUT /application/success/{id}
@@ -105,24 +105,24 @@ Get all the rules needed to be achieved to obtain a specific success.
 GET /application/success/{id}/rules
 < 200
 < Content-Type: application/json
-{ "rules": [
-  { "url": "/application/rules/1", "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
-  { "url": "/application/rules/2", "id": 2, "name": "level2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250 }
-] }
+[
+  { "id": 1, "name": "level1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
+  { "id": 2, "name": "level2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250 }
+]
 
 Add one or more rules to a specific success.
 POST /application/success/{id}/rules
 > Accept: application/json
-{ "rules": [
+[
     { "id": 1}
     { "id": 2}
-] }
+]
 < 201
 < Content-Type: application/json
 {}
 
 Delete a rule from a specific success. The rule is NOT deleted, just unlinked from the success.
-DELETE /application/success/{id}/rules/{id}
+DELETE /application/success/{id}/rules/{idRule}
 < 200
 < Content-Type: application/json
 {}
@@ -131,8 +131,8 @@ Get all users that have obtained the specific success.
 GET /application/success/{id}/users
 < 200
 < Content-Type: application/json
-{ "users": [
-  { "url": "/application/users/1", "id": 1 "name": "doe", "surname": "john", "nickname": "john.doe" }
-  { "url": "/application/users/2", "id": 2 "name": "stark", "surname": "tony", "nickname": "tony.start" }
-] }
+[
+  { "id": 1 "name": "doe", "surname": "john", "nickname": "john.doe" }
+  { "id": 2 "name": "stark", "surname": "tony", "nickname": "tony.start" }
+]
 
