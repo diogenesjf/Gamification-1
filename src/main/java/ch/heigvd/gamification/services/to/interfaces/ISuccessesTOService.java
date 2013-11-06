@@ -9,7 +9,7 @@ import javax.ejb.Local;
  * @author
  */
 @Local
-public interface ISuccessTOService {
+public interface ISuccessesTOService {
 
   public SuccessTO buildSuccessTO(Success source);
 

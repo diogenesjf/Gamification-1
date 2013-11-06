@@ -1,16 +1,16 @@
-package ch.heigvd.gamification.services.crud;
+package ch.heigvd.gamification.services.crud.interfaces;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.ActionType;
+import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.model.UserAction;
 import java.util.List;
 
 /**
  *
  * @author Gaël JObin
  */
-public interface ActionTypesManagerLocal {
+public interface IActionTypesManager {
     
     long create(ActionType actionTypeData);
     
@@ -22,7 +22,7 @@ public interface ActionTypesManagerLocal {
     
     List<ActionType> findAll();
     
-    List<UserAction> findAllActions();
+    List<Event> findAllActions();
     
     List<Rule> findAllRules();
     

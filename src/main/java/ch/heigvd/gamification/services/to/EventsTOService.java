@@ -1,7 +1,10 @@
 package ch.heigvd.gamification.services.to;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.model.ActionType;
+import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Event;
+import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
 import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.to.EventPublicTO;
@@ -21,6 +24,9 @@ public class EventsTOService implements IEventsTOService {
   @EJB
   IAppUsersManager usersManager;
   
+  @EJB
+  IActionTypesManager actionTypesManager;
+  
   @Override
   public EventTO buildEventTO(Event event) {
     return new EventTO(
@@ -32,11 +38,14 @@ public class EventsTOService implements IEventsTOService {
 
   @Override
   public EventPublicTO buildPublicEventTO(Event event) {
+    AppUser u = event.getUser();
+    ActionType at = event.getActionType();
     return new EventPublicTO(
         event.getId(),
-        event.getUser().getName(),
-        event.getActionType().getName(),
-        event.getTimestamp()
+        u.getName() + " " + u.getSurname() + " (" + u.getNickname() + ")",
+        at.getDescription(),
+        event.getTimestamp(),
+        at.getPoints()
     );
   }
 
@@ -44,7 +53,7 @@ public class EventsTOService implements IEventsTOService {
   public void updateEventEntity(Event existingEntity, EventTO newState) {
     try {
       existingEntity.setUser(usersManager.findById(newState.getUserId()));
-      //TODO setActionType
+      existingEntity.setActionType(actionTypesManager.findById(newState.getActionTypeId()));
       existingEntity.setTimestamp(newState.getTimestamp());
     } catch (EntityNotFoundException ex) {
       Logger.getLogger(EventsTOService.class.getName()).log(Level.SEVERE, null, ex);

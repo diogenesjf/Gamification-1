@@ -18,11 +18,11 @@ public class RESTAPI extends Application {
     // register root resources/providers
     classes.add(ApplicationExceptionMapper.class);
     classes.add(AppUserResource.class);
-    classes.add(SuccessResource.class);
+    classes.add(SuccessesResource.class);
     classes.add(EventsResource.class);
     classes.add(LeaderBoardResource.class);
     classes.add(RulesResource.class);
-    classes.add(SuccessResource.class);
+    classes.add(ActionTypesResource.class);
     return classes;
   }
 }

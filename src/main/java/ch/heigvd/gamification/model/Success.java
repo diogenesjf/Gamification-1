@@ -3,6 +3,7 @@ package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,11 +11,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Alexandre Perusset
  */
+@NamedQueries({
+        @NamedQuery(
+                name = "findAllSuccess",
+                query = "select u from Success u"
+        )
+})
 @Entity
 public class Success implements Serializable {
   
@@ -27,19 +36,24 @@ public class Success implements Serializable {
   
   private String badge;
   
-  @ManyToMany(mappedBy="success", fetch = FetchType.LAZY)
+  @ManyToMany(mappedBy="successes", fetch = FetchType.LAZY)
+  private final List<Rule> rules;
+  
+  @ManyToMany(mappedBy="successes", fetch = FetchType.LAZY)
   private final List<AppUser> users;
   
   public Success() {
     name = "UNDEF";
     badge = "UNDEF";
     users = new LinkedList<>();
+    rules = new LinkedList<>();
   }
 
   public Success(Success successData) {
     name = successData.name;
     badge = successData.badge;
     users = successData.users;
+    rules = successData.rules;
   }
   
   public Long getId() {
@@ -68,6 +82,14 @@ public class Success implements Serializable {
   
   public List<AppUser> getUsers() {
     return users;
+  }
+  
+  public List<Rule> getRules() {
+    return rules;
+  }
+  
+  public void addRule(Rule rule) {
+    rules.add(rule);
   }
   
   public void addUser(AppUser user) {

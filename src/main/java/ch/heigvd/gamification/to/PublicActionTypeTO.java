@@ -17,14 +17,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PublicActionTypeTO {
     private long id;
     
-    private String name;
+    private String title;
+    private int points;
+    private String description;
     
     public PublicActionTypeTO() {
     }
     
-    public PublicActionTypeTO(long id, String name) {
+    public PublicActionTypeTO(long id, String title, int points, String description) {
         this.id = id;
-        this.name = name;
+        this.title = title;
+        this.points = points;
+        this.description = description;
     }
     
     public Long getId() {
@@ -35,11 +39,26 @@ public class PublicActionTypeTO {
         this.id = id;
     }
     
-    public String getName(){
-        return this.name;
+    public String getTitle(){
+        return this.title;
     }
     
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public int getPoints(){
+        return this.points;
+    }
+    
+    public void setPoints(int points) {
+        this.points = points;
+    }
+    
+    public String getDescription(){
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

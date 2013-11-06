@@ -1,5 +1,6 @@
 package ch.heigvd.gamification.rest;
 
+import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.services.crud.interfaces.IEventsManager;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
@@ -13,6 +14,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -68,4 +70,17 @@ public class EventsResource {
     ).build();
   }
 
+  /**
+   *
+   * @param id
+   * @return
+   * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
+   */
+  @GET
+  @Path("{id}")
+  @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+  public EventPublicTO getEventById(@PathParam("id") long id) throws EntityNotFoundException {
+    return eventsTOService.buildPublicEventTO(eventsManager.findById(id));
+  }
+  
 }

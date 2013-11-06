@@ -36,14 +36,17 @@ public class LeaderBoardResource {
   @GET
   @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
   public List<RankedAppUserTO> getLeaderboard() {
+    String query =  "select u, coalesce(sum(at.points), 0) as points "
+                  + "from AppUser u "
+                    + "left join u.events e "
+                    + "left join e.actionType at "
+                  + "group by u "
+                  + "order by points desc";
     List<RankedAppUserTO> result = new LinkedList<>();
-    List<Object[]> users = em.createQuery("getRankedUsers").getResultList();
+    List<Object[]> users = em.createQuery(query).getResultList();
     for(Object[] rankedUser : users) {
-      result.add(usersTOService.buildRankedUserTO((AppUser)rankedUser[0], (Long)rankedUser[1]));
+      result.add(usersTOService.buildRankedUserTO((AppUser)rankedUser[0], (Integer)rankedUser[1]));
     }
     return result;
   }
-  
-  
-  
 }

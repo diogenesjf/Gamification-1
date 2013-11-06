@@ -6,12 +6,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Alexandre Perusset
  */
-@XmlRootElement(name="user")
+@XmlRootElement(name="rankeduser")
 public class RankedAppUserTO {
   
   private long id;
   
-  private long points;
+  private int points;
   
   private String name;
   
@@ -22,7 +22,7 @@ public class RankedAppUserTO {
   public RankedAppUserTO() {
   }
   
-  public RankedAppUserTO(long id, long points, String name, String surname, String nickname) {
+  public RankedAppUserTO(long id, int points, String name, String surname, String nickname) {
     this.id = id;
     this.points = points;
     this.name = name;
@@ -38,11 +38,11 @@ public class RankedAppUserTO {
     this.id = id;
   }
 
-  public long getPoints() {
+  public int getPoints() {
     return points;
   }
   
-  public void setPoints(long points) {
+  public void setPoints(int points) {
     this.points = points;
   }
   
