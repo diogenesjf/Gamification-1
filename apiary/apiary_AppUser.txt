@@ -1,0 +1,59 @@
+-- 
+Users Resources 
+To manage the users of your application.
+
++ **name** (string) : User's lastname.
++ **surname** (string) : User's firstname.
++ **nickname** (string) : User's nickname (login).
++ **password** (string) : User's password (only for PUT and POST).
+--
+
+List of your gamified application users.
+GET /users
+< 200
+< Content-Type: application/json
+[
+    { "id": 1, "name": "Doe", "nickname": "john.doe", "surname": "John" },
+    { "id": 2, "name": "Stark", "nickname": "tony.stark", "surname": "Tony" }
+]
+
+Save a new application user by passing his representation.
+POST /users
+> Accept: application/json
+{ "name": "doe", "surname": "john", "nickname": "john.doe", "password": "john.doe$6" }
+< 201
+< Location: /users/3
+
+Get an application user through his id.
+GET /users/{id}
+< 200
+< Content-Type: application/xml
+{ "id": 1, "name": "Doe", "nickname": "john.doe", "surname": "John" }
+
+Update an application user with a new representation through its id.
+PUT /users/{id}
+> Accept: application/json
+{ "name": "Doe", "surname": "John", "nickname": "john.doe", "password": "john.doe$6" }
+< 204
+
+Delete an application user through his id.
+DELETE /users/{id}
+< 204
+
+Get success aquired by an application user.
+GET /users/{id}/success
+< 200
+< Content-Type: application/json
+[
+    { "id": 1, "name": "Get 1000 points", "badge": "badges/cool.png" },
+    { "id": 2, "name": "Lost 1000 points", "badge": "badges/bad.png" }
+]
+
+Get events preformed by an application user. They are ordered from newest to oldest.
+GET /users/{id}/events
+< 200
+< Content-Type: application/xml
+[
+    { "id": 2, "timestamp": 2348327219, "user": "John Doe (john.doe)", "description": "Delete a comment from a thread", "points": -100 },
+    { "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }   
+]

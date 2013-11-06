@@ -30,7 +30,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * REST Service
+ * REST Service mettant à disposition les ressources nécessaire pour la gestion
+ * des utilisateurs de l'api.
  *
  * @author Alexandre Perusset
  */
@@ -49,7 +50,7 @@ public class AppUserResource {
 
   @EJB
   ISuccessesTOService successesTOService;
-  
+
   @EJB
   IEventsTOService eventsTOService;
 
@@ -57,9 +58,25 @@ public class AppUserResource {
   }
 
   /**
+   * Obtenir la liste des utilisateurs.
    *
-   * @param newUserTO
-   * @return
+   * @return List<AppUserPublicTO> liste des utilisateurs
+   */
+  @GET
+  @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+  public List<AppUserPublicTO> getAllUsers() {
+    List<AppUserPublicTO> result = new LinkedList<>();
+    for (AppUser user : usersManager.findAll()) {
+      result.add(usersTOService.buildPublicUserTO(user));
+    }
+    return result;
+  }
+
+  /**
+   * Créer un nouvel utilisateur.
+   *
+   * @param newUserTO le nouvel utilisateur
+   * @return Response HTTP Code 201 Created
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
@@ -74,24 +91,11 @@ public class AppUserResource {
   }
 
   /**
+   * Obtenir un des utilisateurs de l'application.
    *
-   * @return
-   */
-  @GET
-  @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-  public List<AppUserPublicTO> getAllUsers() {
-    List<AppUserPublicTO> result = new LinkedList<>();
-    for (AppUser user : usersManager.findAll()) {
-      result.add(usersTOService.buildPublicUserTO(user));
-    }
-    return result;
-  }
-
-  /**
-   *
-   * @param id
-   * @return
-   * @throws EntityNotFoundException
+   * @param id identifiant unique de l'utilisateur
+   * @return AppUserPublicTO utilisateur voulu
+   * @throws EntityNotFoundException utilisateur non trouvé
    */
   @GET
   @Path("{id}")
@@ -101,11 +105,12 @@ public class AppUserResource {
   }
 
   /**
+   * Mettre à jour un utilisateur.
    *
-   * @param updatedUserTO
-   * @param id
-   * @return
-   * @throws EntityNotFoundException
+   * @param updatedUserTO nouvelle données de l'utilisateur
+   * @param id identifiant unique de l'utilisateur
+   * @return Response HTTP Code 204 No Content
+   * @throws EntityNotFoundException utilisateur non trouvé
    */
   @PUT
   @Path("{id}")
@@ -114,27 +119,30 @@ public class AppUserResource {
     AppUser userToUpdate = usersManager.findById(id);
     usersTOService.updateUserEntity(userToUpdate, updatedUserTO);
     usersManager.update(userToUpdate);
-    return Response.ok().build();
+    return Response.noContent().build();
   }
 
   /**
+   * Supprimer un utilisateur.
    *
-   * @param id
-   * @return
-   * @throws EntityNotFoundException
+   * @param id identifiant unique de l'utilisateur
+   * @return Response HTTP Code 2014 No Content
+   * @throws EntityNotFoundException utilisateur non trouvé
    */
   @DELETE
   @Path("{id}")
   public Response deleteUser(@PathParam("id") long id) throws EntityNotFoundException {
     usersManager.delete(id);
-    return Response.ok().build();
+    return Response.noContent().build();
   }
 
   /**
+   * Obtenir la liste (avec aucun ordre particulié) des succès obtenu par un
+   * utilisateur particulié.
    *
-   * @param id
-   * @return
-   * @throws EntityNotFoundException
+   * @param id identifiant unique de l'utilisateur
+   * @return List<SuccessTO> liste des succès obtenus
+   * @throws EntityNotFoundException utilisateur non trouvé
    */
   @GET
   @Path("{id}/success")
@@ -146,12 +154,14 @@ public class AppUserResource {
     }
     return successTO;
   }
-  
+
   /**
+   * Obtenir la liste (sans ordre particulié) des événements générés par un
+   * utilisateur particulié.
    *
-   * @param id
-   * @return
-   * @throws EntityNotFoundException
+   * @param id identifiant unique de l'utilisateur
+   * @return List<EventPublicTO> liste des énévements générés
+   * @throws EntityNotFoundException utilisateur non trouvé
    */
   @GET
   @Path("{id}/events")
@@ -163,5 +173,4 @@ public class AppUserResource {
     }
     return eventsTO;
   }
-
 }

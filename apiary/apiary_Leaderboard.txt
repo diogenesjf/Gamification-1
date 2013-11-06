@@ -1,0 +1,10 @@
+-- LeaderBoard Resources --
+
+Get the Leaderboard of your application. The Leaderboard contains all users of your application ordered (ranked) by the total value of their acquired points.
+GET /leaderboard
+< 200
+< Content-Type: application/json
+[
+    { "id": 2, "name": "Stark", "surname": "Tony", "nickname": "tony.stark", "points": 100 },
+    { "id": 1, "name": "Doe", "surname": "John", "nickname": "John.Doe", "points": 0 }
+]

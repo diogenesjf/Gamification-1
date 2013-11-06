@@ -22,7 +22,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 /**
- * REST Service
+ * REST Service mettant à disposition les ressources liées aux événements
+ * pouvant se produire dans l'application.
  *
  * @author Alexandre Perusset
  */
@@ -40,23 +41,26 @@ public class EventsResource {
   IEventsTOService eventsTOService;
 
   /**
+   * Obtenir la liste complète (ordonnée de du plus récent au plus ancien) des
+   * événements ayant eu lieu dans l'application.
    *
-   * @return
+   * @return List<EventPublicTO> liste des événements
    */
   @GET
   @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
   public List<EventPublicTO> getEvents() {
     List<EventPublicTO> events = new LinkedList<>();
-    for(Event e : eventsManager.findAll()) {
+    for (Event e : eventsManager.findAll()) {
       events.add(eventsTOService.buildPublicEventTO(e));
     }
     return events;
   }
-  
+
   /**
+   * Ajouter un événement à l'application.
    *
-   * @param newEventTO
-   * @return
+   * @param newEventTO les données du nouvel énévement
+   * @return Response HTTP Code 201 Created
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
@@ -71,10 +75,11 @@ public class EventsResource {
   }
 
   /**
+   * Obtenir les informations d'un événement particulié.
    *
-   * @param id
-   * @return
-   * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
+   * @param id identifiant unique de l'événement
+   * @return EventPublicTO l'évenement voulu
+   * @throws EntityNotFoundException événement inexistant
    */
   @GET
   @Path("{id}")
@@ -82,5 +87,4 @@ public class EventsResource {
   public EventPublicTO getEventById(@PathParam("id") long id) throws EntityNotFoundException {
     return eventsTOService.buildPublicEventTO(eventsManager.findById(id));
   }
-  
 }
