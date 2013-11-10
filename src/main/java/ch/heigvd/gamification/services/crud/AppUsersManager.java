@@ -52,6 +52,6 @@ public class AppUsersManager implements IAppUsersManager {
   
   @Override
   public List<AppUser> findAllBySuccess(long id) {
-    return em.createQuery("SELECT u FROM AppUser u, AppUser_Success us WHERE u.id = us.users_id AND us.successes.id = :id").setParameter("id", id).getResultList();
+    return em.createQuery("SELECT u FROM AppUser u, Success s WHERE s = u.successes AND s.id = :successId").setParameter("successId", id).getResultList();
   }
 }

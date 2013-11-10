@@ -102,7 +102,7 @@ public class RulesResource {
         Rule ruleToUpdate = rulesManager.findById(id);
         rulesTOService.updateRuleEntity(ruleToUpdate, updatedRuleTO);
         rulesManager.update(ruleToUpdate);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
     
     
@@ -114,6 +114,6 @@ public class RulesResource {
     @Path("{id}")
     public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException {
         rulesManager.delete(id);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 }

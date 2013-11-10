@@ -7,55 +7,60 @@ To manage the successes that can be won by users.
 --
 
 List of the success.
-GET /success
+GET /successes
 < 200
 < Content-Type: application/json
 [
-    { "id": 1, "name": "Get 1000 points", "badge": "badges/cool.png" }
+    { "id": 1, "name": "Get 1000 points", "badge": "badges/cool.png" },
     { "id": 2, "name": "Lost 1000 points", "badge": "badges/bad.png" }
 ]
 
 Add a new success.
-POST /success
+POST /successes
 > Accept: application/json
 { "name": "Get 1000 points", "badge": "badges/cool.png" }
 < 201
-< Location: /success/3
+< Location: /successes/3
 
 Get success through its id.
-GET /success/{id}
+GET /successes/{id}
 < 200
 < Content-Type: application/json
 { "id": 1, "name": "get 1000 points", "badge": "badges/cool.png" }
 
 Update a success throught its id and a new representation.
-PUT /success/{id}
+PUT /successes/{id}
 > Accept: application/json
 { "name": "Get 1000 points", "badge": "badges/cool.png" }
 < 204
 
 Delete a success through its id.
-DELETE /success/{id}
+DELETE /successes/{id}
 < 204
 
-Get all the rules needed to be achieved to obtain a specific success.
-GET /success/{id}/rules
+Get all the users who have acquired a specific success.
+GET /successes/{id}/users
 < 200
 < Content-Type: application/json
 [
-  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100 }
-  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250 }
+  {"id":1,"name":"doe","nickname":"john.doe","surname":"john"}
+]
+
+Get all the rules needed to be achieved to obtain a specific success.
+GET /successes/{id}/rules
+< 200
+< Content-Type: application/json
+[
+  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 2 },
+  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250, "actionTypeId": 3 }
 ]
 
 Add one or more rules to a specific success.
-POST /success/{id}/rules
+POST /successes/{id}/rules
 > Accept: application/json
-[
-    { "id": 1 }
-    { "id": 2 }
-]
+{ "id": 1 }
 < 201
 
 Delete a rule from a specific success. The rule is NOT deleted, just unlinked from the success.
-DELETE /success/{id}/rules/{ruleid}
+DELETE /successes/{id}/rules/{ruleid}
 < 204

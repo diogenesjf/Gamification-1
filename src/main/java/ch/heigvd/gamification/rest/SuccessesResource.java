@@ -113,7 +113,10 @@ public class SuccessesResource {
     
     /**
      * Updates an Success resource
-     * @return an instance of PublicRuleTO
+     * @param updatedSuccessTO
+     * @param id
+     * @return instance of PublicRuleTO
+     * @throws EntityNotFoundException 
      */
     @PUT
     @Path("{id}")
@@ -122,7 +125,7 @@ public class SuccessesResource {
         Success successToUpdate = successManager.findById(id);
         successTOService.updateSuccessEntity(successToUpdate, updatedSuccessTO);
         successManager.update(successToUpdate);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
     
     
@@ -134,7 +137,7 @@ public class SuccessesResource {
     @Path("{id}")
     public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException {
         successManager.delete(id);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
     
     
@@ -155,20 +158,6 @@ public class SuccessesResource {
         }
         return result;
     }
-
-    /**
-     * Link one or more Rules to a Success resource
-     * @return an instance of PublicRulesTO
-     */
-    @POST
-    @Path("{id}/rules")
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response linkRuletoSuccess(GenericOnlyIDTO idTO, @PathParam("id") long id) throws EntityNotFoundException {
-        Success success = successManager.findById(id);
-        Rule rule = rulesManager.findById(idTO.getId());
-        success.addRule(rule);
-        return Response.ok().build();
-    }
     
     /**
      * Retrieves representation of a list of User linked to a specific Success resource
@@ -187,6 +176,20 @@ public class SuccessesResource {
         }
         return result;
     }
+
+    /**
+     * Link one or more Rules to a Success resource
+     * @return an instance of PublicRulesTO
+     */
+    @POST
+    @Path("{id}/rules")
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response linkRuletoSuccess(GenericOnlyIDTO idTO, @PathParam("id") long id) throws EntityNotFoundException {
+        Success success = successManager.findById(id);
+        Rule rule = rulesManager.findById(idTO.getId());
+        success.addRule(rule);
+        return Response.created(null).build();
+    }
     
     /**
      * Delete the link between a Rule and a Success resource
@@ -199,6 +202,6 @@ public class SuccessesResource {
         Success success = successManager.findById(id);
         success.getRules().remove(rulesManager.findById(idRule));
         successManager.update(success);
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 }

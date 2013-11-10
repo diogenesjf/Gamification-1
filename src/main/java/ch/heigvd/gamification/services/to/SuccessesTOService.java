@@ -21,7 +21,7 @@ public class SuccessesTOService implements ISuccessesTOService {
   }
 
   @Override
-  public void updateSuccessEntity(Success existingEntity, SuccessTO newState) { //TODO
+  public void updateSuccessEntity(Success existingEntity, SuccessTO newState) {
    existingEntity.setName(newState.getName());
    existingEntity.setBadge(newState.getBadge());
   }
