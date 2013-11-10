@@ -21,5 +21,7 @@ public interface IAppUsersManager {
   public AppUser findById(long id) throws EntityNotFoundException;
 
   public List<AppUser> findAll();
+  
+  public List<AppUser> findAllBySuccess(long id);
 
 }

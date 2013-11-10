@@ -3,6 +3,7 @@ package ch.heigvd.gamification.rest;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.services.crud.interfaces.IEventsManager;
+import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.to.EventPublicTO;
 import ch.heigvd.gamification.to.EventTO;
@@ -36,6 +37,9 @@ public class EventsResource {
 
   @EJB
   IEventsManager eventsManager;
+  
+  @EJB
+  ISuccessesManager successesManager;
 
   @EJB
   IEventsTOService eventsTOService;
@@ -63,7 +67,7 @@ public class EventsResource {
    * @return Response HTTP Code 201 Created
    */
   @POST
-  @Consumes({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
   public Response createEvent(EventTO newEventTO) {
     Event newEvent = new Event();
     eventsTOService.updateEventEntity(newEvent, newEventTO);

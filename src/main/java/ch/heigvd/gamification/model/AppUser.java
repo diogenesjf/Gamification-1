@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -44,6 +45,7 @@ public class AppUser implements Serializable {
   
   //Load success only on demand
   @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name="AppUser_Success")
   private final List<Success> successes;
   
   //Load events only on demand
@@ -108,6 +110,10 @@ public class AppUser implements Serializable {
     this.password = password;
   }
 
+  public void  addSuccess(Success newSuccess) {
+    this.successes.add(newSuccess);
+  }
+  
   public List<Success> getSuccesses() {
     return successes;
   }

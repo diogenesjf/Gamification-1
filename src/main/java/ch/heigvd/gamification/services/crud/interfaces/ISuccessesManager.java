@@ -20,5 +20,7 @@ public interface ISuccessesManager {
 
   public Success findById(long id) throws EntityNotFoundException;
 
-  public List<Success> findAll();  
+  public List<Success> findAll(); 
+  
+  public List<Success> findAllAcquiredByUser(long id);
 }

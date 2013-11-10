@@ -3,7 +3,6 @@ package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,23 +35,18 @@ public class Success implements Serializable {
   
   private String badge;
   
-  @ManyToMany(mappedBy="successes", fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY)
   private final List<Rule> rules;
-  
-  @ManyToMany(mappedBy="successes", fetch = FetchType.LAZY)
-  private final List<AppUser> users;
   
   public Success() {
     name = "UNDEF";
     badge = "UNDEF";
-    users = new LinkedList<>();
     rules = new LinkedList<>();
   }
 
   public Success(Success successData) {
     name = successData.name;
     badge = successData.badge;
-    users = successData.users;
     rules = successData.rules;
   }
   
@@ -80,10 +74,6 @@ public class Success implements Serializable {
     this.badge = badge;
   }
   
-  public List<AppUser> getUsers() {
-    return users;
-  }
-  
   public List<Rule> getRules() {
     return rules;
   }
@@ -91,11 +81,7 @@ public class Success implements Serializable {
   public void addRule(Rule rule) {
     rules.add(rule);
   }
-  
-  public void addUser(AppUser user) {
-    users.add(user);
-  }
-  
+
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;

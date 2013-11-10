@@ -1,5 +1,6 @@
 package ch.heigvd.gamification.rest;
 
+import ch.heigvd.gamification.interceptors.AppUserInterceptor;
 import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;

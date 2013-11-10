@@ -19,7 +19,7 @@ public class SuccessTO {
   private String name;
 
   private String badge;
-
+  
   public SuccessTO() {
   }
 

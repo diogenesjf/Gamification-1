@@ -49,5 +49,9 @@ public class AppUsersManager implements IAppUsersManager {
   public List<AppUser> findAll() {
     return em.createNamedQuery("findAllUsers").getResultList();
   }
-
+  
+  @Override
+  public List<AppUser> findAllBySuccess(long id) {
+    return em.createQuery("SELECT u FROM AppUser u, AppUser_Success us WHERE u.id = us.users_id AND us.successes.id = :id").setParameter("id", id).getResultList();
+  }
 }

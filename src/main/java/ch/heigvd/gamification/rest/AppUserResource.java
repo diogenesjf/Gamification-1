@@ -79,7 +79,7 @@ public class AppUserResource {
    * @return Response HTTP Code 201 Created
    */
   @POST
-  @Consumes({MediaType.APPLICATION_JSON})
+  @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
   public Response createUser(AppUserTO newUserTO) {
     AppUser newUser = new AppUser();
     usersTOService.updateUserEntity(newUser, newUserTO);

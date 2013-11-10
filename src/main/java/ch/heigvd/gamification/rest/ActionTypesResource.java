@@ -2,12 +2,9 @@ package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.ActionType;
-import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
 import ch.heigvd.gamification.services.to.interfaces.IActionTypesTOService;
-import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
 import ch.heigvd.gamification.to.PublicActionTypeTO;
-import ch.heigvd.gamification.to.PublicRuleTO;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,9 +41,6 @@ public class ActionTypesResource {
     @EJB
     IActionTypesTOService actionTypesTOService;
     
-    @EJB
-    IRulesTOService rulesTOService;
-    
     /**
      * Creates a new instance of ActionTypesResource
      */
@@ -58,12 +52,12 @@ public class ActionTypesResource {
      * @return an instance of PublicActionTypeTO
      */
     @POST
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createResource(PublicActionTypeTO newActionTypeTO) {
         ActionType newActionType = new ActionType();
         actionTypesTOService.updateActionTypeEntity(newActionType,newActionTypeTO);
-        long newRuleId = actionTypesManager.create(newActionType);
-        URI createdURI = context.getAbsolutePathBuilder().path(Long.toString(newRuleId)).build();
+        long newActionTypeId = actionTypesManager.create(newActionType);
+        URI createdURI = context.getAbsolutePathBuilder().path(Long.toString(newActionTypeId)).build();
         return Response.created(createdURI).build();
     }
     
@@ -73,7 +67,7 @@ public class ActionTypesResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PublicActionTypeTO> getResourceList() {
+    public List<PublicActionTypeTO> getResources() {
         List<ActionType> actionTypes = actionTypesManager.findAll();
         List<PublicActionTypeTO> result = new LinkedList<PublicActionTypeTO>();
         for(ActionType actionType : actionTypes) {
@@ -103,8 +97,8 @@ public class ActionTypesResource {
      */
     @PUT
     @Path("{id}")
-    @Consumes({"application/json"})
-    public Response Resource(PublicActionTypeTO updatedActionTypeTO, @PathParam("id") long id) throws EntityNotFoundException {
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response updateResource(PublicActionTypeTO updatedActionTypeTO, @PathParam("id") long id) throws EntityNotFoundException {
         ActionType actionTypeToUpdate = actionTypesManager.findById(id);
         actionTypesTOService.updateActionTypeEntity(actionTypeToUpdate, updatedActionTypeTO);
         actionTypesManager.update(actionTypeToUpdate);
@@ -121,21 +115,5 @@ public class ActionTypesResource {
     public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException {
         actionTypesManager.delete(id);
         return Response.ok().build();
-    }
-    
-    /**
-     * Retrieves representation of a list of Rule linked to a specific ActionType
-     * @return an instance of PublicActionTypeTO
-     */
-    @GET
-    @Path("{id}/success")
-    public List<PublicRuleTO> getUserSuccess(@PathParam("id") long id) throws EntityNotFoundException {
-        //If we want another order, use a parametrized NamedQuery
-        List<PublicRuleTO> ruleTO = new LinkedList<>();
-        for (Rule rule : actionTypesManager.findById(id).getRules()) {
-            ruleTO.add(rulesTOService.buildPublicRuleTO(rule));
-        }
-        return ruleTO;
-    }
-    
+    } 
 }

@@ -2,12 +2,9 @@ package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
-import ch.heigvd.gamification.services.to.interfaces.ISuccessesTOService;
 import ch.heigvd.gamification.to.PublicRuleTO;
-import ch.heigvd.gamification.to.SuccessTO;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,9 +41,6 @@ public class RulesResource {
     @EJB
     IRulesTOService rulesTOService;
     
-    @EJB
-    ISuccessesTOService successesTOService;
-    
     /**
      * Creates a new instance of RulesResource
      */
@@ -58,7 +52,7 @@ public class RulesResource {
      * @return an instance of PublicRuleTO
      */
     @POST
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createResource(PublicRuleTO newRuleTO) {
         Rule newRule = new Rule();
         rulesTOService.updateRuleEntity(newRule,newRuleTO);
@@ -73,7 +67,7 @@ public class RulesResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PublicRuleTO> getResourceList() {
+    public List<PublicRuleTO> getResources() {
         List<Rule> rules = rulesManager.findAll();
         List<PublicRuleTO> result = new LinkedList<PublicRuleTO>();
         for(Rule rule : rules) {
@@ -103,8 +97,8 @@ public class RulesResource {
      */
     @PUT
     @Path("{id}")
-    @Consumes({"application/json"})
-    public Response Resource(PublicRuleTO updatedRuleTO, @PathParam("id") long id) throws EntityNotFoundException {
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response updateResource(PublicRuleTO updatedRuleTO, @PathParam("id") long id) throws EntityNotFoundException {
         Rule ruleToUpdate = rulesManager.findById(id);
         rulesTOService.updateRuleEntity(ruleToUpdate, updatedRuleTO);
         rulesManager.update(ruleToUpdate);
@@ -121,22 +115,5 @@ public class RulesResource {
     public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException {
         rulesManager.delete(id);
         return Response.ok().build();
-    }
-    
-    /**
-     * Retrieves representation of a list of SuccessTO linked to a specific Rule
-     * @param id
-     * @return a list of SuccessTO
-     * @throws EntityNotFoundException 
-     */
-    @GET
-    @Path("{id}/success")
-    public List<SuccessTO> getUserSuccesses(@PathParam("id") long id) throws EntityNotFoundException {
-        //If we want another order, use a parametrized NamedQuery
-        List<SuccessTO> successTO = new LinkedList<>();
-        for (Success success : rulesManager.findById(id).getSuccesses()) {
-            successTO.add(successesTOService.buildSuccessTO(success));
-        }
-        return successTO;
     }
 }

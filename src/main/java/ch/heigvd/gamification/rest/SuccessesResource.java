@@ -4,6 +4,7 @@ import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
+import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
 import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
 import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
 import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
@@ -37,7 +38,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Gaël Jobin
  */
 @Stateless
-@Path("success")
+@Path("successes")
 public class SuccessesResource {
     
     @Context
@@ -45,6 +46,9 @@ public class SuccessesResource {
     
     @EJB
     ISuccessesManager successManager;
+    
+    @EJB
+    IAppUsersManager usersManager;
     
     @EJB
     IRulesManager rulesManager;
@@ -69,7 +73,7 @@ public class SuccessesResource {
      * @return an instance of PublicSuccessTO
      */
     @POST
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createResource(SuccessTO newSuccessTO) {
         Success newSuccess = new Success();
         successTOService.updateSuccessEntity(newSuccess,newSuccessTO);
@@ -84,7 +88,7 @@ public class SuccessesResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<SuccessTO> getResourceList() {
+    public List<SuccessTO> getResources() {
         List<Success> success = successManager.findAll();
         List<SuccessTO> result = new LinkedList<SuccessTO>();
         for(Success singleSuccess : success) {
@@ -113,8 +117,8 @@ public class SuccessesResource {
      */
     @PUT
     @Path("{id}")
-    @Consumes({"application/json"})
-    public Response Resource(SuccessTO updatedSuccessTO, @PathParam("id") long id) throws EntityNotFoundException {
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public Response updateResource(SuccessTO updatedSuccessTO, @PathParam("id") long id) throws EntityNotFoundException {
         Success successToUpdate = successManager.findById(id);
         successTOService.updateSuccessEntity(successToUpdate, updatedSuccessTO);
         successManager.update(successToUpdate);
@@ -143,7 +147,7 @@ public class SuccessesResource {
     @GET
     @Path("{id}/rules")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PublicRuleTO> getRulesResource(@PathParam("id") long id) throws EntityNotFoundException {
+    public List<PublicRuleTO> getSuccessRulesResource(@PathParam("id") long id) throws EntityNotFoundException {
         List<Rule> rules = successManager.findById(id).getRules();
         List<PublicRuleTO> result = new LinkedList<PublicRuleTO>();
         for(Rule rule : rules) {
@@ -158,11 +162,10 @@ public class SuccessesResource {
      */
     @POST
     @Path("{id}/rules")
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response linkRuletoSuccess(GenericOnlyIDTO idTO, @PathParam("id") long id) throws EntityNotFoundException {
         Success success = successManager.findById(id);
         Rule rule = rulesManager.findById(idTO.getId());
-        rule.addSuccess(success);
         success.addRule(rule);
         return Response.ok().build();
     }
@@ -176,8 +179,8 @@ public class SuccessesResource {
     @GET
     @Path("{id}/users")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<AppUserPublicTO> getUsersResource(@PathParam("id") long id) throws EntityNotFoundException {
-        List<AppUser> users = successManager.findById(id).getUsers();
+    public List<AppUserPublicTO> getSuccessUsersResource(@PathParam("id") long id) throws EntityNotFoundException {
+        List<AppUser> users = usersManager.findAllBySuccess(id);
         List<AppUserPublicTO> result = new LinkedList<AppUserPublicTO>();
         for(AppUser user : users) {
             result.add(usersTOService.buildPublicUserTO(user));
@@ -191,7 +194,7 @@ public class SuccessesResource {
      */
     @DELETE
     @Path("{id}/rules/{idRule}")
-    @Consumes({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response unlinkRuletoSuccess(@PathParam("id") long id, @PathParam("idRule") long idRule) throws EntityNotFoundException {
         Success success = successManager.findById(id);
         success.getRules().remove(rulesManager.findById(idRule));

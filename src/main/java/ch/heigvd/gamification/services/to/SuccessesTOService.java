@@ -17,8 +17,7 @@ public class SuccessesTOService implements ISuccessesTOService {
     return new SuccessTO(
             source.getId(),
             source.getName(),
-            source.getBadge()
-    );
+            source.getBadge());
   }
 
   @Override

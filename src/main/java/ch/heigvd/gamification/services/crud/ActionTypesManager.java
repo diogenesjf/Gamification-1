@@ -51,7 +51,7 @@ public class ActionTypesManager implements IActionTypesManager {
     
     @Override
     public List<ActionType> findAll() {
-        List actionTypes = em.createNamedQuery("findAllActionType").getResultList();
+        List actionTypes = em.createNamedQuery("findAllActionTypes").getResultList();
         return actionTypes;
     }
     
