@@ -1,4 +1,4 @@
-package ch.heigvd.gamification.rest;
+package ch.heigvd.gamification.rest.exceptionmappers;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import javax.ws.rs.core.Response;
@@ -7,10 +7,10 @@ import javax.ws.rs.ext.Provider;
 
 /**
  *
- * @author Olivier Liechti
+ * @author Alexandre Perusset
  */
 @Provider
-public class ApplicationExceptionMapper implements ExceptionMapper<EntityNotFoundException> {
+public class NotFoundMapper implements ExceptionMapper<EntityNotFoundException> {
 
   @Override
   public Response toResponse(EntityNotFoundException exception) {

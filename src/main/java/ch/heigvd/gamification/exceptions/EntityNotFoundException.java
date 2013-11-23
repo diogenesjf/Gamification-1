@@ -4,7 +4,7 @@ import javax.ejb.ApplicationException;
 
 /**
  *
- * @author Olivier Liechti
+ * @author Alexandre Perusset
  */
 @ApplicationException(rollback = true)
 public class EntityNotFoundException extends Exception {

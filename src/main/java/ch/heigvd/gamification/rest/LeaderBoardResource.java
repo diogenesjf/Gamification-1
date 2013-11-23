@@ -21,7 +21,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("leaderboard")
-public class LeaderBoardResource {
+public class LeaderBoardResource extends GamificationRESTResource {
   
   @PersistenceContext(unitName="Gamification")
   private EntityManager em;

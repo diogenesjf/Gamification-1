@@ -30,10 +30,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Stateless
 @Path("rules")
-public class RulesResource {
-    
-    @Context
-    private UriInfo context;
+public class RulesResource extends GamificationRESTResource {
     
     @EJB
     IRulesManager rulesManager;

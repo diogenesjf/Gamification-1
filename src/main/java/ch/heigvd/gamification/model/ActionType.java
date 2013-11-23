@@ -21,7 +21,6 @@ import javax.persistence.NamedQuery;
 @Entity
 public class ActionType implements Serializable {
     
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -76,9 +75,7 @@ public class ActionType implements Serializable {
     
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return id != null ? id.hashCode() : 0;
     }
     
     @Override
@@ -87,11 +84,8 @@ public class ActionType implements Serializable {
         if (!(object instanceof ActionType)) {
             return false;
         }
-        ActionType other = (ActionType) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        ActionType other = (ActionType)object;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
     }
     
     @Override

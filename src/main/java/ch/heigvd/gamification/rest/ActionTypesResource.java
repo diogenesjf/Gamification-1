@@ -2,9 +2,9 @@ package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.ActionType;
-import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
 import ch.heigvd.gamification.services.to.interfaces.IActionTypesTOService;
 import ch.heigvd.gamification.to.PublicActionTypeTO;
+import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,10 +18,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 /**
  * REST Service
@@ -29,11 +27,8 @@ import javax.ws.rs.core.UriInfo;
  * @author Gaël Jobin
  */
 @Stateless
-@Path("actionTypes")
-public class ActionTypesResource {
-    
-    @Context
-    private UriInfo context;
+@Path("actiontypes")
+public class ActionTypesResource extends GamificationRESTResource {
     
     @EJB
     IActionTypesManager actionTypesManager;
@@ -49,6 +44,7 @@ public class ActionTypesResource {
     
     /**
      * Creates a new ActionType resource from the provided representation
+     * @param newActionTypeTO
      * @return an instance of PublicActionTypeTO
      */
     @POST
@@ -69,7 +65,7 @@ public class ActionTypesResource {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PublicActionTypeTO> getResources() {
         List<ActionType> actionTypes = actionTypesManager.findAll();
-        List<PublicActionTypeTO> result = new LinkedList<PublicActionTypeTO>();
+        List<PublicActionTypeTO> result = new LinkedList<>();
         for(ActionType actionType : actionTypes) {
             result.add(actionTypesTOService.buildPublicActionTypeTO(actionType));
         }
@@ -93,7 +89,10 @@ public class ActionTypesResource {
     
     /**
      * Updates an ActionType resource
+     * @param updatedActionTypeTO
+     * @param id
      * @return an instance of PublicActionTypeTO
+     * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
      */
     @PUT
     @Path("{id}")
@@ -108,7 +107,9 @@ public class ActionTypesResource {
     
     /**
      * Deletes an ActionType resource
+     * @param id
      * @return an instance of PublicActionTypeTO
+     * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
      */
     @DELETE
     @Path("{id}")

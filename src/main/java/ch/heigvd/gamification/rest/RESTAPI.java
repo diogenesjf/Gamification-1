@@ -1,5 +1,6 @@
 package ch.heigvd.gamification.rest;
 
+import ch.heigvd.gamification.rest.exceptionmappers.NotFoundMapper;
 import ch.heigvd.gamification.interceptors.AppUserInterceptor;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,7 @@ public class RESTAPI extends Application {
   public Set<Class<?>> getClasses() {
     final Set<Class<?>> classes = new HashSet<>();
     // register root resources/providers
-    classes.add(ApplicationExceptionMapper.class);
+    classes.add(NotFoundMapper.class);
     classes.add(AppUserResource.class);
     classes.add(SuccessesResource.class);
     classes.add(EventsResource.class);

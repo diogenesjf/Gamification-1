@@ -39,10 +39,7 @@ import javax.ws.rs.core.UriInfo;
  */
 @Stateless
 @Path("successes")
-public class SuccessesResource {
-    
-    @Context
-    private UriInfo context;
+public class SuccessesResource extends GamificationRESTResource {
     
     @EJB
     ISuccessesManager successManager;
