@@ -4,9 +4,8 @@
  */
 package ch.heigvd.gamification.services.to.interfaces;
 
-import ch.heigvd.gamification.model.ActionType;
 import ch.heigvd.gamification.model.Application;
-import ch.heigvd.gamification.to.PublicActionTypeTO;
+import ch.heigvd.gamification.to.PublicApplicationTO;
 
 /**
  *

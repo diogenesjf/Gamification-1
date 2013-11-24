@@ -19,7 +19,8 @@ public class ApplicationTOService {
 
     
     public ApplicationTO buildApplicationTO(Application source) {
-        return new ApplicationTO(source.);
+        return new ApplicationTO(source.getId(),
+                                 source.getName());
     }
     
    
