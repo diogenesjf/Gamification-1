@@ -1,9 +1,12 @@
 package ch.heigvd.gamification.services.crud;
 
-import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
+import ch.heigvd.gamification.services.crud.interfaces.remote.IRulesManagerRemote;
 import java.util.List;
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +17,9 @@ import javax.persistence.PersistenceContext;
  * @author Gaël Jobin
  */
 @Stateless
-public class RulesManager implements IRulesManager {
+@Local(IRulesManagerLocal.class)
+@Remote(IRulesManagerRemote.class)
+public class RulesManager implements IRulesManagerLocal, IRulesManagerRemote {
     
     @PersistenceContext(unitName = "Gamification")
     private EntityManager em;

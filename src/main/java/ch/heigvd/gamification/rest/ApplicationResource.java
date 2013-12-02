@@ -1,7 +1,7 @@
 package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.model.Application;
-import ch.heigvd.gamification.services.crud.interfaces.IApplicationsManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IApplicationsManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IApplicationsTOService;
 import ch.heigvd.gamification.to.PublicApplicationTO;
 import java.net.URI;
@@ -29,7 +29,7 @@ public class ApplicationResource extends GamificationRESTResource {
     private IApplicationsTOService applicationTOService;
     
     @EJB
-    private IApplicationsManager applicationsManager;
+    private IApplicationsManagerLocal applicationsManager;
     
     /**
      * Creates a new instance of ApplicationResource

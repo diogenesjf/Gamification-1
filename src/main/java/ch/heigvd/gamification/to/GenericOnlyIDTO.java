@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  * @author Gaël Jobin
  */
-@XmlRootElement
+@XmlRootElement(name="genericId")
 public class GenericOnlyIDTO {
     private long id;
     

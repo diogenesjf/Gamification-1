@@ -2,7 +2,7 @@ package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
 import ch.heigvd.gamification.to.PublicRuleTO;
 import java.net.URI;
@@ -33,7 +33,7 @@ import javax.ws.rs.core.UriInfo;
 public class RulesResource extends GamificationRESTResource {
         
     @EJB
-    IRulesManager rulesManager;
+    IRulesManagerLocal rulesManager;
     
     @EJB
     IRulesTOService rulesTOService;

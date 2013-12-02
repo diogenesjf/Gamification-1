@@ -4,9 +4,9 @@ import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
-import ch.heigvd.gamification.services.crud.interfaces.IRulesManager;
-import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
 import ch.heigvd.gamification.services.to.interfaces.ISuccessesTOService;
@@ -42,13 +42,13 @@ import javax.ws.rs.core.UriInfo;
 public class SuccessesResource extends GamificationRESTResource {    
     
     @EJB
-    ISuccessesManager successManager;
+    ISuccessesManagerLocal successManager;
     
     @EJB
-    IAppUsersManager usersManager;
+    IAppUsersManagerLocal usersManager;
     
     @EJB
-    IRulesManager rulesManager;
+    IRulesManagerLocal rulesManager;
     
     @EJB
     ISuccessesTOService successTOService;

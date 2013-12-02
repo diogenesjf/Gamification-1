@@ -2,8 +2,8 @@ package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Event;
-import ch.heigvd.gamification.services.crud.interfaces.IEventsManager;
-import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IEventsManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.to.EventPublicTO;
 import ch.heigvd.gamification.to.EventTO;
@@ -33,10 +33,10 @@ import javax.ws.rs.core.UriInfo;
 public class EventsResource extends GamificationRESTResource {
     
   @EJB
-  IEventsManager eventsManager;
+  IEventsManagerLocal eventsManager;
   
   @EJB
-  ISuccessesManager successesManager;
+  ISuccessesManagerLocal successesManager;
 
   @EJB
   IEventsTOService eventsTOService;

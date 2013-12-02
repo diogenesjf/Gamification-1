@@ -3,10 +3,13 @@ package ch.heigvd.gamification.services.crud;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.services.crud.interfaces.IEventsManager;
-import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IEventsManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.remote.IEventsManagerRemote;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,13 +19,15 @@ import javax.persistence.PersistenceContext;
  * @author Alexandre Perusset
  */
 @Stateless
-public class EventsManager implements IEventsManager {
+@Local(IEventsManagerLocal.class)
+@Remote(IEventsManagerRemote.class)
+public class EventsManager implements IEventsManagerLocal, IEventsManagerRemote {
 
   @PersistenceContext(unitName="Gamification")
   private EntityManager em;
   
   @EJB
-  private ISuccessesManager successesManager;
+  private ISuccessesManagerLocal successesManager;
   
   @Override
   public long create(Event eventData) {

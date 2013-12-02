@@ -2,9 +2,12 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Success;
-import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.remote.ISuccessesManagerRemote;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +17,9 @@ import javax.persistence.PersistenceContext;
  * @author Alexandre Perusset
  */
 @Stateless
-public class SuccessesManager implements ISuccessesManager {
+@Local(ISuccessesManagerLocal.class)
+@Remote(ISuccessesManagerRemote.class)
+public class SuccessesManager implements ISuccessesManagerLocal, ISuccessesManagerRemote {
 
   @PersistenceContext(unitName = "Gamification")
   private EntityManager em;

@@ -1,4 +1,4 @@
-package ch.heigvd.gamification.services.crud.interfaces;
+package ch.heigvd.gamification.services.crud.interfaces.remote;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.ActionType;
@@ -8,22 +8,22 @@ import java.util.List;
 
 /**
  *
- * @author Gaël JObin
+ * @author Gaël Jobin
  */
-public interface IActionTypesManager {
-    
+public interface IActionTypesManagerRemote {
+
     long create(ActionType actionTypeData);
-    
+
     void update(ActionType newState) throws EntityNotFoundException;
-    
+
     void delete(long id) throws EntityNotFoundException;
-    
+
     ActionType findById(long id) throws EntityNotFoundException;
-    
+
     List<ActionType> findAll();
-    
+
     List<Event> findAllActions();
-    
+
     List<Rule> findAllRules();
-    
+
 }

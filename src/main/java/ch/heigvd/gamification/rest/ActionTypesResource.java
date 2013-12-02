@@ -4,7 +4,7 @@ import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.ActionType;
 import ch.heigvd.gamification.services.to.interfaces.IActionTypesTOService;
 import ch.heigvd.gamification.to.PublicActionTypeTO;
-import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IActionTypesManagerLocal;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +33,7 @@ import javax.ws.rs.core.UriInfo;
 public class ActionTypesResource extends GamificationRESTResource {
     
     @EJB
-    IActionTypesManager actionTypesManager;
+    IActionTypesManagerLocal actionTypesManager;
     
     @EJB
     IActionTypesTOService actionTypesTOService;

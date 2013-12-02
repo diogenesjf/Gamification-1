@@ -4,10 +4,13 @@
  */
 package ch.heigvd.gamification.to;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author thomasmoegli
  */
+@XmlRootElement(name="application")
 public class PublicApplicationTO {
     
   private Long id;

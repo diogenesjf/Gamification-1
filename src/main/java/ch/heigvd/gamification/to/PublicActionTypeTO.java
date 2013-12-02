@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Gaël Jobin
  */
-@XmlRootElement
+@XmlRootElement(name="actionType")
 public class PublicActionTypeTO {
     private long id;
     

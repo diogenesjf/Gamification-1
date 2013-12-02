@@ -2,8 +2,11 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
-import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.remote.IAppUsersManagerRemote;
 import java.util.List;
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +16,9 @@ import javax.persistence.PersistenceContext;
  * @author Alexandre Perusset
  */
 @Stateless
-public class AppUsersManager implements IAppUsersManager {
+@Local(IAppUsersManagerLocal.class)
+@Remote(IAppUsersManagerRemote.class)
+public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerRemote {
 
   @PersistenceContext(unitName="Gamification")
   private EntityManager em;

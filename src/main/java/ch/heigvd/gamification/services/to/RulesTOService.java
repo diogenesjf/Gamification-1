@@ -3,7 +3,7 @@ package ch.heigvd.gamification.services.to;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.services.crud.interfaces.IActionTypesManager;
+import ch.heigvd.gamification.services.crud.interfaces.local.IActionTypesManagerLocal;
 import ch.heigvd.gamification.to.PublicRuleTO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +18,7 @@ import javax.ejb.Stateless;
 public class RulesTOService implements IRulesTOService {
     
     @EJB
-    IActionTypesManager actionTypesManager;
+    IActionTypesManagerLocal actionTypesManager;
     
     public PublicRuleTO buildPublicRuleTO(Rule source) {
         PublicRuleTO to = new PublicRuleTO(source.getId(), source.getName(), source.getDescription(), source.getAcquiredPoints(), source.getActionType().getId());

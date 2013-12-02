@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Gaël Jobin
  */
-@XmlRootElement
+@XmlRootElement(name="rule")
 public class PublicRuleTO {
     private long ruleId;
 
