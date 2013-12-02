@@ -11,7 +11,7 @@ import ch.heigvd.gamification.to.PublicApplicationTO;
  *
  * @author thomasmoegli
  */
-public interface IApplicationTOService {
+public interface IApplicationsTOService {
     /**
      * This method builds a TO instance from a JPA entity instance. In this particular
      * case, the only thing that we do is get rid of the salary property (which is
@@ -20,7 +20,7 @@ public interface IApplicationTOService {
      * @param source the JPA entity
      * @return the TO
      */
-    public PublicApplicationTO buildPublicActionTypeTO(Application source);
+    public PublicApplicationTO buildPublicApplicationTO(Application source);
     
     /**
      * This method updates an existing JPA entity by merging the state of the
@@ -30,5 +30,5 @@ public interface IApplicationTOService {
      * @param newState a TO that contains new state (subset of the entity state)
      * @return the updated employee entity
      */
-    public void updateActionTypeEntity(Application existingEntity, PublicApplicationTO newState);
+    public void updateApplicationEntity(Application existingEntity, PublicApplicationTO newState);
 }

@@ -12,7 +12,9 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * REST Service
@@ -21,8 +23,8 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("leaderboard")
-public class LeaderBoardResource extends GamificationRESTResource {
-  
+public class LeaderBoardResource  extends GamificationRESTResource {
+      
   @PersistenceContext(unitName="Gamification")
   private EntityManager em;
   

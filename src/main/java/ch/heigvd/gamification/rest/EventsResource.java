@@ -17,8 +17,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * REST Service mettant à disposition les ressources liées aux événements
@@ -29,7 +31,7 @@ import javax.ws.rs.core.Response;
 @Stateless
 @Path("events")
 public class EventsResource extends GamificationRESTResource {
-
+    
   @EJB
   IEventsManager eventsManager;
   

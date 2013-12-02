@@ -15,8 +15,8 @@ public class GamificationRESTResource {
   
   @Context
   protected UriInfo context;
-  
-  /* TODO
+
+  /*
   public Application getApplication() {
     
   }*/

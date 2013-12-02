@@ -1,37 +1,71 @@
 package ch.heigvd.gamification.model;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.LinkedList;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author thomasmoegli
  */
+@NamedQueries({
+        @NamedQuery(
+                name = "findAllApplication",
+                query = "select u from Application u"
+        )
+})
+@Entity
 public class Application implements Serializable {
-    
+
     @Id                                               //ID field
     @GeneratedValue(strategy = GenerationType.AUTO)   //Auto-increment
     private Long id;
 
     private String name;
 
-    @OneToMany
-    private Rule rule;
+    @OneToMany(fetch = FetchType.LAZY)
+    private final List<Rule> rules;
 
-    @OneToMany
-    private Success success;
+    @OneToMany(fetch = FetchType.LAZY)
+    private final List<Success> successes;
 
-    @OneToMany
-    private AppUser user;
+    @OneToMany(fetch = FetchType.LAZY)
+    private final List<AppUser> users;
 
-    @OneToMany
-    private ActionType actionType;
+    @OneToMany(fetch = FetchType.LAZY)
+    private final List<ActionType> actionsTypes;
+    
+    @OneToMany(fetch = FetchType.LAZY)
+    private final List<Event> events;
 
+    public Application()
+    {
+        name = "UNDEF";
+        rules = new LinkedList<>();
+        successes = new LinkedList<>();
+        users = new LinkedList<>();
+        actionsTypes = new LinkedList<>();
+        events = new LinkedList<>();
+    }
+    
+    public Application(Application app)
+    {
+        name = app.name;
+        rules = app.rules;
+        successes = app.successes;
+        users = app.users;
+        actionsTypes = app.actionsTypes;
+        events = app.events;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -47,32 +81,75 @@ public class Application implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-  
+    
+    public void addRule(Rule rule)
+    {
+        rules.add(rule);
+    }
+    
+    public List<Rule> getRules()
+    {
+        return rules;
+    }
+    
+    public void addSuccess(Success success)
+    {
+        successes.add(success);
+    }
+    
+    public List<Success> getSuccesses()
+    {
+        return successes;
+    }
+    
+    public void addEvent(Event event)
+    {
+        events.add(event);
+    }
+    
+    public List<Event> getEvents()
+    {
+        return events;
+    }
 
+    public void addActionType(ActionType actionType)
+    {
+        actionsTypes.add(actionType);
+    }
+    
+    public List<ActionType> getActionsTypes()
+    {
+        return actionsTypes;
+    }
+    
+    public void addUser(AppUser user)
+    {
+        users.add(user);
+    }
+    
+    public List<AppUser> getUsers()
+    {
+        return users;
+    }
+    
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        hash = 23 * hash + Objects.hashCode(this.name);
-        return hash;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object object) {
+
+        if (!(object instanceof Application)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Application other = (Application) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
+        Application other = (Application) object;
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+
     }
-  
+
+    @Override
+    public String toString() {
+        return "ch.heigvd.gamification.model.Application[ id=" + id + " ]";
+    }
 }

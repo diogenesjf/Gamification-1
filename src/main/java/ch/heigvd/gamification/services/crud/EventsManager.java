@@ -1,12 +1,13 @@
 package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
-import ch.heigvd.gamification.interceptors.AppUserInterceptor;
 import ch.heigvd.gamification.model.Event;
+import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.IEventsManager;
+import ch.heigvd.gamification.services.crud.interfaces.ISuccessesManager;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -20,12 +21,24 @@ public class EventsManager implements IEventsManager {
   @PersistenceContext(unitName="Gamification")
   private EntityManager em;
   
-  @Interceptors({AppUserInterceptor.class})
+  @EJB
+  private ISuccessesManager successesManager;
+  
   @Override
   public long create(Event eventData) {
     Event event = new Event(eventData);
     em.persist(event);
     event.getUser().addEvent(event);
+    
+    List<Success> newUserSuccesses = successesManager.findAllAcquiredByUser(event.getUser().getId());
+    List<Success> userSuccesses = event.getUser().getSuccesses();
+
+    for(Success success: newUserSuccesses)
+    {
+        if(!userSuccesses.contains(success))
+            event.getUser().addSuccess(success);
+    }
+    
     return event.getId();
   }
 
