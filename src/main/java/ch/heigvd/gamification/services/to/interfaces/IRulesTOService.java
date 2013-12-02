@@ -7,7 +7,7 @@
 package ch.heigvd.gamification.services.to.interfaces;
 
 import ch.heigvd.gamification.model.Rule;
-import ch.heigvd.gamification.to.PublicRuleTO;
+import ch.heigvd.gamification.to.RuleTO;
 import javax.ejb.Local;
 
 /**
@@ -24,7 +24,7 @@ public interface IRulesTOService {
      * @param source the JPA entity
      * @return the TO
      */
-    public PublicRuleTO buildPublicRuleTO(Rule source);
+    public RuleTO buildPublicRuleTO(Rule source);
     
     /**
      * This method updates an existing JPA entity by merging the state of the
@@ -34,6 +34,6 @@ public interface IRulesTOService {
      * @param newState a TO that contains new state (subset of the entity state)
      * @return the updated employee entity
      */
-    public void updateRuleEntity(Rule existingEntity, PublicRuleTO newState);
+    public void updateRuleEntity(Rule existingEntity, RuleTO newState);
     
 }

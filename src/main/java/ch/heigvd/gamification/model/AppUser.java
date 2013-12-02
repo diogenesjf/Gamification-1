@@ -9,21 +9,26 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
+ * This class is represent a user.
  *
  * @author Alexandre Perusset
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "findAllUsers",
-                query = "select u from AppUser u"
-        )
+  @NamedQuery(
+          name = "findAllUsers",
+          query = "select u from AppUser u where u.application.id = :appid"
+  ),
+  @NamedQuery(
+          name = "findAllBySuccess",
+          query = "select u from AppUser u inner join u.successes s where s.id = :successid and u.application.id = :appid"
+  )
 })
 
 @Entity
@@ -38,19 +43,21 @@ public class AppUser implements Serializable {
   private String surname;
 
   //If we don't want a nullable field
-  @Column(nullable=false)
+  @Column(nullable = false)
   private String nickname;
 
   private String password;
-  
+
   //Load success only on demand
   @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name="AppUser_Success")
   private final List<Success> successes;
-  
+
   //Load events only on demand
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
   private final List<Event> events;
+
+  @ManyToOne
+  private Application application;
 
   public AppUser() {
     name = "UNDEF";
@@ -61,13 +68,14 @@ public class AppUser implements Serializable {
     events = new LinkedList<>();
   }
 
-  public AppUser(AppUser userData) {
-    name = userData.name;
-    surname = userData.surname;
-    nickname = userData.nickname;
-    password = userData.password;
-    successes = userData.successes;
-    events = userData.events;
+  public AppUser(AppUser user) {
+    name = user.name;
+    surname = user.surname;
+    nickname = user.nickname;
+    password = user.password;
+    successes = user.successes;
+    events = user.events;
+    application = user.application;
   }
 
   public Long getId() {
@@ -110,22 +118,30 @@ public class AppUser implements Serializable {
     this.password = password;
   }
 
-  public void  addSuccess(Success newSuccess) {
+  public void addSuccess(Success newSuccess) {
     this.successes.add(newSuccess);
   }
-  
+
   public List<Success> getSuccesses() {
     return successes;
   }
-  
+
   public List<Event> getEvents() {
     return events;
   }
-  
+
   public void addEvent(Event event) {
     events.add(event);
   }
-  
+
+  public Application getApplication() {
+    return this.application;
+  }
+
+  public void setApplication(Application application) {
+    this.application = application;
+  }
+
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
@@ -133,8 +149,7 @@ public class AppUser implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof AppUser)) {
+    if (!(object instanceof AppUser) || this.id == -1) {
       return false;
     }
     AppUser other = (AppUser)object;
@@ -143,7 +158,6 @@ public class AppUser implements Serializable {
 
   @Override
   public String toString() {
-    return "ch.heigvd.gamification.model.AppUser[ id=" + id + " ]";
+    return "ch.heigvd.gamification.model.AppUser[id=" + id + "]";
   }
-
 }

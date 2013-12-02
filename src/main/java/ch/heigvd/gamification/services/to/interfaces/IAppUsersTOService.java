@@ -1,6 +1,7 @@
 package ch.heigvd.gamification.services.to.interfaces;
 
 import ch.heigvd.gamification.model.AppUser;
+import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.to.AppUserPublicTO;
 import ch.heigvd.gamification.to.AppUserTO;
 import ch.heigvd.gamification.to.RankedAppUserTO;
@@ -35,8 +36,8 @@ public interface IAppUsersTOService {
    *
    * @param existingEntity the existing entity that we want to update
    * @param newState a TO that contains new state (subset of the entity state)
+   * @param application the application of the user
    */
-  public void updateUserEntity(AppUser existingEntity, AppUserTO newState);
+  public void updateUserEntity(AppUser existingEntity, AppUserTO newState, Application application);
    
-
 }

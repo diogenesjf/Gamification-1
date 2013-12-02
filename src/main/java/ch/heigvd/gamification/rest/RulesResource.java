@@ -4,12 +4,11 @@ import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
-import ch.heigvd.gamification.to.PublicRuleTO;
+import ch.heigvd.gamification.to.RuleTO;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,17 +17,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 /**
  * REST SERVICE
  *
  * @author Gaël Jobin
  */
-@Stateless
 @Path("rules")
 public class RulesResource extends GamificationRESTResource {
         
@@ -50,7 +46,7 @@ public class RulesResource extends GamificationRESTResource {
      */
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response createResource(PublicRuleTO newRuleTO) {
+    public Response createResource(RuleTO newRuleTO) {
         Rule newRule = new Rule();
         rulesTOService.updateRuleEntity(newRule,newRuleTO);
         long newRuleId = rulesManager.create(newRule);
@@ -64,9 +60,9 @@ public class RulesResource extends GamificationRESTResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PublicRuleTO> getResources() {
+    public List<RuleTO> getResources() {
         List<Rule> rules = rulesManager.findAll();
-        List<PublicRuleTO> result = new LinkedList<PublicRuleTO>();
+        List<RuleTO> result = new LinkedList<RuleTO>();
         for(Rule rule : rules) {
             result.add(rulesTOService.buildPublicRuleTO(rule));
         }
@@ -82,9 +78,9 @@ public class RulesResource extends GamificationRESTResource {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PublicRuleTO getResource(@PathParam("id") long id) throws EntityNotFoundException {
+    public RuleTO getResource(@PathParam("id") long id) throws EntityNotFoundException {
         Rule rule = rulesManager.findById(id);
-        PublicRuleTO ruleTO = rulesTOService.buildPublicRuleTO(rule);
+        RuleTO ruleTO = rulesTOService.buildPublicRuleTO(rule);
         return ruleTO;
     }
     
@@ -95,7 +91,7 @@ public class RulesResource extends GamificationRESTResource {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public Response updateResource(PublicRuleTO updatedRuleTO, @PathParam("id") long id) throws EntityNotFoundException {
+    public Response updateResource(RuleTO updatedRuleTO, @PathParam("id") long id) throws EntityNotFoundException {
         Rule ruleToUpdate = rulesManager.findById(id);
         rulesTOService.updateRuleEntity(ruleToUpdate, updatedRuleTO);
         rulesManager.update(ruleToUpdate);

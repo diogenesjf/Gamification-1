@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -18,70 +19,81 @@ import javax.persistence.NamedQuery;
  * @author Alexandre Perusset
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "findAllSuccess",
-                query = "select u from Success u"
-        )
+  @NamedQuery(
+          name = "findAllSuccess",
+          query = "select u from Success u"
+  )
 })
 @Entity
 public class Success implements Serializable {
-  
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="ID")
   private Long id;
-  
+
   private String name;
-  
+
   private String badge;
-  
+
   @ManyToMany(fetch = FetchType.LAZY)
   private final List<Rule> rules;
   
+  @ManyToOne
+  private Application application;
+
   public Success() {
     name = "UNDEF";
     badge = "UNDEF";
     rules = new LinkedList<>();
   }
 
-  public Success(Success successData) {
-    name = successData.name;
-    badge = successData.badge;
-    rules = successData.rules;
+  public Success(Success success) {
+    name = success.name;
+    badge = success.badge;
+    rules = success.rules;
+    application = success.application;
   }
-  
+
   public Long getId() {
     return id;
   }
-  
+
   public void setId(Long id) {
     this.id = id;
   }
-  
+
   public String getName() {
     return name;
   }
-  
+
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public String getBadge() {
     return badge;
   }
-  
+
   public void setBadge(String badge) {
     this.badge = badge;
   }
-  
+
   public List<Rule> getRules() {
     return rules;
   }
-  
+
   public void addRule(Rule rule) {
     rules.add(rule);
   }
 
+  public Application getApplication() {
+    return this.application;
+  }
+
+  public void setApplication(Application application) {
+    this.application = application;
+  }
+  
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
@@ -89,8 +101,7 @@ public class Success implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Success)) {
+    if (!(object instanceof Success) || this.id == -1) {
       return false;
     }
     Success other = (Success)object;
@@ -99,6 +110,6 @@ public class Success implements Serializable {
 
   @Override
   public String toString() {
-    return "ch.heigvd.gamification.model.Success[ id=" + id + " ]";
+    return "ch.heigvd.gamification.model.Success[id=" + id + "]";
   }
 }

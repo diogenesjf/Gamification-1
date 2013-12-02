@@ -11,15 +11,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author thomasmoegli
  */
 @XmlRootElement(name="application")
-public class PublicApplicationTO {
+public class ApplicationTO {
     
   private Long id;
   private String name;
 
-  public PublicApplicationTO() {
+  public ApplicationTO() {
   }
 
-  public PublicApplicationTO(Long id, String name) {
+  public ApplicationTO(Long id, String name) {
     this.id = id;
     this.name = name;
   }

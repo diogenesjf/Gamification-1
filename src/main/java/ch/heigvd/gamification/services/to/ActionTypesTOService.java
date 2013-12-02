@@ -1,8 +1,8 @@
 package ch.heigvd.gamification.services.to;
 
 import ch.heigvd.gamification.services.to.interfaces.IActionTypesTOService;
-import ch.heigvd.gamification.model.ActionType;
-import ch.heigvd.gamification.to.PublicActionTypeTO;
+import ch.heigvd.gamification.model.AppAction;
+import ch.heigvd.gamification.to.AppActionTO;
 import javax.ejb.Stateless;
 
 /**
@@ -11,13 +11,13 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ActionTypesTOService implements IActionTypesTOService {
-     public PublicActionTypeTO buildPublicActionTypeTO(ActionType source) {
-        PublicActionTypeTO to = new PublicActionTypeTO(source.getId(),source.getTitle(), source.getPoints(), source.getDescription());
+     public AppActionTO buildPublicActionTypeTO(AppAction source) {
+        AppActionTO to = new AppActionTO(source.getId(),source.getTitle(), source.getPoints(), source.getDescription());
         return to;
     }
     
     @Override
-    public void updateActionTypeEntity(ActionType existingEntity, PublicActionTypeTO newState) {
+    public void updateActionTypeEntity(AppAction existingEntity, AppActionTO newState) {
         existingEntity.setTitle(newState.getTitle());
         existingEntity.setPoints(newState.getPoints());
         existingEntity.setDescription(newState.getDescription());

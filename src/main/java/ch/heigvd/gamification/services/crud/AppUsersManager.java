@@ -2,6 +2,7 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
+import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IAppUsersManagerRemote;
 import java.util.List;
@@ -51,12 +52,17 @@ public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerR
   }
 
   @Override
-  public List<AppUser> findAll() {
-    return em.createNamedQuery("findAllUsers").getResultList();
+  public List<AppUser> findAll(Application application) {
+    return em.createNamedQuery("findAllUsers")
+              .setParameter("appid", application.getId())
+           .getResultList();
   }
   
   @Override
-  public List<AppUser> findAllBySuccess(long id) {
-    return em.createQuery("SELECT u FROM AppUser u, Success s WHERE s = u.successes AND s.id = :successId").setParameter("successId", id).getResultList();
+  public List<AppUser> findAllBySuccess(long id, Application application) {
+    return em.createNamedQuery("findAllBySuccess")
+              .setParameter("successid", id)
+              .setParameter("appid", application.getId())
+           .getResultList();
   }
 }

@@ -13,18 +13,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Gaël Jobin
  */
-@XmlRootElement(name="actionType")
-public class PublicActionTypeTO {
+@XmlRootElement(name="action")
+public class AppActionTO {
     private long id;
     
     private String title;
     private int points;
     private String description;
     
-    public PublicActionTypeTO() {
+    public AppActionTO() {
     }
     
-    public PublicActionTypeTO(long id, String title, int points, String description) {
+    public AppActionTO(long id, String title, int points, String description) {
         this.id = id;
         this.title = title;
         this.points = points;

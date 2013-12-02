@@ -1,7 +1,7 @@
 package ch.heigvd.gamification.services.to.interfaces;
 
-import ch.heigvd.gamification.model.ActionType;
-import ch.heigvd.gamification.to.PublicActionTypeTO;
+import ch.heigvd.gamification.model.AppAction;
+import ch.heigvd.gamification.to.AppActionTO;
 
 /**
  *
@@ -16,7 +16,7 @@ public interface IActionTypesTOService {
      * @param source the JPA entity
      * @return the TO
      */
-    public PublicActionTypeTO buildPublicActionTypeTO(ActionType source);
+    public AppActionTO buildPublicActionTypeTO(AppAction source);
     
     /**
      * This method updates an existing JPA entity by merging the state of the
@@ -26,5 +26,5 @@ public interface IActionTypesTOService {
      * @param newState a TO that contains new state (subset of the entity state)
      * @return the updated employee entity
      */
-    public void updateActionTypeEntity(ActionType existingEntity, PublicActionTypeTO newState);
+    public void updateActionTypeEntity(AppAction existingEntity, AppActionTO newState);
 }

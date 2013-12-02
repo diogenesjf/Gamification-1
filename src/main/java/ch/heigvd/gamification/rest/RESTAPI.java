@@ -10,7 +10,7 @@ import javax.ws.rs.core.Application;
  *
  * @author Olivier Liechti
  */
-@ApplicationPath("/api")
+@ApplicationPath("/")
 public class RESTAPI extends Application {
 
   @Override
@@ -23,7 +23,7 @@ public class RESTAPI extends Application {
     classes.add(EventsResource.class);
     classes.add(LeaderBoardResource.class);
     classes.add(RulesResource.class);
-    classes.add(ActionTypesResource.class);
+    classes.add(AppActionResource.class);
     classes.add(ApplicationResource.class);
     return classes;
   }

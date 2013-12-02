@@ -2,6 +2,7 @@ package ch.heigvd.gamification.services.crud.interfaces.remote;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
+import ch.heigvd.gamification.model.Application;
 import java.util.List;
 
 /**
@@ -18,8 +19,8 @@ public interface IAppUsersManagerRemote {
 
     public AppUser findById(long id) throws EntityNotFoundException;
 
-    public List<AppUser> findAll();
+    public List<AppUser> findAll(Application application);
 
-    public List<AppUser> findAllBySuccess(long id);
+    public List<AppUser> findAllBySuccess(long id, Application application);
 
 }

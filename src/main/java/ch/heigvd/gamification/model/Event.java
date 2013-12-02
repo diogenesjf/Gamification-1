@@ -14,69 +14,81 @@ import javax.persistence.NamedQuery;
  * @author Alexandre Perusset
  */
 @NamedQueries({
-        @NamedQuery(
-                name = "findAllEvents",
-                query = "select e from Event e order by e.evenTimestamp desc"
-        )
+  @NamedQuery(
+          name = "findAllEvents",
+          query = "select e from Event e order by e.evenTimestamp desc"
+  )
 })
 
 @Entity
 public class Event implements Serializable {
-  
+
   @Id                                               //ID field
   @GeneratedValue(strategy = GenerationType.AUTO)   //Auto-increment
   private Long id;
-  
+
   @ManyToOne
   private AppUser user;
-  
+
   @ManyToOne
-  private ActionType actionType;
-  
+  private AppAction action;
+
   private long evenTimestamp;
   
+  @ManyToOne
+  private Application application;
+
   public Event() {
     user = null;
-    actionType = null;
+    action = null;
     evenTimestamp = -1;
   }
-  
+
   public Event(Event event) {
     user = event.user;
-    actionType = event.actionType;
+    action = event.action;
     evenTimestamp = event.evenTimestamp;
+    application = event.application;
   }
-  
+
   public Long getId() {
     return id;
   }
-  
+
   public void setId(Long id) {
     this.id = id;
   }
-  
+
   public AppUser getUser() {
     return this.user;
   }
-  
+
   public void setUser(AppUser user) {
     this.user = user;
   }
-  
-  public ActionType getActionType() {
-    return this.actionType;
+
+  public AppAction getActionType() {
+    return this.action;
   }
-  
-  public void setActionType(ActionType actionType) {
-    this.actionType = actionType;
+
+  public void setActionType(AppAction actionType) {
+    this.action = actionType;
   }
-  
+
   public long getTimestamp() {
     return evenTimestamp;
   }
-  
+
   public void setTimestamp(long timestamp) {
     this.evenTimestamp = timestamp;
+  }
+
+  public Application getApplication() {
+    return this.application;
+  }
+
+  public void setApplication(Application application) {
+    this.application = application;
   }
   
   @Override
@@ -90,7 +102,7 @@ public class Event implements Serializable {
     if (!(object instanceof Event)) {
       return false;
     }
-    Event other = (Event)object;
+    Event other = (Event) object;
     return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
   }
 

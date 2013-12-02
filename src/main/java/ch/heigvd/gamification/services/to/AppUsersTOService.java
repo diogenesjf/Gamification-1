@@ -2,6 +2,7 @@ package ch.heigvd.gamification.services.to;
 
 import javax.ejb.Stateless;
 import ch.heigvd.gamification.model.AppUser;
+import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
 import ch.heigvd.gamification.to.AppUserPublicTO;
 import ch.heigvd.gamification.to.AppUserTO;
@@ -36,11 +37,12 @@ public class AppUsersTOService implements IAppUsersTOService {
   }
 
   @Override
-  public void updateUserEntity(AppUser existingEntity, AppUserTO newState) {
-    existingEntity.setName(newState.getName());
-    existingEntity.setSurname(newState.getSurname());
-    existingEntity.setNickname(newState.getNickname());
-    existingEntity.setPassword(newState.getPassword());
+  public void updateUserEntity(AppUser existing, AppUserTO newState, Application application) {
+    existing.setName(newState.getName());
+    existing.setSurname(newState.getSurname());
+    existing.setNickname(newState.getNickname());
+    existing.setPassword(newState.getPassword());
+    existing.setApplication(application);
   }
 
   @Override

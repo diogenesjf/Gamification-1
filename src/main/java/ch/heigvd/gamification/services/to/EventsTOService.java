@@ -1,10 +1,10 @@
 package ch.heigvd.gamification.services.to;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
-import ch.heigvd.gamification.model.ActionType;
+import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Event;
-import ch.heigvd.gamification.services.crud.interfaces.local.IActionTypesManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.IAppActionsManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.to.EventPublicTO;
@@ -25,7 +25,7 @@ public class EventsTOService implements IEventsTOService {
   IAppUsersManagerLocal usersManager;
   
   @EJB
-  IActionTypesManagerLocal actionTypesManager;
+  IAppActionsManagerLocal actionTypesManager;
   
   @Override
   public EventTO buildEventTO(Event event) {
@@ -39,7 +39,7 @@ public class EventsTOService implements IEventsTOService {
   @Override
   public EventPublicTO buildPublicEventTO(Event event) {
     AppUser u = event.getUser();
-    ActionType at = event.getActionType();
+    AppAction at = event.getActionType();
     return new EventPublicTO(
         event.getId(),
         u.getName() + " " + u.getSurname() + " (" + u.getNickname() + ")",
