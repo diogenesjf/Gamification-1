@@ -16,7 +16,9 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
   @NamedQuery(
           name = "findAllEvents",
-          query = "select e from Event e where e.application.id = :appid by e.evenTimestamp desc"
+          query = "select e from Event e "
+          + "where e.application.id = :appid "
+          + "order by e.evenTimestamp desc"
   )
 })
 

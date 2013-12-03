@@ -21,10 +21,6 @@ import javax.persistence.NamedQuery;
   @NamedQuery(
           name = "findAllSuccess",
           query = "select s from Success s where s.application.id = :appid"
-  ),
-  @NamedQuery(
-          name = "findAcquiredByUser",
-          query = ""
   )
 })
 @Entity

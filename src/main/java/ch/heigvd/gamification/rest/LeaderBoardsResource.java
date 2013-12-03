@@ -42,8 +42,8 @@ public class LeaderBoardsResource extends GamificationRESTResource {
                   + "from AppUser u "
                     + "left join u.events e "
                     + "left join e.actionType at "
-                  + "group by u "
                   + "where u.application.id = " + getApplication().getId()
+                  + "group by u "
                   + "order by points desc";
     List<RankedAppUserTO> result = new LinkedList<>();
     List<Object[]> users = em.createQuery(query).getResultList();

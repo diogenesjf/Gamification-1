@@ -41,8 +41,7 @@ public class SuccessesManager implements ISuccessesManagerLocal, ISuccessesManag
 
   @Override
   public void delete(long id) throws EntityNotFoundException {
-    Success successToDelete = findById(id);
-    em.remove(successToDelete);
+    em.remove(findById(id));
   }
 
   @Override
@@ -122,7 +121,7 @@ public class SuccessesManager implements ISuccessesManagerLocal, ISuccessesManag
             + "HAVING COUNT(*) = SUM(finalReq.RulesPassed)";
 
     List<Long> listObject = em.createNativeQuery(query).setParameter(1, id).getResultList();
-    List<Success> listSuccess = new ArrayList<Success>();
+    List<Success> listSuccess = new ArrayList<>();
 
     for (Long result : listObject) {
       try {

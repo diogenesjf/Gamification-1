@@ -1,10 +1,14 @@
 package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -35,6 +39,9 @@ public class Rule implements Serializable {
   @ManyToOne
   private AppAction action;
   
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "rules")
+  private final List<Success> successes;
+  
   @ManyToOne
   private Application application;
 
@@ -43,6 +50,7 @@ public class Rule implements Serializable {
     description = "UNDEF";
     goalPoints = -1;
     action = null;
+    successes = new LinkedList<>();
   }
 
   public Rule(Rule rule) {
@@ -51,6 +59,7 @@ public class Rule implements Serializable {
     this.goalPoints = rule.goalPoints;
     this.action = rule.action;
     this.application = rule.application;
+    this.successes = rule.successes;
   }
 
   public Long getId() {

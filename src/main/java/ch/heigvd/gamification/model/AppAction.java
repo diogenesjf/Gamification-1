@@ -1,13 +1,17 @@
 package ch.heigvd.gamification.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 /**
  * This class is an Action. An action can be performed by a user. When a user
@@ -33,7 +37,10 @@ public class AppAction implements Serializable {
   private int points;
 
   private String description;
-
+  
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
+  private final List<Rule> rules;
+  
   @ManyToOne
   private Application application;
 
@@ -41,6 +48,7 @@ public class AppAction implements Serializable {
     title = "UNDEF";
     points = -1;
     description = "UNDEF";
+    rules = new LinkedList<>();
   }
 
   public AppAction(AppAction action) {
@@ -48,6 +56,7 @@ public class AppAction implements Serializable {
     this.points = action.points;
     this.description = action.description;
     this.application = action.application;
+    this.rules = action.rules;
   }
 
   public Long getId() {
@@ -81,7 +90,7 @@ public class AppAction implements Serializable {
   public void setDescription(String description) {
     this.description = description;
   }
-
+  
   public Application getApplication() {
     return this.application;
   }

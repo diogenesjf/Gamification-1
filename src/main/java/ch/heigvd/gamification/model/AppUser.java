@@ -118,12 +118,12 @@ public class AppUser implements Serializable {
     this.password = password;
   }
 
-  public void addSuccess(Success newSuccess) {
-    this.successes.add(newSuccess);
-  }
-
   public List<Success> getSuccesses() {
     return successes;
+  }
+  
+  public void addSuccess(Success newSuccess) {
+    this.successes.add(newSuccess);
   }
 
   public List<Event> getEvents() {
@@ -133,7 +133,7 @@ public class AppUser implements Serializable {
   public void addEvent(Event event) {
     events.add(event);
   }
-
+  
   public Application getApplication() {
     return this.application;
   }
