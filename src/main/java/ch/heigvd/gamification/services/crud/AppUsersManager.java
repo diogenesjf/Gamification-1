@@ -2,11 +2,18 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
+import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Application;
+import ch.heigvd.gamification.model.Rule;
+import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
+import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IAppUsersManagerRemote;
+import java.util.LinkedList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -24,6 +31,12 @@ public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerR
 
   @PersistenceContext(unitName = "Gamification")
   private EntityManager em;
+
+  @EJB
+  private ISuccessesManagerLocal successesManager;
+  
+  @EJB
+  private IRulesManagerLocal rulesManager;
 
   @Override
   public long create(AppUser userData) {
@@ -61,9 +74,50 @@ public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerR
 
   @Override
   public List<AppUser> findAllBySuccess(long id) {
-    return em.createNamedQuery("findAllBySuccess")
+    return em.createNamedQuery("findAllWithSuccess")
             .setParameter("successid", id)
             .getResultList();
+  }
+
+  @Override
+  public List<Success> checkForNewSuccesses(AppUser user) {
+    List<Rule> matchingRules = new LinkedList<>(), actionRules;
+    List<Success> notAquiredSuccesses = successesManager.findAll(user.getApplication()),
+            aquiredSuccesses = new LinkedList<>();
+    //First step : get the matching rules
+    AppAction action;
+    long points;
+    List<Object[]> actionPoints = em.createNamedQuery("findAllActionPointsForUser")
+            .setParameter("userid", user.getId()).getResultList();
+    for (Object[] ap : actionPoints) {
+      action = (AppAction) ap[0];
+      points = (Long) ap[1];
+      actionRules = rulesManager.findAllForAction(action);
+      for (Rule r : actionRules) {
+        if (r.getGoalPoints() <= points) {
+          matchingRules.add(r);
+        }
+      }
+    }
+    //Second step : define which successes can be obtained
+    for (Success s : user.getSuccesses()) {
+      notAquiredSuccesses.remove(s);
+    }
+    //Third (and last) step : check if a new success is acquired
+    boolean acquired;
+    for (Success s : notAquiredSuccesses) {
+      acquired = true;
+      for (Rule r : s.getRules()) {
+        if (!matchingRules.contains(r)) {
+          acquired = false;
+          break;
+        }
+      }
+      if (acquired) {
+        aquiredSuccesses.add(s);
+      }
+    }
+    return aquiredSuccesses;
   }
 
   @Override

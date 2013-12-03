@@ -1,12 +1,9 @@
 package ch.heigvd.gamification.to;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author Alexandre Perusset
  */
-@XmlRootElement(name="success")
 public class SuccessTO {
 
   private long id;

@@ -3,6 +3,7 @@ package ch.heigvd.gamification.services.crud;
 import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
+import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IRulesManagerRemote;
@@ -58,6 +59,13 @@ public class RulesManager implements IRulesManagerLocal, IRulesManagerRemote {
   public List<Rule> findAll(Application application) {
     return em.createNamedQuery("findAllRules")
             .setParameter("appid", application.getId())
+            .getResultList();
+  }
+  
+  @Override
+  public List<Rule> findAllForAction(AppAction action) {
+    return em.createNamedQuery("findAllRulesForAction")
+            .setParameter("actionid", action.getId())
             .getResultList();
   }
   

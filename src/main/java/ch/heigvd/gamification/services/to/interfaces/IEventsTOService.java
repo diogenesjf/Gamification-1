@@ -1,5 +1,7 @@
 package ch.heigvd.gamification.services.to.interfaces;
 
+import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.to.EventPublicTO;
 import ch.heigvd.gamification.to.EventTO;
@@ -16,5 +18,5 @@ public interface IEventsTOService {
   
   public EventPublicTO buildPublicEventTO(Event event);
   
-  public void updateEventEntity(Event existingEntitiy, EventTO newState);
+  public void updateEventEntity(Event existingEntitiy, EventTO newState, Application application) throws EntityNotFoundException;
 }

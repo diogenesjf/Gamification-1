@@ -38,11 +38,12 @@ public class LeaderBoardsResource extends GamificationRESTResource {
   @GET
   @Produces({MediaType.APPLICATION_JSON})
   public List<RankedAppUserTO> getLeaderboard() throws EntityNotFoundException {
-    String query =  "select u, coalesce(sum(at.points), 0) as points "
+    //TODO Bad, query is not checked at compilation time
+    String query =  "select u, coalesce(sum(a.points), 0) as points "
                   + "from AppUser u "
                     + "left join u.events e "
-                    + "left join e.actionType at "
-                  + "where u.application.id = " + getApplication().getId()
+                    + "left join e.action a "
+                  + "where u.application.id = " + getApplication().getId() + " "
                   + "group by u "
                   + "order by points desc";
     List<RankedAppUserTO> result = new LinkedList<>();

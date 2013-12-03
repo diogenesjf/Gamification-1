@@ -41,9 +41,8 @@ public class RulesTOService implements IRulesTOService {
   public void updateRuleEntity(Rule existing, RuleTO state, Application application) throws EntityNotFoundException {
     existing.setName(state.getName());
     existing.setDescription(state.getDescription());
-    existing.setGoalPoints(state.getAcquiredPoints());
-    //TODO do not retrieve entity here to avoid throws, do it in resource
-    existing.setAction(actionsManager.findById(state.getActionTypeId()));
+    existing.setGoalPoints(state.getGoalPoints());
+    existing.setAction(actionsManager.findById(state.getActionID()));
     existing.setApplication(application);
   }
 }

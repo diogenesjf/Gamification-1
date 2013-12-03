@@ -1,12 +1,9 @@
 package ch.heigvd.gamification.to;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * 
  * @author Alexandre Perusset
  */
-@XmlRootElement(name="event")
 public class EventPublicTO {
   
   private long id;
@@ -20,7 +17,6 @@ public class EventPublicTO {
   private long points;
   
   public EventPublicTO() {
-    
   }
   
   public EventPublicTO(long id, String user, String description, long timestamp, long points) {
@@ -70,5 +66,4 @@ public class EventPublicTO {
   public void setPoints(long points) {
     this.points = points;
   }
-  
 }

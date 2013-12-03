@@ -4,6 +4,7 @@ import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Application;
+import ch.heigvd.gamification.model.Success;
 import java.util.List;
 
 /**
@@ -12,9 +13,9 @@ import java.util.List;
  */
 public interface IAppUsersManagerRemote {
 
-    public long create(AppUser userData);
+    public long create(AppUser user);
 
-    public void update(AppUser newState) throws EntityNotFoundException;
+    public void update(AppUser state) throws EntityNotFoundException;
 
     public void delete(long id) throws EntityNotFoundException;
 
@@ -25,4 +26,6 @@ public interface IAppUsersManagerRemote {
     public List<AppUser> findAllBySuccess(long id);
     
     public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
+    
+    public List<Success> checkForNewSuccesses(AppUser user);
 }

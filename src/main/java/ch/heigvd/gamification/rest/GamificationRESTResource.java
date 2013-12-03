@@ -1,7 +1,6 @@
 package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
-import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.services.crud.interfaces.local.IApplicationsManagerLocal;
 import javax.ejb.EJB;

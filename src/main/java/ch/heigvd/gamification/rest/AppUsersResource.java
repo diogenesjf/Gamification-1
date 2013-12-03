@@ -148,7 +148,8 @@ public class AppUsersResource extends GamificationRESTResource {
    * @throws UnauthorizedException user does not belong to current application
    */
   @GET
-  @Path("{id}/success")
+  @Path("{id}/successes")
+  @Produces({MediaType.APPLICATION_JSON})
   public List<SuccessTO> getUserSuccesses(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
     usersManager.checkRights(id, getApplication());
     //If we want another order, use a parametrized NamedQuery
@@ -169,6 +170,7 @@ public class AppUsersResource extends GamificationRESTResource {
    */
   @GET
   @Path("{id}/events")
+  @Produces({MediaType.APPLICATION_JSON})
   public List<EventPublicTO> getUserEvents(@PathParam("id") long id) throws EntityNotFoundException {
     //If we want another order, use a parametrized NamedQuery
     List<EventPublicTO> eventsTO = new LinkedList<>();

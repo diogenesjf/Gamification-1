@@ -115,5 +115,5 @@ public class ApplicationsResource extends GamificationRESTResource {
     return Response.noContent().build();
   }
   
-  //TODO get all elements ? later ...
+  //TODO get all elements ?
 }

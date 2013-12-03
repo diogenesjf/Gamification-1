@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IEventsManagerRemote {
 
-    public long create(Event eventData);
+    public long create(Event eventData) throws EntityNotFoundException;
 
     public void delete(long id) throws EntityNotFoundException;
 

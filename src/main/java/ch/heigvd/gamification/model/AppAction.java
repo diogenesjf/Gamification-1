@@ -23,6 +23,12 @@ import javax.persistence.OneToMany;
   @NamedQuery(
           name = "findAllAppActions",
           query = "select a from AppAction a where a.application.id = :appid"
+  ),
+  @NamedQuery(
+          name = "findAllActionPointsForUser",
+          query = "select a, sum(a.points) as points "
+          + "from AppUser u inner join u.events e inner join e.action a "
+          + "where u.id = :userid group by a"
   )
 })
 @Entity
@@ -37,10 +43,10 @@ public class AppAction implements Serializable {
   private int points;
 
   private String description;
-  
+
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
   private final List<Rule> rules;
-  
+
   @ManyToOne
   private Application application;
 
@@ -90,7 +96,7 @@ public class AppAction implements Serializable {
   public void setDescription(String description) {
     this.description = description;
   }
-  
+
   public Application getApplication() {
     return this.application;
   }

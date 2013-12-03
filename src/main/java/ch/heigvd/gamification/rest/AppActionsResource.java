@@ -45,12 +45,13 @@ public class AppActionsResource extends GamificationRESTResource {
    *
    * @param actionTO the new action representation
    * @return Response HTTP Code 201 Created
+   * @throws EntityNotFoundException if application does not exists
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response createAction(AppActionTO actionTO) {
+  public Response createAction(AppActionTO actionTO) throws EntityNotFoundException {
     AppAction action = new AppAction();
-    actionTOService.updateActionTypeEntity(action, actionTO);
+    actionTOService.updateActionTypeEntity(action, actionTO, getApplication());
     return Response.created(
             context.getAbsolutePathBuilder().path(Long.toString(
                             actionManager.create(action)
@@ -96,7 +97,7 @@ public class AppActionsResource extends GamificationRESTResource {
    * @param actionTO the new representation of the action
    * @param id id of the action to update
    * @return Response HTTP Code 204 No Content
-   * @throws EntityNotFoundException if action does not exists
+   * @throws EntityNotFoundException if action or application does not exists
    * @throws UnauthorizedException action does not belong to current application
    */
   @PUT
@@ -105,7 +106,7 @@ public class AppActionsResource extends GamificationRESTResource {
   public Response updateResource(AppActionTO actionTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
     actionManager.checkRights(id, getApplication());
     AppAction actionTypeToUpdate = actionManager.findById(id);
-    actionTOService.updateActionTypeEntity(actionTypeToUpdate, actionTO);
+    actionTOService.updateActionTypeEntity(actionTypeToUpdate, actionTO, getApplication());
     actionManager.update(actionTypeToUpdate);
     return Response.noContent().build();
   }

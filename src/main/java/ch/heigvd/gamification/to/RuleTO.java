@@ -1,30 +1,30 @@
 package ch.heigvd.gamification.to;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author Gaël Jobin
  */
-@XmlRootElement(name = "rule")
 public class RuleTO {
 
   private long ruleId;
 
   private String name;
+
   private String description;
-  private int acquiredPoints;
-  private long actionTypeId;
+
+  private int goalPoints;
+
+  private long actionID;
 
   public RuleTO() {
   }
 
-  public RuleTO(long ruleId, String name, String description, int acquiredPoints, long actionTypeId) {
+  public RuleTO(long ruleId, String name, String description, int goalPoints, long actionID) {
     this.ruleId = ruleId;
     this.name = name;
     this.description = description;
-    this.acquiredPoints = acquiredPoints;
-    this.actionTypeId = actionTypeId;
+    this.goalPoints = goalPoints;
+    this.actionID = actionID;
   }
 
   public long getId() {
@@ -36,7 +36,7 @@ public class RuleTO {
   }
 
   public String getName() {
-    return this.name;
+    return name;
   }
 
   public void setName(String name) {
@@ -44,27 +44,26 @@ public class RuleTO {
   }
 
   public String getDescription() {
-    return this.description;
+    return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
   }
 
-  public int getAcquiredPoints() {
-    return this.acquiredPoints;
+  public int getGoalPoints() {
+    return goalPoints;
   }
 
-  public void setAcquiredPoints(int acquiredPoints) {
-    this.acquiredPoints = acquiredPoints;
+  public void setGoalPoints(int goalPoints) {
+    this.goalPoints = goalPoints;
   }
 
-  public long getActionTypeId() {
-    return this.actionTypeId;
+  public long getActionID() {
+    return actionID;
   }
 
-  public void setActionTypeId(long actionTypeId) {
-    this.actionTypeId = actionTypeId;
+  public void setActionID(long actionID) {
+    this.actionID = actionID;
   }
-
 }

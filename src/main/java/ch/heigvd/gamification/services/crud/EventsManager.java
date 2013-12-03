@@ -2,11 +2,12 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
+import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.model.Success;
+import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.local.IEventsManagerLocal;
-import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IEventsManagerRemote;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,23 +30,19 @@ public class EventsManager implements IEventsManagerLocal, IEventsManagerRemote 
   private EntityManager em;
 
   @EJB
-  private ISuccessesManagerLocal successesManager;
+  private IAppUsersManagerLocal usersManager;
 
   @Override
-  public long create(Event eventData) {
+  public long create(Event eventData) throws EntityNotFoundException {
     Event event = new Event(eventData);
     em.persist(event);
-    event.getUser().addEvent(event);
-
-    List<Success> newUserSuccesses = successesManager.findAllAcquiredByUser(event.getUser().getId());
-    List<Success> userSuccesses = event.getUser().getSuccesses();
-
-    for (Success success : newUserSuccesses) {
-      if (!userSuccesses.contains(success)) {
-        event.getUser().addSuccess(success);
-      }
+    AppUser user = event.getUser();
+    user.addEvent(event);
+    //Add new success if needed
+    for (Success success : usersManager.checkForNewSuccesses(event.getUser())) {
+      user.addSuccess(success);
     }
-
+    usersManager.update(user);
     return event.getId();
   }
 

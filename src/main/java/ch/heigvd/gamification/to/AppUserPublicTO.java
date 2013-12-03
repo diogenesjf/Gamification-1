@@ -1,12 +1,9 @@
 package ch.heigvd.gamification.to;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author Alexandre Perusset
  */
-@XmlRootElement(name="user")
 public class AppUserPublicTO {
 
   private long id;
@@ -58,5 +55,4 @@ public class AppUserPublicTO {
   public void setNickname(String nickname) {
     this.nickname = nickname;
   }
-
 }

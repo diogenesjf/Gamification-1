@@ -5,8 +5,6 @@ import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.Application;
-import ch.heigvd.gamification.model.Event;
-import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IAppActionsManagerRemote;
 import java.util.List;
 import javax.ejb.Local;
@@ -60,16 +58,6 @@ public class AppActionsManager implements IAppActionsManagerLocal, IAppActionsMa
     return em.createNamedQuery("findAllAppActions")
             .setParameter("appid", application.getId())
             .getResultList();
-  }
-
-  @Override
-  public List<Event> findAllActions() { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
-
-  @Override
-  public List<Rule> findAllRules() { //TODO
-    throw new UnsupportedOperationException("Not supported yet.");
   }
 
   @Override

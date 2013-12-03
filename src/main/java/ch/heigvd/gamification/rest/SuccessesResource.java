@@ -207,7 +207,9 @@ public class SuccessesResource extends GamificationRESTResource {
   public Response linkRuletoSuccess(GenericOnlyIDTO to, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
     successManager.checkRights(id, getApplication());
     rulesManager.checkRights(to.getId(), getApplication());
-    successManager.findById(id).addRule(rulesManager.findById(to.getId()));
+    Success s = successManager.findById(id);
+    s.addRule(rulesManager.findById(to.getId()));
+    successManager.update(s);
     return Response.created(null).build();
   }
 

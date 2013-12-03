@@ -3,14 +3,13 @@ package ch.heigvd.gamification.services.to;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.AppUser;
+import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppActionsManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.to.EventPublicTO;
 import ch.heigvd.gamification.to.EventTO;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -50,13 +49,10 @@ public class EventsTOService implements IEventsTOService {
   }
 
   @Override
-  public void updateEventEntity(Event existingEntity, EventTO newState) {
-    try {
-      existingEntity.setUser(usersManager.findById(newState.getUserId()));
-      existingEntity.setActionType(actionTypesManager.findById(newState.getActionTypeId()));
-      existingEntity.setTimestamp(newState.getTimestamp());
-    } catch (EntityNotFoundException ex) {
-      Logger.getLogger(EventsTOService.class.getName()).log(Level.SEVERE, null, ex);
-    }
+  public void updateEventEntity(Event existing, EventTO state, Application application) throws EntityNotFoundException {
+    existing.setUser(usersManager.findById(state.getUserId()));
+    existing.setActionType(actionTypesManager.findById(state.getActionId()));
+    existing.setTimestamp(state.getTimestamp());
+    existing.setApplication(application);
   }
 }

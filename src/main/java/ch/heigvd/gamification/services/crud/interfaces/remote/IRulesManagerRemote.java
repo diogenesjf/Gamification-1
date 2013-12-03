@@ -2,6 +2,7 @@ package ch.heigvd.gamification.services.crud.interfaces.remote;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
+import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Rule;
 import java.util.List;
@@ -21,6 +22,8 @@ public interface IRulesManagerRemote {
     public Rule findById(long id) throws EntityNotFoundException;
 
     public List<Rule> findAll(Application application);
+    
+    public List<Rule> findAllForAction(AppAction action);
     
     public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
 }

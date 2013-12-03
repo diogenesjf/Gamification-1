@@ -1,30 +1,27 @@
 package ch.heigvd.gamification.to;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-
 /**
- * This is a genreic TO when you want to pass through JSON/XML a simple ID
- * and not the whole representation
- * 
+ * This is a generic TO when you want to pass through JSON a simple ID and not
+ * the whole representation
+ *
  * @author Gaël Jobin
  */
-@XmlRootElement(name="genericId")
 public class GenericOnlyIDTO {
-    private long id;
-    
-    public GenericOnlyIDTO() {
-    }
-    
-    public GenericOnlyIDTO(long id) {
-        this.id = id;
-    }
-    
-    public long getId() {
-        return id;
-    }
-    
-    public void setId(long id) {
-        this.id = id;
-    }
+
+  private long id;
+
+  public GenericOnlyIDTO() {
+  }
+
+  public GenericOnlyIDTO(long id) {
+    this.id = id;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
 }

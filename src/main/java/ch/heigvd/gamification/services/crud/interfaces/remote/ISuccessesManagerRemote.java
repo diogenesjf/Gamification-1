@@ -21,8 +21,6 @@ public interface ISuccessesManagerRemote {
     public Success findById(long id) throws EntityNotFoundException;
 
     public List<Success> findAll(Application application);
-
-    public List<Success> findAllAcquiredByUser(long id);
     
     public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
 }

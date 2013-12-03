@@ -28,10 +28,10 @@ import javax.ws.rs.core.Response;
  */
 @Path("events")
 public class EventsResource extends GamificationRESTResource {
-    
+
   @EJB
   IEventsManagerLocal eventsManager;
-  
+
   @EJB
   ISuccessesManagerLocal successesManager;
 
@@ -40,7 +40,7 @@ public class EventsResource extends GamificationRESTResource {
 
   /**
    * Get the list of the events that occurred in the current application.
-   * 
+   *
    * @return List<EventPublicTO> a list of EventPublicTO
    * @throws EntityNotFoundException application does not exists
    */
@@ -59,12 +59,13 @@ public class EventsResource extends GamificationRESTResource {
    *
    * @param newEventTO new event representation
    * @return Response HTTP Code 201 Created
+   * @throws EntityNotFoundException application does not exists
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response createEvent(EventTO newEventTO) {
+  public Response createEvent(EventTO newEventTO) throws EntityNotFoundException {
     Event newEvent = new Event();
-    eventsTOService.updateEventEntity(newEvent, newEventTO);
+    eventsTOService.updateEventEntity(newEvent, newEventTO, getApplication());
     return Response.created(
             context.getAbsolutePathBuilder().path(Long.toString(
                             eventsManager.create(newEvent)
