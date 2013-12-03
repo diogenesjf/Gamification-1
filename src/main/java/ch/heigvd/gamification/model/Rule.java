@@ -16,7 +16,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
   @NamedQuery(
           name = "findAllRules",
-          query = "select r from Rule r"
+          query = "select r from Rule r where r.application.id = :appid"
   )
 })
 @Entity
@@ -30,7 +30,7 @@ public class Rule implements Serializable {
   
   private String description;
   
-  private int acquiredPoints;
+  private int goalPoints;
 
   @ManyToOne
   private AppAction action;
@@ -41,14 +41,14 @@ public class Rule implements Serializable {
   public Rule() {
     name = "UNDEF";
     description = "UNDEF";
-    acquiredPoints = -1;
+    goalPoints = -1;
     action = null;
   }
 
   public Rule(Rule rule) {
     this.name = rule.name;
     this.description = rule.description;
-    this.acquiredPoints = rule.acquiredPoints;
+    this.goalPoints = rule.goalPoints;
     this.action = rule.action;
     this.application = rule.application;
   }
@@ -77,12 +77,12 @@ public class Rule implements Serializable {
     this.description = description;
   }
 
-  public int getAcquiredPoints() {
-    return this.acquiredPoints;
+  public int getGoalPoints() {
+    return this.goalPoints;
   }
 
-  public void setAcquiredPoints(int acquiredPoints) {
-    this.acquiredPoints = acquiredPoints;
+  public void setGoalPoints(int acquiredPoints) {
+    this.goalPoints = acquiredPoints;
   }
 
   public AppAction getAction() {

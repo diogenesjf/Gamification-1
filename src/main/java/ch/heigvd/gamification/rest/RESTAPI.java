@@ -7,8 +7,9 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 /**
- *
- * @author Olivier Liechti
+ * Register all the REST resources.
+ * 
+ * @author Alexandre Perusset
  */
 @ApplicationPath("/")
 public class RESTAPI extends Application {
@@ -16,15 +17,14 @@ public class RESTAPI extends Application {
   @Override
   public Set<Class<?>> getClasses() {
     final Set<Class<?>> classes = new HashSet<>();
-    // register root resources/providers
     classes.add(NotFoundMapper.class);
-    classes.add(AppUserResource.class);
+    classes.add(AppUsersResource.class);
     classes.add(SuccessesResource.class);
     classes.add(EventsResource.class);
-    classes.add(LeaderBoardResource.class);
+    classes.add(LeaderBoardsResource.class);
     classes.add(RulesResource.class);
-    classes.add(AppActionResource.class);
-    classes.add(ApplicationResource.class);
+    classes.add(AppActionsResource.class);
+    classes.add(ApplicationsResource.class);
     return classes;
   }
 }

@@ -3,7 +3,7 @@ package ch.heigvd.gamification.rest;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppAction;
-import ch.heigvd.gamification.services.to.interfaces.IActionTypesTOService;
+import ch.heigvd.gamification.services.to.interfaces.IAppActionsTOService;
 import ch.heigvd.gamification.to.AppActionTO;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppActionsManagerLocal;
 import java.util.LinkedList;
@@ -26,18 +26,18 @@ import javax.ws.rs.core.Response;
  * @author Gaël Jobin
  */
 @Path("actions")
-public class AppActionResource extends GamificationRESTResource {
+public class AppActionsResource extends GamificationRESTResource {
 
   @EJB
   IAppActionsManagerLocal actionManager;
 
   @EJB
-  IActionTypesTOService actionTOService;
+  IAppActionsTOService actionTOService;
 
   /**
    * Creates a new instance of AppActionResource
    */
-  public AppActionResource() {
+  public AppActionsResource() {
   }
 
   /**
@@ -86,7 +86,7 @@ public class AppActionResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public AppActionTO getAction(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    actionManager.checkRights(id, getApplication());
     return actionTOService.buildPublicActionTypeTO(actionManager.findById(id));
   }
 
@@ -103,7 +103,7 @@ public class AppActionResource extends GamificationRESTResource {
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response updateResource(AppActionTO actionTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    actionManager.checkRights(id, getApplication());
     AppAction actionTypeToUpdate = actionManager.findById(id);
     actionTOService.updateActionTypeEntity(actionTypeToUpdate, actionTO);
     actionManager.update(actionTypeToUpdate);
@@ -116,28 +116,13 @@ public class AppActionResource extends GamificationRESTResource {
    * @param id the if of the action to delete
    * @return Response HTTP Code 204 No Content
    * @throws EntityNotFoundException if the action does not exists
-   * @throws UnauthorizedException action does not belong current applicaiton
+   * @throws UnauthorizedException action does not belong current application
    */
   @DELETE
   @Path("{id}")
   public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    actionManager.checkRights(id, getApplication());
     actionManager.delete(id);
     return Response.noContent().build();
-  }
-
-  /**
-   * Check if the passed action id belong to the current application.
-   *
-   * @param id the action id to check
-   * @throws EntityNotFoundException action does not exists
-   * @throws UnauthorizedException user action not belong to current application
-   */
-  @Override
-  protected void checkRights(long id) throws EntityNotFoundException, UnauthorizedException {
-    AppAction action = actionManager.findById(id);
-    if (!action.getApplication().equals(getApplication())) {
-      throw new UnauthorizedException();
-    }
   }
 }

@@ -2,7 +2,6 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.Application;
-import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.local.IApplicationsManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IApplicationsManagerRemote;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ApplicationsManager implements IApplicationsManagerLocal, IApplicat
 
   @Override
   public void delete(long id) throws EntityNotFoundException {
-    //TODO delete all the attached elements ? Cascade is enabled ?
+    //Is delete cascade setted ?
     em.remove(findById(id));
   }
 

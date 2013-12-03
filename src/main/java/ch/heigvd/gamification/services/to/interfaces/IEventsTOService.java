@@ -17,5 +17,4 @@ public interface IEventsTOService {
   public EventPublicTO buildPublicEventTO(Event event);
   
   public void updateEventEntity(Event existingEntitiy, EventTO newState);
-  
 }

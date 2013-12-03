@@ -1,6 +1,7 @@
 package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.services.crud.interfaces.local.IEventsManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
@@ -20,8 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Service mettant à disposition les ressources liées aux événements
- * pouvant se produire dans l'application.
+ * REST Service. Expose service for events management. An event is an action
+ * performed by a user at a given time.
  *
  * @author Alexandre Perusset
  */
@@ -38,29 +39,29 @@ public class EventsResource extends GamificationRESTResource {
   IEventsTOService eventsTOService;
 
   /**
-   * Obtenir la liste complète (ordonnée de du plus récent au plus ancien) des
-   * événements ayant eu lieu dans l'application.
-   *
-   * @return List<EventPublicTO> liste des événements
+   * Get the list of the events that occurred in the current application.
+   * 
+   * @return List<EventPublicTO> a list of EventPublicTO
+   * @throws EntityNotFoundException application does not exists
    */
   @GET
-  @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-  public List<EventPublicTO> getEvents() {
+  @Produces({MediaType.APPLICATION_JSON})
+  public List<EventPublicTO> getEvents() throws EntityNotFoundException {
     List<EventPublicTO> events = new LinkedList<>();
-    for (Event e : eventsManager.findAll()) {
+    for (Event e : eventsManager.findAll(getApplication())) {
       events.add(eventsTOService.buildPublicEventTO(e));
     }
     return events;
   }
 
   /**
-   * Ajouter un événement à l'application.
+   * Add an event to the application by passing his representation.
    *
-   * @param newEventTO les données du nouvel énévement
+   * @param newEventTO new event representation
    * @return Response HTTP Code 201 Created
    */
   @POST
-  @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+  @Consumes({MediaType.APPLICATION_JSON})
   public Response createEvent(EventTO newEventTO) {
     Event newEvent = new Event();
     eventsTOService.updateEventEntity(newEvent, newEventTO);
@@ -72,16 +73,18 @@ public class EventsResource extends GamificationRESTResource {
   }
 
   /**
-   * Obtenir les informations d'un événement particulié.
+   * Get the informations of an event.
    *
-   * @param id identifiant unique de l'événement
-   * @return EventPublicTO l'évenement voulu
-   * @throws EntityNotFoundException événement inexistant
+   * @param id unique id of the event
+   * @return EventPublicTO the event representation
+   * @throws EntityNotFoundException the event or application does not exists
+   * @throws UnauthorizedException the event does not belong current application
    */
   @GET
   @Path("{id}")
-  @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-  public EventPublicTO getEventById(@PathParam("id") long id) throws EntityNotFoundException {
+  @Produces({MediaType.APPLICATION_JSON})
+  public EventPublicTO getEventById(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    eventsManager.checkRights(id, getApplication());
     return eventsTOService.buildPublicEventTO(eventsManager.findById(id));
   }
 }

@@ -3,7 +3,6 @@ package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,7 +20,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
   @NamedQuery(
           name = "findAllSuccess",
-          query = "select u from Success u"
+          query = "select s from Success s where s.application.id = :appid"
   )
 })
 @Entity
@@ -37,7 +36,7 @@ public class Success implements Serializable {
 
   @ManyToMany(fetch = FetchType.LAZY)
   private final List<Rule> rules;
-  
+
   @ManyToOne
   private Application application;
 
@@ -93,7 +92,7 @@ public class Success implements Serializable {
   public void setApplication(Application application) {
     this.application = application;
   }
-  
+
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;
@@ -104,7 +103,7 @@ public class Success implements Serializable {
     if (!(object instanceof Success) || this.id == -1) {
       return false;
     }
-    Success other = (Success)object;
+    Success other = (Success) object;
     return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
   }
 

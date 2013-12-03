@@ -55,5 +55,4 @@ public class AppUsersTOService implements IAppUsersTOService {
             source.getNickname()
     );
   }
-
 }

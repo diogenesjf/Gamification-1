@@ -1,6 +1,7 @@
 package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
@@ -21,7 +22,7 @@ import javax.persistence.PersistenceContext;
 @Remote(IAppUsersManagerRemote.class)
 public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerRemote {
 
-  @PersistenceContext(unitName="Gamification")
+  @PersistenceContext(unitName = "Gamification")
   private EntityManager em;
 
   @Override
@@ -54,15 +55,21 @@ public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerR
   @Override
   public List<AppUser> findAll(Application application) {
     return em.createNamedQuery("findAllUsers")
-              .setParameter("appid", application.getId())
-           .getResultList();
+            .setParameter("appid", application.getId())
+            .getResultList();
   }
-  
+
   @Override
-  public List<AppUser> findAllBySuccess(long id, Application application) {
+  public List<AppUser> findAllBySuccess(long id) {
     return em.createNamedQuery("findAllBySuccess")
-              .setParameter("successid", id)
-              .setParameter("appid", application.getId())
-           .getResultList();
+            .setParameter("successid", id)
+            .getResultList();
+  }
+
+  @Override
+  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
+    if (!findById(id).getApplication().equals(app)) {
+      throw new UnauthorizedException();
+    }
   }
 }

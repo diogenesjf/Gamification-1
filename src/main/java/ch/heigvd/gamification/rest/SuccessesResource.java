@@ -1,6 +1,7 @@
 package ch.heigvd.gamification.rest;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.model.Success;
@@ -29,7 +30,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Service
+ * REST Service. Expose some service for successes management. A success is
+ * defined by a name and a badge (an image).
  *
  * @author Gaël Jobin
  */
@@ -61,14 +63,15 @@ public class SuccessesResource extends GamificationRESTResource {
   }
 
   /**
-   * Creates a new Success resource from the provided representation
+   * Creates a new Success resource from the provided representation.
    *
-   * @param successTO the new success representation
+   * @param successTO the representation of the new success
    * @return Response HTTP Code 201 Created
+   * @throws EntityNotFoundException application does not exists
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response createResource(SuccessTO successTO) throws EntityNotFoundException {
+  public Response createSuccess(SuccessTO successTO) throws EntityNotFoundException {
     Success success = new Success();
     successTOService.updateSuccessEntity(success, successTO, getApplication());
     return Response.created(
@@ -79,82 +82,87 @@ public class SuccessesResource extends GamificationRESTResource {
   }
 
   /**
-   * Retrieves a representation of a list of Success resources
+   * Retrieves a representation of a list of Success resources.
    *
-   * @return an instance of SuccessTO
+   * @return List<SuccessTO> an list of SuccessTO
+   * @throws EntityNotFoundException application does not exists
    */
   @GET
   @Produces({MediaType.APPLICATION_JSON})
-  public List<SuccessTO> getResources() {
-    List<Success> success = successManager.findAll();
+  public List<SuccessTO> getSuccesses() throws EntityNotFoundException {
     List<SuccessTO> result = new LinkedList<>();
-    for (Success singleSuccess : success) {
+    for (Success singleSuccess : successManager.findAll(getApplication())) {
       result.add(successTOService.buildSuccessTO(singleSuccess));
     }
     return result;
   }
 
   /**
-   * Retrieves representation of an Success resource
+   * Retrieves representation of a Success resource.
    *
-   * @param id
+   * @param id the unique id of the success
    * @return an instance of SuccessTO
-   * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
+   * @throws EntityNotFoundException success or application does not exists
+   * @throws UnauthorizedException success does not belong current application
    */
   @GET
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
-  public SuccessTO getResource(@PathParam("id") long id) throws EntityNotFoundException {
-    Success success = successManager.findById(id);
-    SuccessTO successTO = successTOService.buildSuccessTO(success);
-    return successTO;
+  public SuccessTO getSuccess(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
+    return successTOService.buildSuccessTO(successManager.findById(id));
   }
 
   /**
-   * Updates an Success resource
+   * Update a Success resource by passing his new representation.
    *
-   * @param updatedSuccessTO
-   * @param id
-   * @return instance of PublicRuleTO
+   * @param successTO new representation
+   * @param id the unique id of the success
+   * @return Response HTTP Code 204 No Content
    * @throws EntityNotFoundException success or application not found
+   * @throws UnauthorizedException success does not belong current application
    */
   @PUT
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response updateResource(SuccessTO updatedSuccessTO, @PathParam("id") long id) throws EntityNotFoundException {
+  public Response updateSuccess(SuccessTO successTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
     Success successToUpdate = successManager.findById(id);
-    successTOService.updateSuccessEntity(successToUpdate, updatedSuccessTO, getApplication());
+    successTOService.updateSuccessEntity(successToUpdate, successTO, getApplication());
     successManager.update(successToUpdate);
     return Response.noContent().build();
   }
 
   /**
-   * Deletes an Success resource
+   * Delete an Success resource by passing his id.
    *
-   * @param id
+   * @param id the unique id of the success to delete
    * @return Response HTTP Code 204 No Content
    * @throws EntityNotFoundException success not found
+   * @throws UnauthorizedException success does not belong current application
    */
   @DELETE
   @Path("{id}")
-  public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException {
-    //TODO control rights from application
+  public Response deleteSuccess(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
     successManager.delete(id);
     return Response.noContent().build();
   }
 
   /**
    * Retrieves representation of a liste of Rules linked to a specific Success
-   * resource
+   * resource.
    *
-   * @param id
+   * @param id the unique id of the success
    * @return List<RuleTO> a list of PublicRuleTO
    * @throws EntityNotFoundException success does not exists
+   * @throws UnauthorizedException success does not belong current application
    */
   @GET
   @Path("{id}/rules")
   @Produces({MediaType.APPLICATION_JSON})
-  public List<RuleTO> getSuccessRulesResource(@PathParam("id") long id) throws EntityNotFoundException {
+  public List<RuleTO> getSuccessRules(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
     List<RuleTO> result = new LinkedList<>();
     for (Rule rule : successManager.findById(id).getRules()) {
       result.add(rulesTOService.buildPublicRuleTO(rule));
@@ -166,52 +174,59 @@ public class SuccessesResource extends GamificationRESTResource {
    * Retrieves representation of a list of User linked to a specific Success
    * resource
    *
-   * @param id
-   * @return a list of AppUserPublicTO
-   * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
+   * @param id unique id of the success
+   * @return List<AppUserPublicTO> a list of AppUserPublicTO
+   * @throws EntityNotFoundException success does not exists
+   * @throws UnauthorizedException success does not belong current application
    */
   @GET
   @Path("{id}/users")
   @Produces({MediaType.APPLICATION_JSON})
-  public List<AppUserPublicTO> getSuccessUsersResource(@PathParam("id") long id) throws EntityNotFoundException {
-    List<AppUser> users = usersManager.findAllBySuccess(id, getApplication());
+  public List<AppUserPublicTO> getSuccessUsers(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
     List<AppUserPublicTO> result = new LinkedList<>();
-    for (AppUser user : users) {
+    for (AppUser user : usersManager.findAllBySuccess(id)) {
       result.add(usersTOService.buildPublicUserTO(user));
     }
     return result;
   }
 
   /**
-   * Link one or more Rules to a Success resource
+   * Link one Rules to a Success resource.
    *
-   * @param idTO
-   * @param id
-   * @return an instance of PublicRulesTO
-   * @throws ch.heigvd.gamification.exceptions.EntityNotFoundException
+   * @param to the transfer object with rule id
+   * @param id the unique id of the success
+   * @return Response HTTP Code 201 Created
+   * @throws EntityNotFoundException rule or success does not exists
+   * @throws UnauthorizedException success or rule does not belong current
+   * application
    */
   @POST
   @Path("{id}/rules")
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response linkRuletoSuccess(GenericOnlyIDTO idTO, @PathParam("id") long id) throws EntityNotFoundException {
-    Success success = successManager.findById(id);
-    Rule rule = rulesManager.findById(idTO.getId());
-    success.addRule(rule);
+  public Response linkRuletoSuccess(GenericOnlyIDTO to, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
+    rulesManager.checkRights(to.getId(), getApplication());
+    successManager.findById(id).addRule(rulesManager.findById(to.getId()));
     return Response.created(null).build();
   }
 
   /**
-   * Delete the link between a Rule and a Success resource
+   * Delete the link between a Rule and a Success resource.
    *
-   * @param id
-   * @param idRule
-   * @return an instance of PublicRulesTO
-   * @throws EntityNotFoundException
+   * @param id unique id of the success
+   * @param idRule unique id of the rule
+   * @return Response HTTP Code 204 No Content
+   * @throws EntityNotFoundException rule or success does not exists
+   * @throws UnauthorizedException rule or success does not belong current
+   * application
    */
   @DELETE
-  @Path("{id}/rules/{idRule}")
+  @Path("{id}/rules/{idrule}")
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response unlinkRuleFromSuccess(@PathParam("id") long id, @PathParam("idRule") long idRule) throws EntityNotFoundException {
+  public Response unlinkRuleFromSuccess(@PathParam("id") long id, @PathParam("idrule") long idRule) throws EntityNotFoundException, UnauthorizedException {
+    successManager.checkRights(id, getApplication());
+    rulesManager.checkRights(idRule, getApplication());
     Success success = successManager.findById(id);
     success.getRules().remove(rulesManager.findById(idRule));
     successManager.update(success);

@@ -6,6 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 /**
+ * Allow to map UnauthorizedException to an error page.
  *
  * @author Alexandre Perusset
  */

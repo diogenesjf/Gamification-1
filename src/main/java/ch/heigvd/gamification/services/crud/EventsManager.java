@@ -1,6 +1,8 @@
 package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
+import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.local.IEventsManagerLocal;
@@ -23,27 +25,27 @@ import javax.persistence.PersistenceContext;
 @Remote(IEventsManagerRemote.class)
 public class EventsManager implements IEventsManagerLocal, IEventsManagerRemote {
 
-  @PersistenceContext(unitName="Gamification")
+  @PersistenceContext(unitName = "Gamification")
   private EntityManager em;
-  
+
   @EJB
   private ISuccessesManagerLocal successesManager;
-  
+
   @Override
   public long create(Event eventData) {
     Event event = new Event(eventData);
     em.persist(event);
     event.getUser().addEvent(event);
-    
+
     List<Success> newUserSuccesses = successesManager.findAllAcquiredByUser(event.getUser().getId());
     List<Success> userSuccesses = event.getUser().getSuccesses();
 
-    for(Success success: newUserSuccesses)
-    {
-        if(!userSuccesses.contains(success))
-            event.getUser().addSuccess(success);
+    for (Success success : newUserSuccesses) {
+      if (!userSuccesses.contains(success)) {
+        event.getUser().addSuccess(success);
+      }
     }
-    
+
     return event.getId();
   }
 
@@ -60,10 +62,18 @@ public class EventsManager implements IEventsManagerLocal, IEventsManagerRemote 
     }
     return findEvent;
   }
-  
+
   @Override
-  public List<Event> findAll() {
-    return em.createNamedQuery("findAllEvents").getResultList();
+  public List<Event> findAll(Application application) {
+    return em.createNamedQuery("findAllEvents")
+            .setParameter("appid", application.getId())
+            .getResultList();
   }
-  
+
+  @Override
+  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
+    if (!findById(id).getApplication().equals(app)) {
+      throw new UnauthorizedException();
+    }
+  }
 }

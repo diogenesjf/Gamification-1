@@ -27,7 +27,7 @@ import javax.persistence.OneToMany;
   ),
   @NamedQuery(
           name = "findAllBySuccess",
-          query = "select u from AppUser u inner join u.successes s where s.id = :successid and u.application.id = :appid"
+          query = "select u from AppUser u inner join u.successes s where s.id = :successid"
   )
 })
 

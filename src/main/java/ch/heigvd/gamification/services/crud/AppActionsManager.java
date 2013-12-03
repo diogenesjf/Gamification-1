@@ -2,6 +2,7 @@ package ch.heigvd.gamification.services.crud;
 
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppActionsManagerLocal;
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Event;
@@ -21,7 +22,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @Local(IAppActionsManagerLocal.class)
 @Remote(IAppActionsManagerRemote.class)
-public class ActionTypesManager implements IAppActionsManagerLocal, IAppActionsManagerRemote {
+public class AppActionsManager implements IAppActionsManagerLocal, IAppActionsManagerRemote {
 
   @PersistenceContext(unitName = "Gamification")
   private EntityManager em;
@@ -71,4 +72,10 @@ public class ActionTypesManager implements IAppActionsManagerLocal, IAppActionsM
     throw new UnsupportedOperationException("Not supported yet.");
   }
 
+  @Override
+  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
+    if (!findById(id).getApplication().equals(app)) {
+      throw new UnauthorizedException();
+    }
+  }
 }

@@ -11,31 +11,29 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 /**
+ * Stateless Bean that represent an abstract Gamification resource. That
+ * provides a method to get the application of the current context. The
+ * application id is passed as an header parameter.
  *
  * @author Alexandre Perusset
  */
 @Stateless
 public class GamificationRESTResource {
-  
-  @HeaderParam(value="appid")
+
+  @HeaderParam(value = "appid")
   private long appID;
-  
+
   @Context
   protected UriInfo context;
 
   @EJB
   IApplicationsManagerLocal securityManager;
-  
+
   public Application getApplication() throws EntityNotFoundException {
     try {
       return securityManager.findById(appID);
-    }
-    catch(EntityNotFoundException e) {
+    } catch (EntityNotFoundException e) {
       throw new EntityNotFoundException("Bad Header param, cannot found Application with id " + appID);
     }
   }
-  
-  //Redefine if necessary
-  protected void checkRights(long id) throws EntityNotFoundException, UnauthorizedException {}
-  
 }

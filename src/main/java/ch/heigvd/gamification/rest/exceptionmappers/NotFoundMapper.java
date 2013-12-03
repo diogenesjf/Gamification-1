@@ -6,6 +6,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 /**
+ * Allow to map EntityNotFoundException to an error page.
  *
  * @author Alexandre Perusset
  */
@@ -14,7 +15,6 @@ public class NotFoundMapper implements ExceptionMapper<EntityNotFoundException> 
 
   @Override
   public Response toResponse(EntityNotFoundException exception) {
-    exception.printStackTrace();
     return Response.status(Response.Status.NOT_FOUND).build();
   }
 

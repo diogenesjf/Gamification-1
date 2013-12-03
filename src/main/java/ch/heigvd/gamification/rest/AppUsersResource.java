@@ -34,7 +34,7 @@ import javax.ws.rs.core.Response;
  * @author Alexandre Perusset
  */
 @Path("users")
-public class AppUserResource extends GamificationRESTResource {
+public class AppUsersResource extends GamificationRESTResource {
 
   @EJB
   IAppUsersManagerLocal usersManager;
@@ -48,7 +48,7 @@ public class AppUserResource extends GamificationRESTResource {
   @EJB
   IEventsTOService eventsTOService;
 
-  public AppUserResource() {
+  public AppUsersResource() {
   }
 
   /**
@@ -98,7 +98,7 @@ public class AppUserResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public AppUserPublicTO getUser(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    usersManager.checkRights(id, getApplication());
     return usersTOService.buildPublicUserTO(usersManager.findById(id));
   }
 
@@ -115,7 +115,7 @@ public class AppUserResource extends GamificationRESTResource {
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response updateUser(AppUserTO userTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    usersManager.checkRights(id, getApplication());
     AppUser user = usersManager.findById(id);
     usersTOService.updateUserEntity(user, userTO, getApplication());
     usersManager.update(user);
@@ -133,7 +133,7 @@ public class AppUserResource extends GamificationRESTResource {
   @DELETE
   @Path("{id}")
   public Response deleteUser(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    usersManager.checkRights(id, getApplication());
     usersManager.delete(id);
     return Response.noContent().build();
   }
@@ -150,7 +150,7 @@ public class AppUserResource extends GamificationRESTResource {
   @GET
   @Path("{id}/success")
   public List<SuccessTO> getUserSuccesses(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    checkRights(id);
+    usersManager.checkRights(id, getApplication());
     //If we want another order, use a parametrized NamedQuery
     List<SuccessTO> successTO = new LinkedList<>();
     for (Success success : usersManager.findById(id).getSuccesses()) {
@@ -176,20 +176,5 @@ public class AppUserResource extends GamificationRESTResource {
       eventsTO.add(eventsTOService.buildPublicEventTO(event));
     }
     return eventsTO;
-  }
-
-  /**
-   * Check if the passed user id belong to the current application.
-   *
-   * @param id the user id to check
-   * @throws EntityNotFoundException user does not exists
-   * @throws UnauthorizedException user does not belong to current application
-   */
-  @Override
-  protected void checkRights(long id) throws EntityNotFoundException, UnauthorizedException {
-    AppUser user = usersManager.findById(id);
-    if (!user.getApplication().equals(getApplication())) {
-      throw new UnauthorizedException();
-    }
   }
 }

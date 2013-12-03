@@ -59,5 +59,4 @@ public class EventsTOService implements IEventsTOService {
       Logger.getLogger(EventsTOService.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
-
 }

@@ -16,7 +16,7 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
   @NamedQuery(
           name = "findAllEvents",
-          query = "select e from Event e order by e.evenTimestamp desc"
+          query = "select e from Event e where e.application.id = :appid by e.evenTimestamp desc"
   )
 })
 
@@ -34,7 +34,7 @@ public class Event implements Serializable {
   private AppAction action;
 
   private long evenTimestamp;
-  
+
   @ManyToOne
   private Application application;
 
@@ -90,7 +90,7 @@ public class Event implements Serializable {
   public void setApplication(Application application) {
     this.application = application;
   }
-  
+
   @Override
   public int hashCode() {
     return id != null ? id.hashCode() : 0;

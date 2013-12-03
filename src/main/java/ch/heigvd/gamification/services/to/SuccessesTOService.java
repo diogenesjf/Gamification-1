@@ -27,5 +27,4 @@ public class SuccessesTOService implements ISuccessesTOService {
     existing.setBadge(state.getBadge());
     existing.setApplication(application);
   }
-
 }

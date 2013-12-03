@@ -1,5 +1,6 @@
 package ch.heigvd.gamification.rest;
 
+import ch.heigvd.gamification.exceptions.EntityNotFoundException;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.services.to.interfaces.IAppUsersTOService;
 import ch.heigvd.gamification.to.RankedAppUserTO;
@@ -14,12 +15,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- * REST Service
+ * REST Service. Expose some service to get the leader board of the application.
+ * The leader board is the users ranked by total of acquired points.
  * 
  * @author Alexandre Perusset
  */
 @Path("leaderboard")
-public class LeaderBoardResource  extends GamificationRESTResource {
+public class LeaderBoardsResource extends GamificationRESTResource {
       
   @PersistenceContext(unitName="Gamification")
   private EntityManager em;
@@ -28,17 +30,20 @@ public class LeaderBoardResource  extends GamificationRESTResource {
   private IAppUsersTOService usersTOService;
   
   /**
-   *
-   * @return
+   * Provides the leader board of the current application.
+   * 
+   * @return List<RankedAppUserTO> the list of ranked users
+   * @throws EntityNotFoundException application does not exists
    */
   @GET
-  @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-  public List<RankedAppUserTO> getLeaderboard() {
+  @Produces({MediaType.APPLICATION_JSON})
+  public List<RankedAppUserTO> getLeaderboard() throws EntityNotFoundException {
     String query =  "select u, coalesce(sum(at.points), 0) as points "
                   + "from AppUser u "
                     + "left join u.events e "
                     + "left join e.actionType at "
                   + "group by u "
+                  + "where u.application.id = " + getApplication().getId()
                   + "order by points desc";
     List<RankedAppUserTO> result = new LinkedList<>();
     List<Object[]> users = em.createQuery(query).getResultList();
