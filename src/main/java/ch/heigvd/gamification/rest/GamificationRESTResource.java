@@ -21,6 +21,8 @@ public class GamificationRESTResource {
 
   @HeaderParam(value = "appid")
   private long appID;
+  
+  private Application application = null;
 
   @Context
   protected UriInfo context;
@@ -30,7 +32,9 @@ public class GamificationRESTResource {
 
   public Application getApplication() throws EntityNotFoundException {
     try {
-      return securityManager.findById(appID);
+      if ( this.application == null ) //Prevent from multiple access
+        application = securityManager.findById(appID);
+      return application;
     } catch (EntityNotFoundException e) {
       throw new EntityNotFoundException("Bad Header param, cannot found Application with id " + appID);
     }

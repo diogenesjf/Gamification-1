@@ -51,10 +51,11 @@ public class RulesResource extends GamificationRESTResource {
    * @param ruleTO the representation of the new rule
    * @return Response HTTP Code 201 Created
    * @throws EntityNotFoundException application does not exists
+   * @throws UnauthorizedException rule action does not belong to application
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response createRule(RuleTO ruleTO) throws EntityNotFoundException {
+  public Response createRule(RuleTO ruleTO) throws EntityNotFoundException, UnauthorizedException {
     Rule newRule = new Rule();
     rulesTOService.updateRuleEntity(newRule, ruleTO, getApplication());
     return Response.created(
@@ -92,8 +93,7 @@ public class RulesResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public RuleTO getRule(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    rulesManager.checkRights(id, getApplication());
-    return rulesTOService.buildPublicRuleTO(rulesManager.findById(id));
+    return rulesTOService.buildPublicRuleTO(rulesManager.findById(id, getApplication()));
   }
 
   /**
@@ -109,10 +109,9 @@ public class RulesResource extends GamificationRESTResource {
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response updateRule(RuleTO ruleTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    rulesManager.checkRights(id, getApplication());
-    Rule ruleToUpdate = rulesManager.findById(id);
+    Rule ruleToUpdate = rulesManager.findById(id, getApplication());
     rulesTOService.updateRuleEntity(ruleToUpdate, ruleTO, getApplication());
-    rulesManager.update(ruleToUpdate);
+    rulesManager.update(ruleToUpdate, getApplication());
     return Response.noContent().build();
   }
 
@@ -127,8 +126,7 @@ public class RulesResource extends GamificationRESTResource {
   @DELETE
   @Path("{id}")
   public Response deleteRule(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    rulesManager.checkRights(id, getApplication());
-    rulesManager.delete(id);
+    rulesManager.delete(id, getApplication());
     return Response.noContent().build();
   }
 }

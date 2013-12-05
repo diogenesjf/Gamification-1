@@ -14,13 +14,13 @@ public interface IAppActionsManagerRemote {
 
   public long create(AppAction actionTypeData);
 
-  public void update(AppAction newState) throws EntityNotFoundException;
+  public void update(AppAction newState, Application application) throws EntityNotFoundException, UnauthorizedException;
 
-  public void delete(long id) throws EntityNotFoundException;
+  public void delete(long id, Application application) throws EntityNotFoundException, UnauthorizedException;
 
-  public AppAction findById(long id) throws EntityNotFoundException;
+  public AppAction findById(long id, Application application) throws EntityNotFoundException, UnauthorizedException;
 
   public List<AppAction> findAll(Application application);
 
-  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
+  public void checkRights(AppAction action, Application app) throws UnauthorizedException;
 }

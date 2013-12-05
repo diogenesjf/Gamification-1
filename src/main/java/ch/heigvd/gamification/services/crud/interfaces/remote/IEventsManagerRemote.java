@@ -12,13 +12,13 @@ import java.util.List;
  */
 public interface IEventsManagerRemote {
 
-    public long create(Event eventData) throws EntityNotFoundException;
+    public long create(Event eventData) throws EntityNotFoundException, UnauthorizedException;
 
-    public void delete(long id) throws EntityNotFoundException;
+    public void delete(long id, Application application) throws EntityNotFoundException, UnauthorizedException;
 
-    public Event findById(long id) throws EntityNotFoundException;
+    public Event findById(long id, Application application) throws EntityNotFoundException, UnauthorizedException;
 
     public List<Event> findAll(Application application);
 
-    public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
+    public void checkRights(Event event, Application app) throws UnauthorizedException;
 }

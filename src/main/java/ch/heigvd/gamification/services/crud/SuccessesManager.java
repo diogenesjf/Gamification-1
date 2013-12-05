@@ -6,6 +6,7 @@ import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.ISuccessesManagerRemote;
+import java.security.InvalidParameterException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -26,42 +27,46 @@ public class SuccessesManager implements ISuccessesManagerLocal, ISuccessesManag
   private EntityManager em;
 
   @Override
-  public long create(Success successData) {
-    Success newSuccess = new Success(successData);
+  public long create(Success success) {
+    if ( success.getApplication() == null ) { //Check if application setted
+      throw new InvalidParameterException("Cannot save a success without application");
+    }
+    Success newSuccess = new Success(success);
     em.persist(newSuccess);
     return newSuccess.getId();
   }
 
   @Override
-  public void update(Success newState) throws EntityNotFoundException {
-    findById(newState.getId());
+  public void update(Success newState, Application app) throws EntityNotFoundException, UnauthorizedException {
+    findById(newState.getId(), app);
     em.merge(newState);
   }
 
   @Override
-  public void delete(long id) throws EntityNotFoundException {
-    em.remove(findById(id));
+  public void delete(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
+    em.remove(findById(id, app));
   }
 
   @Override
-  public Success findById(long id) throws EntityNotFoundException {
-    Success existingSuccess = em.find(Success.class, id);
-    if (existingSuccess == null) {
+  public Success findById(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
+    Success success = em.find(Success.class, id);
+    if (success == null) {
       throw new EntityNotFoundException();
     }
-    return existingSuccess;
+    checkRights(success, app);
+    return success;
   }
 
   @Override
-  public List<Success> findAll(Application application) {
+  public List<Success> findAll(Application app) {
     return em.createNamedQuery("findAllSuccess")
-            .setParameter("appid", application.getId())
+            .setParameter("appid", app.getId())
             .getResultList();
   }
 
   @Override
-  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
-    if (!findById(id).getApplication().equals(app)) {
+  public void checkRights(Success success, Application app) throws UnauthorizedException {
+    if (success.getApplication() == null || !success.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }

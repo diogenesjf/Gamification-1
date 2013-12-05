@@ -1,6 +1,7 @@
 package ch.heigvd.gamification.services.to;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.AppUser;
 import ch.heigvd.gamification.model.Application;
@@ -49,9 +50,9 @@ public class EventsTOService implements IEventsTOService {
   }
 
   @Override
-  public void updateEventEntity(Event existing, EventTO state, Application application) throws EntityNotFoundException {
-    existing.setUser(usersManager.findById(state.getUserId()));
-    existing.setActionType(actionTypesManager.findById(state.getActionId()));
+  public void updateEventEntity(Event existing, EventTO state, Application application) throws EntityNotFoundException, UnauthorizedException {
+    existing.setUser(usersManager.findById(state.getUserId(), application));
+    existing.setActionType(actionTypesManager.findById(state.getActionId(), application));
     existing.setTimestamp(state.getTimestamp());
     existing.setApplication(application);
   }

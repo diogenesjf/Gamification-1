@@ -21,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Service
+ * REST Service. Expose some service to manage application actions.
  *
  * @author Gaël Jobin
  */
@@ -87,8 +87,7 @@ public class AppActionsResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public AppActionTO getAction(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    actionManager.checkRights(id, getApplication());
-    return actionTOService.buildPublicActionTypeTO(actionManager.findById(id));
+    return actionTOService.buildPublicActionTypeTO(actionManager.findById(id, getApplication()));
   }
 
   /**
@@ -104,10 +103,9 @@ public class AppActionsResource extends GamificationRESTResource {
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response updateResource(AppActionTO actionTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    actionManager.checkRights(id, getApplication());
-    AppAction actionTypeToUpdate = actionManager.findById(id);
-    actionTOService.updateActionTypeEntity(actionTypeToUpdate, actionTO, getApplication());
-    actionManager.update(actionTypeToUpdate);
+    AppAction action = actionManager.findById(id, getApplication());
+    actionTOService.updateActionTypeEntity(action, actionTO, getApplication());
+    actionManager.update(action, getApplication());
     return Response.noContent().build();
   }
 
@@ -122,8 +120,7 @@ public class AppActionsResource extends GamificationRESTResource {
   @DELETE
   @Path("{id}")
   public Response deleteResource(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    actionManager.checkRights(id, getApplication());
-    actionManager.delete(id);
+    actionManager.delete(id, getApplication());
     return Response.noContent().build();
   }
 }

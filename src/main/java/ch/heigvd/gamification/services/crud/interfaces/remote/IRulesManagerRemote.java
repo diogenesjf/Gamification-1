@@ -15,15 +15,15 @@ public interface IRulesManagerRemote {
 
     public long create(Rule employeeData);
 
-    public void update(Rule newState) throws EntityNotFoundException;
+    public void update(Rule newState, Application application) throws EntityNotFoundException, UnauthorizedException;
 
-    public void delete(long id) throws EntityNotFoundException;
+    public void delete(long id, Application applicaiton) throws EntityNotFoundException, UnauthorizedException;
 
-    public Rule findById(long id) throws EntityNotFoundException;
+    public Rule findById(long id, Application application) throws EntityNotFoundException, UnauthorizedException;
 
     public List<Rule> findAll(Application application);
     
     public List<Rule> findAllForAction(AppAction action);
     
-    public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
+    public void checkRights(Rule rule, Application app) throws UnauthorizedException;
 }

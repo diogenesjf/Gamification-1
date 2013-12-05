@@ -6,6 +6,7 @@ import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IAppActionsManagerRemote;
+import java.security.InvalidParameterException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -26,31 +27,34 @@ public class AppActionsManager implements IAppActionsManagerLocal, IAppActionsMa
   private EntityManager em;
 
   @Override
-  public long create(AppAction actionTypeData) {
-    AppAction newActionType = new AppAction(actionTypeData);
-    em.persist(newActionType);
-    return newActionType.getId();
+  public long create(AppAction action) {
+    if ( action.getApplication() == null ) { //Check if application setted
+      throw new InvalidParameterException("Cannot save an AppAction without application");
+    }
+    AppAction newAction = new AppAction(action);
+    em.persist(newAction);
+    return newAction.getId();
   }
 
   @Override
-  public void update(AppAction newState) throws EntityNotFoundException {
-    findById(newState.getId());
+  public void update(AppAction newState, Application application) throws EntityNotFoundException, UnauthorizedException {
+    findById(newState.getId(), application);
     em.merge(newState);
   }
 
   @Override
-  public void delete(long id) throws EntityNotFoundException {
-    AppAction actionTypeToDelete = findById(id);
-    em.remove(actionTypeToDelete);
+  public void delete(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    em.remove(findById(id, application));
   }
 
   @Override
-  public AppAction findById(long id) throws EntityNotFoundException {
-    AppAction existingActionType = em.find(AppAction.class, id);
-    if (existingActionType == null) {
+  public AppAction findById(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    AppAction action = em.find(AppAction.class, id);
+    if (action == null) {
       throw new EntityNotFoundException();
     }
-    return existingActionType;
+    checkRights(action, application);
+    return action;
   }
 
   @Override
@@ -61,8 +65,8 @@ public class AppActionsManager implements IAppActionsManagerLocal, IAppActionsMa
   }
 
   @Override
-  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
-    if (!findById(id).getApplication().equals(app)) {
+  public void checkRights(AppAction action, Application app) throws UnauthorizedException {
+    if (action.getApplication() == null || action.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }

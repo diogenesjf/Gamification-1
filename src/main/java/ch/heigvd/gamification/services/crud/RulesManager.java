@@ -7,6 +7,7 @@ import ch.heigvd.gamification.model.AppAction;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Rule;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IRulesManagerRemote;
+import java.security.InvalidParameterException;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -28,31 +29,34 @@ public class RulesManager implements IRulesManagerLocal, IRulesManagerRemote {
   private EntityManager em;
 
   @Override
-  public long create(Rule ruleData) {
-    Rule newRule = new Rule(ruleData);
+  public long create(Rule rule) {
+    if ( rule.getApplication() == null ) { //Check if application setted
+      throw new InvalidParameterException("Cannot save a rule without application");
+    }
+    Rule newRule = new Rule(rule);
     em.persist(newRule);
     return newRule.getId();
   }
 
   @Override
-  public void update(Rule newState) throws EntityNotFoundException {
-    findById(newState.getId());
+  public void update(Rule newState, Application application) throws EntityNotFoundException, UnauthorizedException {
+    findById(newState.getId(), application);
     em.merge(newState);
   }
 
   @Override
-  public void delete(long id) throws EntityNotFoundException {
-    Rule ruleToDelete = findById(id);
-    em.remove(ruleToDelete);
+  public void delete(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    em.remove(findById(id, application));
   }
 
   @Override
-  public Rule findById(long id) throws EntityNotFoundException {
-    Rule existingRule = em.find(Rule.class, id);
-    if (existingRule == null) {
+  public Rule findById(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    Rule rule = em.find(Rule.class, id);
+    if (rule == null) {
       throw new EntityNotFoundException();
     }
-    return existingRule;
+    checkRights(rule, application);
+    return rule;
   }
 
   @Override
@@ -70,8 +74,8 @@ public class RulesManager implements IRulesManagerLocal, IRulesManagerRemote {
   }
   
   @Override
-  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
-    if (!findById(id).getApplication().equals(app)) {
+  public void checkRights(Rule rule, Application app) throws UnauthorizedException {
+    if (rule.getApplication() == null ||!rule.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }

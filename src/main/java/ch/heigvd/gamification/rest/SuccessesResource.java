@@ -109,8 +109,7 @@ public class SuccessesResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public SuccessTO getSuccess(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
-    return successTOService.buildSuccessTO(successManager.findById(id));
+    return successTOService.buildSuccessTO(successManager.findById(id, getApplication()));
   }
 
   /**
@@ -126,10 +125,9 @@ public class SuccessesResource extends GamificationRESTResource {
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response updateSuccess(SuccessTO successTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
-    Success successToUpdate = successManager.findById(id);
+    Success successToUpdate = successManager.findById(id, getApplication());
     successTOService.updateSuccessEntity(successToUpdate, successTO, getApplication());
-    successManager.update(successToUpdate);
+    successManager.update(successToUpdate, getApplication());
     return Response.noContent().build();
   }
 
@@ -144,8 +142,7 @@ public class SuccessesResource extends GamificationRESTResource {
   @DELETE
   @Path("{id}")
   public Response deleteSuccess(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
-    successManager.delete(id);
+    successManager.delete(id, getApplication());
     return Response.noContent().build();
   }
 
@@ -162,9 +159,8 @@ public class SuccessesResource extends GamificationRESTResource {
   @Path("{id}/rules")
   @Produces({MediaType.APPLICATION_JSON})
   public List<RuleTO> getSuccessRules(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
     List<RuleTO> result = new LinkedList<>();
-    for (Rule rule : successManager.findById(id).getRules()) {
+    for (Rule rule : successManager.findById(id, getApplication()).getRules()) {
       result.add(rulesTOService.buildPublicRuleTO(rule));
     }
     return result;
@@ -183,9 +179,9 @@ public class SuccessesResource extends GamificationRESTResource {
   @Path("{id}/users")
   @Produces({MediaType.APPLICATION_JSON})
   public List<AppUserPublicTO> getSuccessUsers(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
+    Success success = successManager.findById(id, getApplication());
     List<AppUserPublicTO> result = new LinkedList<>();
-    for (AppUser user : usersManager.findAllBySuccess(id)) {
+    for (AppUser user : usersManager.findAllBySuccess(success, getApplication())) {
       result.add(usersTOService.buildPublicUserTO(user));
     }
     return result;
@@ -205,11 +201,9 @@ public class SuccessesResource extends GamificationRESTResource {
   @Path("{id}/rules")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response linkRuletoSuccess(GenericOnlyIDTO to, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
-    rulesManager.checkRights(to.getId(), getApplication());
-    Success s = successManager.findById(id);
-    s.addRule(rulesManager.findById(to.getId()));
-    successManager.update(s);
+    Success success = successManager.findById(id, getApplication());
+    success.addRule(rulesManager.findById(to.getId(), getApplication()));
+    successManager.update(success, getApplication());
     return Response.created(null).build();
   }
 
@@ -227,11 +221,9 @@ public class SuccessesResource extends GamificationRESTResource {
   @Path("{id}/rules/{idrule}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response unlinkRuleFromSuccess(@PathParam("id") long id, @PathParam("idrule") long idRule) throws EntityNotFoundException, UnauthorizedException {
-    successManager.checkRights(id, getApplication());
-    rulesManager.checkRights(idRule, getApplication());
-    Success success = successManager.findById(id);
-    success.getRules().remove(rulesManager.findById(idRule));
-    successManager.update(success);
+    Success success = successManager.findById(id, getApplication());
+    success.getRules().remove(rulesManager.findById(idRule, getApplication()));
+    successManager.update(success, getApplication());
     return Response.noContent().build();
   }
 }

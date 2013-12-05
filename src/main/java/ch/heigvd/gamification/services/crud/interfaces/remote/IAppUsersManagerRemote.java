@@ -15,17 +15,17 @@ public interface IAppUsersManagerRemote {
 
     public long create(AppUser user);
 
-    public void update(AppUser state) throws EntityNotFoundException;
+    public void update(AppUser state, Application app) throws EntityNotFoundException, UnauthorizedException;
 
-    public void delete(long id) throws EntityNotFoundException;
+    public void delete(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
 
-    public AppUser findById(long id) throws EntityNotFoundException;
+    public AppUser findById(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
 
-    public List<AppUser> findAll(Application application);
+    public List<AppUser> findAll(Application app);
 
-    public List<AppUser> findAllBySuccess(long id);
+    public List<AppUser> findAllBySuccess(Success success, Application app) throws UnauthorizedException;
     
-    public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
+    public void checkRights(AppUser user, Application app) throws UnauthorizedException;
     
     public List<Success> checkForNewSuccesses(AppUser user);
 }

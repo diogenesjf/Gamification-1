@@ -98,8 +98,7 @@ public class AppUsersResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public AppUserPublicTO getUser(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    usersManager.checkRights(id, getApplication());
-    return usersTOService.buildPublicUserTO(usersManager.findById(id));
+    return usersTOService.buildPublicUserTO(usersManager.findById(id, getApplication()));
   }
 
   /**
@@ -115,10 +114,9 @@ public class AppUsersResource extends GamificationRESTResource {
   @Path("{id}")
   @Consumes({MediaType.APPLICATION_JSON})
   public Response updateUser(AppUserTO userTO, @PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    usersManager.checkRights(id, getApplication());
-    AppUser user = usersManager.findById(id);
+    AppUser user = usersManager.findById(id, getApplication());
     usersTOService.updateUserEntity(user, userTO, getApplication());
-    usersManager.update(user);
+    usersManager.update(user, getApplication());
     return Response.noContent().build();
   }
 
@@ -133,8 +131,7 @@ public class AppUsersResource extends GamificationRESTResource {
   @DELETE
   @Path("{id}")
   public Response deleteUser(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    usersManager.checkRights(id, getApplication());
-    usersManager.delete(id);
+    usersManager.delete(id, getApplication());
     return Response.noContent().build();
   }
 
@@ -151,10 +148,9 @@ public class AppUsersResource extends GamificationRESTResource {
   @Path("{id}/successes")
   @Produces({MediaType.APPLICATION_JSON})
   public List<SuccessTO> getUserSuccesses(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    usersManager.checkRights(id, getApplication());
     //If we want another order, use a parametrized NamedQuery
     List<SuccessTO> successTO = new LinkedList<>();
-    for (Success success : usersManager.findById(id).getSuccesses()) {
+    for (Success success : usersManager.findById(id, getApplication()).getSuccesses()) {
       successTO.add(successesTOService.buildSuccessTO(success));
     }
     return successTO;
@@ -167,14 +163,15 @@ public class AppUsersResource extends GamificationRESTResource {
    * @param id the identifier of the user
    * @return List<EventPublicTO> list of the user events
    * @throws EntityNotFoundException user does not exists
+   * @throws UnauthorizedException user does not belong to current application
    */
   @GET
   @Path("{id}/events")
   @Produces({MediaType.APPLICATION_JSON})
-  public List<EventPublicTO> getUserEvents(@PathParam("id") long id) throws EntityNotFoundException {
+  public List<EventPublicTO> getUserEvents(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
     //If we want another order, use a parametrized NamedQuery
     List<EventPublicTO> eventsTO = new LinkedList<>();
-    for (Event event : usersManager.findById(id).getEvents()) {
+    for (Event event : usersManager.findById(id, getApplication()).getEvents()) {
       eventsTO.add(eventsTOService.buildPublicEventTO(event));
     }
     return eventsTO;

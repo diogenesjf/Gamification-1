@@ -11,6 +11,7 @@ import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLoc
 import ch.heigvd.gamification.services.crud.interfaces.local.IRulesManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.local.ISuccessesManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IAppUsersManagerRemote;
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -39,43 +40,48 @@ public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerR
   private IRulesManagerLocal rulesManager;
 
   @Override
-  public long create(AppUser userData) {
-    AppUser newUser = new AppUser(userData);
+  public long create(AppUser user) {
+    if ( user.getApplication() == null ) { //Check if application setted
+      throw new InvalidParameterException("Cannot save an AppUser without application");
+    }
+    AppUser newUser = new AppUser(user);
     em.persist(newUser);
     return newUser.getId();
   }
 
   @Override
-  public void update(AppUser newState) throws EntityNotFoundException {
-    findById(newState.getId());
+  public void update(AppUser newState, Application application) throws EntityNotFoundException, UnauthorizedException {
+    findById(newState.getId(), application);
     em.merge(newState);
   }
 
   @Override
-  public void delete(long id) throws EntityNotFoundException {
-    em.remove(findById(id));
+  public void delete(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    em.remove(findById(id, application));
   }
 
   @Override
-  public AppUser findById(long id) throws EntityNotFoundException {
-    AppUser findUser = em.find(AppUser.class, id);
-    if (findUser == null) {
+  public AppUser findById(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
+    AppUser user = em.find(AppUser.class, id);
+    if (user == null) {
       throw new EntityNotFoundException("Cannot find User with id " + id);
     }
-    return findUser;
+    checkRights(user, app);
+    return user;
   }
 
   @Override
-  public List<AppUser> findAll(Application application) {
+  public List<AppUser> findAll(Application app) {
     return em.createNamedQuery("findAllUsers")
-            .setParameter("appid", application.getId())
+            .setParameter("appid", app.getId())
             .getResultList();
   }
 
   @Override
-  public List<AppUser> findAllBySuccess(long id) {
+  public List<AppUser> findAllBySuccess(Success success, Application app) throws UnauthorizedException {
+    successesManager.checkRights(success, app);
     return em.createNamedQuery("findAllWithSuccess")
-            .setParameter("successid", id)
+            .setParameter("successid", success.getId())
             .getResultList();
   }
 
@@ -121,8 +127,8 @@ public class AppUsersManager implements IAppUsersManagerLocal, IAppUsersManagerR
   }
 
   @Override
-  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
-    if (!findById(id).getApplication().equals(app)) {
+  public void checkRights(AppUser user, Application app) throws UnauthorizedException {
+    if (user.getApplication() == null || !user.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }

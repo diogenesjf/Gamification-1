@@ -60,10 +60,11 @@ public class EventsResource extends GamificationRESTResource {
    * @param newEventTO new event representation
    * @return Response HTTP Code 201 Created
    * @throws EntityNotFoundException application does not exists
+   * @throws UnauthorizedException event's user does not belong application
    */
   @POST
   @Consumes({MediaType.APPLICATION_JSON})
-  public Response createEvent(EventTO newEventTO) throws EntityNotFoundException {
+  public Response createEvent(EventTO newEventTO) throws EntityNotFoundException, UnauthorizedException {
     Event newEvent = new Event();
     eventsTOService.updateEventEntity(newEvent, newEventTO, getApplication());
     return Response.created(
@@ -85,7 +86,6 @@ public class EventsResource extends GamificationRESTResource {
   @Path("{id}")
   @Produces({MediaType.APPLICATION_JSON})
   public EventPublicTO getEventById(@PathParam("id") long id) throws EntityNotFoundException, UnauthorizedException {
-    eventsManager.checkRights(id, getApplication());
-    return eventsTOService.buildPublicEventTO(eventsManager.findById(id));
+    return eventsTOService.buildPublicEventTO(eventsManager.findById(id, getApplication()));
   }
 }

@@ -14,13 +14,13 @@ public interface ISuccessesManagerRemote {
 
     public long create(Success successData);
 
-    public void update(Success newState) throws EntityNotFoundException;
+    public void update(Success newState, Application app) throws EntityNotFoundException, UnauthorizedException;
 
-    public void delete(long id) throws EntityNotFoundException;
+    public void delete(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
 
-    public Success findById(long id) throws EntityNotFoundException;
+    public Success findById(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
 
-    public List<Success> findAll(Application application);
+    public List<Success> findAll(Application app);
     
-    public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException;
+    public void checkRights(Success success, Application app) throws UnauthorizedException;
 }

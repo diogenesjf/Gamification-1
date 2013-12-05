@@ -1,6 +1,7 @@
 package ch.heigvd.gamification.services.to;
 
 import ch.heigvd.gamification.exceptions.EntityNotFoundException;
+import ch.heigvd.gamification.exceptions.UnauthorizedException;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.services.to.interfaces.IRulesTOService;
 import ch.heigvd.gamification.model.Rule;
@@ -36,13 +37,14 @@ public class RulesTOService implements IRulesTOService {
    * @param state
    * @param application
    * @throws EntityNotFoundException if the action does not exists
+   * @throws UnauthorizedException action does not belong to application
    */
   @Override
-  public void updateRuleEntity(Rule existing, RuleTO state, Application application) throws EntityNotFoundException {
+  public void updateRuleEntity(Rule existing, RuleTO state, Application application) throws EntityNotFoundException, UnauthorizedException {
     existing.setName(state.getName());
     existing.setDescription(state.getDescription());
     existing.setGoalPoints(state.getGoalPoints());
-    existing.setAction(actionsManager.findById(state.getActionID()));
+    existing.setAction(actionsManager.findById(state.getActionID(), application));
     existing.setApplication(application);
   }
 }

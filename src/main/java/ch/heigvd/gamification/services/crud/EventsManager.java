@@ -9,6 +9,7 @@ import ch.heigvd.gamification.model.Success;
 import ch.heigvd.gamification.services.crud.interfaces.local.IAppUsersManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.local.IEventsManagerLocal;
 import ch.heigvd.gamification.services.crud.interfaces.remote.IEventsManagerRemote;
+import java.security.InvalidParameterException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -33,31 +34,35 @@ public class EventsManager implements IEventsManagerLocal, IEventsManagerRemote 
   private IAppUsersManagerLocal usersManager;
 
   @Override
-  public long create(Event eventData) throws EntityNotFoundException {
-    Event event = new Event(eventData);
-    em.persist(event);
-    AppUser user = event.getUser();
-    user.addEvent(event);
+  public long create(Event event) throws EntityNotFoundException, UnauthorizedException {
+    if ( event.getApplication() == null ) { //Check if application setted
+      throw new InvalidParameterException("Cannot save an event without application");
+    }
+    Event newEvent = new Event(event);
+    em.persist(newEvent);
+    AppUser user = newEvent.getUser();
+    user.addEvent(newEvent);
     //Add new success if needed
-    for (Success success : usersManager.checkForNewSuccesses(event.getUser())) {
+    for (Success success : usersManager.checkForNewSuccesses(newEvent.getUser())) {
       user.addSuccess(success);
     }
-    usersManager.update(user);
+    usersManager.update(user, newEvent.getApplication());
     return event.getId();
   }
 
   @Override
-  public void delete(long id) throws EntityNotFoundException {
-    em.remove(findById(id));
+  public void delete(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    em.remove(findById(id, application));
   }
 
   @Override
-  public Event findById(long id) throws EntityNotFoundException {
-    Event findEvent = em.find(Event.class, id);
-    if (findEvent == null) {
+  public Event findById(long id, Application application) throws EntityNotFoundException, UnauthorizedException {
+    Event event = em.find(Event.class, id);
+    if (event == null) {
       throw new EntityNotFoundException("Cannot find Event with id " + id);
     }
-    return findEvent;
+    checkRights(event, application);
+    return event;
   }
 
   @Override
@@ -68,8 +73,8 @@ public class EventsManager implements IEventsManagerLocal, IEventsManagerRemote 
   }
 
   @Override
-  public void checkRights(long id, Application app) throws EntityNotFoundException, UnauthorizedException {
-    if (!findById(id).getApplication().equals(app)) {
+  public void checkRights(Event event, Application app) throws UnauthorizedException {
+    if (event.getApplication() == null || !event.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }
