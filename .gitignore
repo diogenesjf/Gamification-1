@@ -1,2 +1,11 @@
 /target/
 Thumbs.db
+/GamificationClient/target/
+/GamificationAPI/target/
+/GamificationLib/target/
+/GamificationClientEE/target/
+/GamificationClientJE/build/
+/GamificationClientJE/dist/
+/GamificationClientJE/nbproject/private/
+/GamificationClientJS/nbproject/private/
+/GamificationClientJS/build/
