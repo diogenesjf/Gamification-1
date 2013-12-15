@@ -13,14 +13,20 @@ import javax.ws.rs.core.Response;
  */
 @Remote
 public interface IAppActionsResource {
-  
-  public Response createAction(AppActionTO actionTO, long idApp) throws EntityNotFoundException;
-  
-  public List<AppActionTO> getActions(long idApp) throws EntityNotFoundException;
-  
-  public AppActionTO getAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public Response updateAction(AppActionTO actionTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public Response deleteAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public long createAction(AppActionTO actionTO, long idApp) throws EntityNotFoundException;
+    
+    public void updateAction(AppActionTO actionTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+    
+    public void deleteAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restCreateAction(AppActionTO actionTO, long idApp) throws EntityNotFoundException;
+
+    public List<AppActionTO> getActions(long idApp) throws EntityNotFoundException;
+
+    public AppActionTO getAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restUpdateAction(AppActionTO actionTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restDeleteAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 }

@@ -16,18 +16,24 @@ import javax.ws.rs.core.Response;
  */
 @Remote
 public interface IAppUsersResource {
-  
-  public List<AppUserPublicTO> getAllUsers(long idApp) throws EntityNotFoundException;
-  
-  public Response createUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
-  
-  public AppUserPublicTO getUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public Response updateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public Response deleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public List<SuccessTO> getUserSuccesses(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public List<EventPublicTO> getUserEvents(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public long createUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
+    
+    public void updateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public void deleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public List<AppUserPublicTO> getAllUsers(long idApp) throws EntityNotFoundException;
+
+    public Response restCreateUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
+
+    public AppUserPublicTO getUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restUpdateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restDeleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public List<SuccessTO> getUserSuccesses(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public List<EventPublicTO> getUserEvents(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 }

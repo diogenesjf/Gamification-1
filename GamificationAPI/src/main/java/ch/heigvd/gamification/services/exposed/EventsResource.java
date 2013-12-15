@@ -35,72 +35,78 @@ import javax.ws.rs.core.UriInfo;
 @Path("events")
 public class EventsResource implements IEventsResource {
 
-  @Context
-  private UriInfo context;
-  
-  @EJB
-  private IEventsManager eventsManager;
+    @Context
+    private UriInfo context;
 
-  @EJB
-  private IEventsTOService eventsTOService;
-  
-  @EJB
-  private IApplicationsManager appManager;
+    @EJB
+    private IEventsManager eventsManager;
 
-  /**
-   * Get the list of the events that occurred in the current application.
-   *
-   * @param idApp id of the application
-   * @return List<EventPublicTO> a list of EventPublicTO
-   * @throws EntityNotFoundException application does not exists
-   */
-  @GET
-  @Produces({MediaType.APPLICATION_JSON})
-  @Override
-  public List<EventPublicTO> getEvents(@HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException {
-    List<EventPublicTO> events = new LinkedList<>();
-    for (Event e : eventsManager.findAll(appManager.findById(idApp))) {
-      events.add(eventsTOService.buildPublicEventTO(e));
+    @EJB
+    private IEventsTOService eventsTOService;
+
+    @EJB
+    private IApplicationsManager appManager;
+
+    /**
+     * Get the list of the events that occurred in the current application.
+     *
+     * @param idApp id of the application
+     * @return List<EventPublicTO> a list of EventPublicTO
+     * @throws EntityNotFoundException application does not exists
+     */
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Override
+    public List<EventPublicTO> getEvents(@HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException {
+        List<EventPublicTO> events = new LinkedList<>();
+        for (Event e : eventsManager.findAll(appManager.findById(idApp))) {
+            events.add(eventsTOService.buildPublicEventTO(e));
+        }
+        return events;
     }
-    return events;
-  }
 
-  /**
-   * Add an event to the application by passing his representation.
-   *
-   * @param newEventTO new event representation
-   * @param idApp id of the application
-   * @return Response HTTP Code 201 Created
-   * @throws EntityNotFoundException application does not exists
-   * @throws UnauthorizedException event's user does not belong application
-   */
-  @POST
-  @Consumes({MediaType.APPLICATION_JSON})
-  @Override
-  public Response createEvent(EventTO newEventTO, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
-    Event newEvent = new Event();
-    eventsTOService.updateEventEntity(newEvent, newEventTO, appManager.findById(idApp));
-    return Response.created(
-            context.getAbsolutePathBuilder().path(Long.toString(
-                            eventsManager.create(newEvent)
-                    )).build()
-    ).build();
-  }
+    /**
+     * Add an event to the application by passing his representation.
+     *
+     * @param newEventTO new event representation
+     * @param idApp id of the application
+     * @return Response HTTP Code 201 Created
+     * @throws EntityNotFoundException application does not exists
+     * @throws UnauthorizedException event's user does not belong application
+     */
+    @POST
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Override
+    public Response restCreateEvent(EventTO newEventTO, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
+        return Response.created(
+                context.getAbsolutePathBuilder().path(Long.toString(
+                                createEvent(newEventTO, idApp)
+                        )).build()
+        ).build();
+    }
 
-  /**
-   * Get the informations of an event.
-   *
-   * @param id unique id of the event
-   * @param idApp id of the application
-   * @return EventPublicTO the event representation
-   * @throws EntityNotFoundException the event or application does not exists
-   * @throws UnauthorizedException the event does not belong current application
-   */
-  @GET
-  @Path("{id}")
-  @Produces({MediaType.APPLICATION_JSON})
-  @Override
-  public EventPublicTO getEventById(@PathParam("id") long id, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
-    return eventsTOService.buildPublicEventTO(eventsManager.findById(id, appManager.findById(idApp)));
-  }
+    @Override
+    public long createEvent(EventTO newEventTO, long idApp) throws EntityNotFoundException, UnauthorizedException {
+        Event newEvent = new Event();
+        eventsTOService.updateEventEntity(newEvent, newEventTO, appManager.findById(idApp));
+        return eventsManager.create(newEvent);
+    }
+    
+    /**
+     * Get the informations of an event.
+     *
+     * @param id unique id of the event
+     * @param idApp id of the application
+     * @return EventPublicTO the event representation
+     * @throws EntityNotFoundException the event or application does not exists
+     * @throws UnauthorizedException the event does not belong current
+     * application
+     */
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Override
+    public EventPublicTO getEventById(@PathParam("id") long id, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
+        return eventsTOService.buildPublicEventTO(eventsManager.findById(id, appManager.findById(idApp)));
+    }
 }

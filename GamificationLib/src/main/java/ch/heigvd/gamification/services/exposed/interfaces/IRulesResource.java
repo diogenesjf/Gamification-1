@@ -13,14 +13,20 @@ import javax.ws.rs.core.Response;
  */
 @Remote
 public interface IRulesResource {
-  
-  public Response createRule(RuleTO ruleTO, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public List<RuleTO> getAllRules(long idApp) throws EntityNotFoundException;
-  
-  public RuleTO getRule(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public Response updateRule(RuleTO ruleTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public Response deleteRule(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public long createRule(RuleTO ruleTO, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public void updateRule(RuleTO ruleTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public void deleteRule(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+    
+    public Response restCreateRule(RuleTO ruleTO, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public List<RuleTO> getAllRules(long idApp) throws EntityNotFoundException;
+
+    public RuleTO getRule(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restUpdateRule(RuleTO ruleTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restDeleteRule(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 }

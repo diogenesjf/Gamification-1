@@ -14,10 +14,12 @@ import javax.ws.rs.core.Response;
  */
 @Remote
 public interface IEventsResource {
-  
-  public List<EventPublicTO> getEvents(long idApp) throws EntityNotFoundException;
-  
-  public Response createEvent(EventTO newEventTO, long idApp) throws EntityNotFoundException, UnauthorizedException;
-  
-  public EventPublicTO getEventById(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public long createEvent(EventTO newEventTO, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public List<EventPublicTO> getEvents(long idApp) throws EntityNotFoundException;
+
+    public Response restCreateEvent(EventTO newEventTO, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public EventPublicTO getEventById(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 }
