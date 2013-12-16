@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class RuleTO implements Serializable {
 
-  private long ruleId;
+  private long id;
 
   private String name;
 
@@ -22,7 +22,7 @@ public class RuleTO implements Serializable {
   }
 
   public RuleTO(long ruleId, String name, String description, int goalPoints, long actionID) {
-    this.ruleId = ruleId;
+    this.id = ruleId;
     this.name = name;
     this.description = description;
     this.goalPoints = goalPoints;
@@ -30,11 +30,11 @@ public class RuleTO implements Serializable {
   }
 
   public long getId() {
-    return ruleId;
+    return id;
   }
 
   public void setId(long ruleId) {
-    this.ruleId = ruleId;
+    this.id = ruleId;
   }
 
   public String getName() {

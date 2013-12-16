@@ -14,7 +14,7 @@ import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.services.to.interfaces.ISuccessesTOService;
 import ch.heigvd.gamification.to.AppUserPublicTO;
 import ch.heigvd.gamification.to.AppUserTO;
-import ch.heigvd.gamification.to.EventPublicTO;
+import ch.heigvd.gamification.to.EventTO;
 import ch.heigvd.gamification.to.SuccessTO;
 import java.util.LinkedList;
 import java.util.List;
@@ -212,11 +212,11 @@ public class AppUsersResource implements IAppUsersResource {
     @Path("{id}/events")
     @Produces({MediaType.APPLICATION_JSON})
     @Override
-    public List<EventPublicTO> getUserEvents(@PathParam("id") long id, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
+    public List<EventTO> getUserEvents(@PathParam("id") long id, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
         //If we want another order, use a parametrized NamedQuery
-        List<EventPublicTO> eventsTO = new LinkedList<>();
+        List<EventTO> eventsTO = new LinkedList<>();
         for (Event event : usersManager.findById(id, appManager.findById(idApp)).getEvents()) {
-            eventsTO.add(eventsTOService.buildPublicEventTO(event));
+            eventsTO.add(eventsTOService.buildEventTO(event));
         }
         return eventsTO;
     }

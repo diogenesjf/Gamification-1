@@ -9,7 +9,6 @@ import ch.heigvd.gamification.model.Event;
 import ch.heigvd.gamification.services.crud.interfaces.IAppActionsManager;
 import ch.heigvd.gamification.services.crud.interfaces.IAppUsersManager;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
-import ch.heigvd.gamification.to.EventPublicTO;
 import ch.heigvd.gamification.to.EventTO;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -33,19 +32,6 @@ public class EventsTOService implements IEventsTOService {
             event.getUser().getId(),
             event.getActionType().getId(),
             event.getTimestamp()
-    );
-  }
-
-  @Override
-  public EventPublicTO buildPublicEventTO(Event event) {
-    AppUser u = event.getUser();
-    AppAction at = event.getActionType();
-    return new EventPublicTO(
-        event.getId(),
-        u.getName() + " " + u.getSurname() + " (" + u.getNickname() + ")",
-        at.getDescription(),
-        event.getTimestamp(),
-        at.getPoints()
     );
   }
 

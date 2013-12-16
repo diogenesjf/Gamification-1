@@ -26,20 +26,20 @@ public interface ISuccessesResource {
     public void linkRuletoSuccess(GenericOnlyIDTO to, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
     public void unlinkRuleFromSuccess(long id, long idRule, long idApp) throws EntityNotFoundException, UnauthorizedException;
-    
-    public Response restCreateSuccess(SuccessTO successTO, long idApp) throws EntityNotFoundException;
 
     public List<SuccessTO> getSuccesses(long idApp) throws EntityNotFoundException;
 
     public SuccessTO getSuccess(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public Response restUpdateSuccess(SuccessTO successTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-
-    public Response restDeleteSuccess(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-
     public List<RuleTO> getSuccessRules(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
     public List<AppUserPublicTO> getSuccessUsers(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+    
+    public Response restCreateSuccess(SuccessTO successTO, long idApp) throws EntityNotFoundException;
+
+    public Response restUpdateSuccess(SuccessTO successTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+    public Response restDeleteSuccess(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
     public Response restLinkRuletoSuccess(GenericOnlyIDTO to, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 

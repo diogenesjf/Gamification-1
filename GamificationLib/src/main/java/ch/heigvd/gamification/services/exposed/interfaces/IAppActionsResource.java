@@ -20,11 +20,11 @@ public interface IAppActionsResource {
     
     public void deleteAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public Response restCreateAction(AppActionTO actionTO, long idApp) throws EntityNotFoundException;
-
     public List<AppActionTO> getActions(long idApp) throws EntityNotFoundException;
 
     public AppActionTO getAction(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+    
+    public Response restCreateAction(AppActionTO actionTO, long idApp) throws EntityNotFoundException;
 
     public Response restUpdateAction(AppActionTO actionTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 

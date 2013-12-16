@@ -7,7 +7,7 @@ import ch.heigvd.gamification.services.crud.interfaces.IApplicationsManager;
 import ch.heigvd.gamification.services.crud.interfaces.IEventsManager;
 import ch.heigvd.gamification.services.exposed.interfaces.IEventsResource;
 import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
-import ch.heigvd.gamification.to.EventPublicTO;
+import ch.heigvd.gamification.to.EventTO;
 import ch.heigvd.gamification.to.EventTO;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,16 +51,16 @@ public class EventsResource implements IEventsResource {
      * Get the list of the events that occurred in the current application.
      *
      * @param idApp id of the application
-     * @return List<EventPublicTO> a list of EventPublicTO
+     * @return List<EventTO> a list of EventPublicTO
      * @throws EntityNotFoundException application does not exists
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     @Override
-    public List<EventPublicTO> getEvents(@HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException {
-        List<EventPublicTO> events = new LinkedList<>();
+    public List<EventTO> getEvents(@HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException {
+        List<EventTO> events = new LinkedList<>();
         for (Event e : eventsManager.findAll(appManager.findById(idApp))) {
-            events.add(eventsTOService.buildPublicEventTO(e));
+            events.add(eventsTOService.buildEventTO(e));
         }
         return events;
     }
@@ -97,7 +97,7 @@ public class EventsResource implements IEventsResource {
      *
      * @param id unique id of the event
      * @param idApp id of the application
-     * @return EventPublicTO the event representation
+     * @return EventTO the event representation
      * @throws EntityNotFoundException the event or application does not exists
      * @throws UnauthorizedException the event does not belong current
      * application
@@ -106,7 +106,7 @@ public class EventsResource implements IEventsResource {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Override
-    public EventPublicTO getEventById(@PathParam("id") long id, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
-        return eventsTOService.buildPublicEventTO(eventsManager.findById(id, appManager.findById(idApp)));
+    public EventTO getEvent(@PathParam("id") long id, @HeaderParam(value = RESTAPI.APP) long idApp) throws EntityNotFoundException, UnauthorizedException {
+        return eventsTOService.buildEventTO(eventsManager.findById(id, appManager.findById(idApp)));
     }
 }
