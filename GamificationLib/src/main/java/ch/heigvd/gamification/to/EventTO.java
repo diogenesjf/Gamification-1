@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class EventTO implements Serializable {
 
+  private long id;
+  
   private long userId;
 
   private long actionId;
@@ -17,12 +19,20 @@ public class EventTO implements Serializable {
   public EventTO() {
   }
 
-  public EventTO(long userId, long actionId, long timestamp) {
+  public EventTO(long id, long userId, long actionId, long timestamp) {
+    this.id = id;
     this.userId = userId;
     this.actionId = actionId;
     this.timestamp = timestamp;
   }
 
+  public long getId() {
+      return id;
+  }
+  
+  public void setId(long id) {
+      this.id = id;
+  }
   public long getUserId() {
     return userId;
   }

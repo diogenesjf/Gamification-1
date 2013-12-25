@@ -31,6 +31,7 @@ public class EventsTOService implements IEventsTOService {
   @Override
   public EventTO buildEventTO(Event event) {
     return new EventTO(
+            event.getId(),
             event.getUser().getId(),
             event.getActionType().getId(),
             event.getTimestamp()

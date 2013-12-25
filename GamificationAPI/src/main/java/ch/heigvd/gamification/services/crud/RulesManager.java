@@ -70,7 +70,7 @@ public class RulesManager implements IRulesManager {
   
   @Override
   public void checkRights(Rule rule, Application app) throws UnauthorizedException {
-    if (rule.getApplication() == null ||!rule.getApplication().equals(app)) {
+    if (rule.getApplication() == null || !rule.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }
