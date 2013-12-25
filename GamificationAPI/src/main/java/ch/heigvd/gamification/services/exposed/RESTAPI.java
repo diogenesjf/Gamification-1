@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  * 
  * @author Alexandre Perusset
  */
-@ApplicationPath("/")
+@ApplicationPath("GamificationAPI")
 public class RESTAPI extends Application {
 
   public static final String APP = "appid";

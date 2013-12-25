@@ -12,6 +12,8 @@ import ch.heigvd.gamification.services.to.interfaces.IEventsTOService;
 import ch.heigvd.gamification.to.EventTO;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -37,8 +39,17 @@ public class EventsTOService implements IEventsTOService {
 
   @Override
   public void updateEventEntity(Event existing, EventTO state, Application application) throws EntityNotFoundException, UnauthorizedException {
-    existing.setUser(usersManager.findById(state.getUserId(), application));
-    existing.setActionType(actionTypesManager.findById(state.getActionId(), application));
+    try
+    {
+        existing.setUser(usersManager.findById(state.getUserId(), application));
+        existing.setActionType(actionTypesManager.findById(state.getActionId(), application));
+    }
+    catch(UnauthorizedException e)
+    {
+        e.printStackTrace();
+        throw e;
+    }
+    
     existing.setTimestamp(state.getTimestamp());
     existing.setApplication(application);
   }

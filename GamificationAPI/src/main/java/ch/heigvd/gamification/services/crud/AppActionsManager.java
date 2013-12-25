@@ -61,7 +61,7 @@ public class AppActionsManager implements IAppActionsManager {
 
   @Override
   public void checkRights(AppAction action, Application app) throws UnauthorizedException {
-    if (action.getApplication() == null || action.getApplication().equals(app)) {
+    if (action.getApplication() == null || !action.getApplication().equals(app)) {
       throw new UnauthorizedException();
     }
   }

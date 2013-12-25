@@ -42,7 +42,7 @@ public class EventsManager implements IEventsManager {
       user.addSuccess(success);
     }
     usersManager.update(user, newEvent.getApplication());
-    return event.getId();
+    return newEvent.getId();
   }
 
   @Override
