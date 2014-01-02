@@ -10,6 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
+ * This class represent an event. An event occurend when a user do an action.
  *
  * @author Alexandre Perusset
  */
@@ -100,7 +101,7 @@ public class Event implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Event) || this.id == -1) {
+    if (!(object instanceof Event) || this.id == null) {
       return false;
     }
     Event other = (Event) object;

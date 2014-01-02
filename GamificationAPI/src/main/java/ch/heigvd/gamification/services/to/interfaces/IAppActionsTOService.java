@@ -6,6 +6,8 @@ import ch.heigvd.gamification.to.AppActionTO;
 import javax.ejb.Local;
 
 /**
+ * This interface provides methods for converting actions to transfert object or
+ * update actions from transfert object.
  *
  * @author Gaël Jobin
  */

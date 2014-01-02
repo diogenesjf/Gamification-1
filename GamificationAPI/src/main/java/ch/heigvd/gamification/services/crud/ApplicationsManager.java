@@ -9,7 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Implementation of the application manager interface.
  *
+ * @see IApplicationsManager
  * @author Gaël Jobin
  */
 @Stateless

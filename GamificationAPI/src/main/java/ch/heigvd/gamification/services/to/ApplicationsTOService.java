@@ -6,7 +6,9 @@ import ch.heigvd.gamification.to.ApplicationTO;
 import javax.ejb.Stateless;
 
 /**
+ * Implementation of the application transfert object management interface.
  *
+ * @see IApplicationsTOService
  * @author Thomas Moegli
  */
 @Stateless

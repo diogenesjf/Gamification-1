@@ -8,13 +8,15 @@ import ch.heigvd.gamification.to.EventTO;
 import javax.ejb.Local;
 
 /**
+ * This interface provides methods for converting events to transfert object or
+ * update events from transfert object.
  *
  * @author Alexandre Perusset
  */
 @Local
 public interface IEventsTOService {
-  
+
   public EventTO buildEventTO(Event event);
-  
+
   public void updateEventEntity(Event existingEntitiy, EventTO newState, Application application) throws EntityNotFoundException, UnauthorizedException;
 }

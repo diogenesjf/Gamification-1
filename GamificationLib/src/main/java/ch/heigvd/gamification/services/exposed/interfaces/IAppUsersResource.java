@@ -11,29 +11,31 @@ import javax.ejb.Remote;
 import javax.ws.rs.core.Response;
 
 /**
+ * Interface for user management. The methods inside can be called remotly or
+ * with jax-rs rest api.
  *
  * @author Alexandre Perusset
  */
 @Remote
 public interface IAppUsersResource {
 
-    public long createUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
-    
-    public void updateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+  public long createUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
 
-    public void deleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+  public void updateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public List<AppUserPublicTO> getAllUsers(long idApp) throws EntityNotFoundException;
+  public void deleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public AppUserPublicTO getUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+  public List<AppUserPublicTO> getAllUsers(long idApp) throws EntityNotFoundException;
 
-    public List<SuccessTO> getUserSuccesses(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+  public AppUserPublicTO getUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public List<EventTO> getUserEvents(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
-    
-    public Response restCreateUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
+  public List<SuccessTO> getUserSuccesses(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public Response restUpdateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+  public List<EventTO> getUserEvents(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 
-    public Response restDeleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+  public Response restCreateUser(AppUserTO userTO, long idApp) throws EntityNotFoundException;
+
+  public Response restUpdateUser(AppUserTO userTO, long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
+
+  public Response restDeleteUser(long id, long idApp) throws EntityNotFoundException, UnauthorizedException;
 }

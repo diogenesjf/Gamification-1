@@ -112,7 +112,7 @@ public class AppAction implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof AppAction) || this.id == -1) {
+    if (!(object instanceof AppAction) || this.id == null) {
       return false;
     }
     AppAction other = (AppAction) object;

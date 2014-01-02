@@ -149,7 +149,7 @@ public class AppUser implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof AppUser) || this.id == -1) {
+    if (!(object instanceof AppUser) || this.id == null) {
       return false;
     }
     AppUser other = (AppUser)object;

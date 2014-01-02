@@ -5,6 +5,8 @@ import ch.heigvd.gamification.to.ApplicationTO;
 import javax.ejb.Local;
 
 /**
+ * This interface provides methods for converting applications to transfert
+ * object or update applications from transfert object.
  *
  * @author Thomas Moegli
  */

@@ -10,7 +10,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
- *
+ * This class represent a rule.
+ * 
  * @author Gaël Jobin
  */
 @NamedQueries({
@@ -112,7 +113,7 @@ public class Rule implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Rule) || this.id == -1) {
+    if (!(object instanceof Rule) || this.id == null) {
       return false;
     }
     Rule other = (Rule)object;

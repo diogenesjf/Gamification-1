@@ -3,6 +3,8 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Success transfert object. This class is used to transfer to the api user,
+ * create or update successes remotly or via jax-rs api.
  *
  * @author Alexandre Perusset
  */
@@ -13,7 +15,7 @@ public class SuccessTO implements Serializable {
   private String name;
 
   private String badge;
-  
+
   public SuccessTO() {
   }
 

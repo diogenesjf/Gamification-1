@@ -11,7 +11,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
+ * Implementation of the rule transfert object management interface.
  *
+ * @see IRulesTOService
  * @author Gaël Jobin
  */
 @Stateless

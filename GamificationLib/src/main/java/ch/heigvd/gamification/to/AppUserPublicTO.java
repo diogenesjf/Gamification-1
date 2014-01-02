@@ -3,6 +3,8 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Public user transfert object. This class is used to transfert users to the
+ * api user remotly or via jax-rs api.
  *
  * @author Alexandre Perusset
  */

@@ -13,7 +13,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
- *
+ * This class represent an application.
+ * 
  * @author Thomas Moegli
  */
 @NamedQueries({
@@ -31,6 +32,7 @@ public class Application implements Serializable {
 
   private String name;
 
+  //Load the objects only on demand
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "application")
   private final List<Rule> rules;
 
@@ -127,7 +129,7 @@ public class Application implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Application) || this.id == -1) {
+    if (!(object instanceof Application) || this.id == null) {
       return false;
     }
     Application other = (Application)object;

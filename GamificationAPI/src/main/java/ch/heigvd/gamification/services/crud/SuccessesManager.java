@@ -12,7 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Implementation of the successes manager interface.
  *
+ * @see ISuccessesManager
  * @author Alexandre Perusset
  */
 @Stateless
@@ -23,7 +25,7 @@ public class SuccessesManager implements ISuccessesManager {
 
   @Override
   public long create(Success success) {
-    if ( success.getApplication() == null ) { //Check if application setted
+    if (success.getApplication() == null) { //Check if application setted
       throw new InvalidParameterException("Cannot save a success without application");
     }
     Success newSuccess = new Success(success);

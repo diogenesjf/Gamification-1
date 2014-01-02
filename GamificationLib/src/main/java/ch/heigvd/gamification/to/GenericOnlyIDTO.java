@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * This is a generic TO when you want to pass through JSON a simple ID and not
- * the whole representation
+ * the whole representation.
  *
  * @author Gaël Jobin
  */

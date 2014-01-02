@@ -9,6 +9,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
+ * This interface provides method to create, update, delete and get rules. It is
+ * also possible de get all rules linked to a given action.
  *
  * @author Gaël Jobin
  */

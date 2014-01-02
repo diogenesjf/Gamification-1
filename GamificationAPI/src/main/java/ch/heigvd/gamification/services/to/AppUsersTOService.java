@@ -9,7 +9,9 @@ import ch.heigvd.gamification.to.AppUserTO;
 import ch.heigvd.gamification.to.RankedAppUserTO;
 
 /**
+ * Implementation of the user transfert object management interface.
  *
+ * @see IAppUsersTOService
  * @author Alexandre Perusset
  */
 @Stateless

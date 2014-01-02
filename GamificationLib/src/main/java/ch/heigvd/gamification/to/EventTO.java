@@ -3,13 +3,16 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Event transfert object. This class is used to transfer to the api user or
+ * create events remotly or via jax-rs api. It is not possible to update an
+ * existing event.
  *
  * @author Alexandre Perusset
  */
 public class EventTO implements Serializable {
 
   private long id;
-  
+
   private long userId;
 
   private long actionId;
@@ -27,12 +30,13 @@ public class EventTO implements Serializable {
   }
 
   public long getId() {
-      return id;
+    return id;
   }
-  
+
   public void setId(long id) {
-      this.id = id;
+    this.id = id;
   }
+
   public long getUserId() {
     return userId;
   }

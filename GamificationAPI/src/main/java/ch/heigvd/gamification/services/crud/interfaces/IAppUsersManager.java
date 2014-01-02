@@ -9,6 +9,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
+ * This interface provides method to create, update, delete and get users. It is
+ * also possible to get the user successes or check if user has obtained new
+ * successes.
  *
  * @author Alexandre perusset
  */

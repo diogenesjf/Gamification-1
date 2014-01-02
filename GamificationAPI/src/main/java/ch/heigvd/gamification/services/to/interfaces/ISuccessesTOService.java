@@ -6,6 +6,8 @@ import ch.heigvd.gamification.to.SuccessTO;
 import javax.ejb.Local;
 
 /**
+ * This interface provides methods for converting successes to transfert object
+ * or update successes from transfert object.
  *
  * @author Alexandre Perusset
  */

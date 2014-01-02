@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
+ * This class represent a success.
  *
  * @author Alexandre Perusset
  */
@@ -100,7 +101,7 @@ public class Success implements Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Success) || this.id == -1) {
+    if (!(object instanceof Success) || this.id == null) {
       return false;
     }
     Success other = (Success) object;

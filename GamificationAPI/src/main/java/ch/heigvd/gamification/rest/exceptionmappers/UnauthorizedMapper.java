@@ -17,5 +17,4 @@ public class UnauthorizedMapper implements ExceptionMapper<UnauthorizedException
   public Response toResponse(UnauthorizedException exception) {
     return Response.status(Response.Status.UNAUTHORIZED).build();
   }
-
 }

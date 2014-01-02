@@ -7,7 +7,9 @@ import ch.heigvd.gamification.to.AppActionTO;
 import javax.ejb.Stateless;
 
 /**
+ * Implementation of the action transfert object management interface.
  *
+ * @see IAppActionsTOService
  * @author Gaël Jobin
  */
 @Stateless

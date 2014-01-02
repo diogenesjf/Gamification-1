@@ -12,7 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Implementation of the actions manager interface.
  *
+ * @see IAppActionsManager
  * @author Gaël Jobin
  */
 @Stateless
@@ -23,7 +25,7 @@ public class AppActionsManager implements IAppActionsManager {
 
   @Override
   public long create(AppAction action) {
-    if ( action.getApplication() == null ) { //Check if application setted
+    if (action.getApplication() == null) { //Check if application setted
       throw new InvalidParameterException("Cannot save an AppAction without application");
     }
     AppAction newAction = new AppAction(action);

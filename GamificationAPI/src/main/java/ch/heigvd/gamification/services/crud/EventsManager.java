@@ -16,7 +16,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Implementation of the events manager interface.
  *
+ * @see IEventsManager
  * @author Alexandre Perusset
  */
 @Stateless
@@ -30,7 +32,7 @@ public class EventsManager implements IEventsManager {
 
   @Override
   public long create(Event event) throws EntityNotFoundException, UnauthorizedException {
-    if ( event.getApplication() == null ) { //Check if application setted
+    if (event.getApplication() == null) { //Check if application setted
       throw new InvalidParameterException("Cannot save an event without application");
     }
     Event newEvent = new Event(event);

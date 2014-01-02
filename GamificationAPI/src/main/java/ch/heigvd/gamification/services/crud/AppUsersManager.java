@@ -19,7 +19,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Implementation of the users manager interface.
  *
+ * @see IAppUsersManager
  * @author Alexandre Perusset
  */
 @Stateless
@@ -30,13 +32,13 @@ public class AppUsersManager implements IAppUsersManager {
 
   @EJB
   private ISuccessesManager successesManager;
-  
+
   @EJB
   private IRulesManager rulesManager;
 
   @Override
   public long create(AppUser user) {
-    if ( user.getApplication() == null ) { //Check if application setted
+    if (user.getApplication() == null) { //Check if application setted
       throw new InvalidParameterException("Cannot save an AppUser without application");
     }
     AppUser newUser = new AppUser(user);

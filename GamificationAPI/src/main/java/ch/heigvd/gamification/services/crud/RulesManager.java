@@ -13,8 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Implementation of the rules manager interface.
  *
- *
+ * @see IRulesManager
  * @author Gaël Jobin
  */
 @Stateless
@@ -25,7 +26,7 @@ public class RulesManager implements IRulesManager {
 
   @Override
   public long create(Rule rule) {
-    if ( rule.getApplication() == null ) { //Check if application setted
+    if (rule.getApplication() == null) { //Check if application setted
       throw new InvalidParameterException("Cannot save a rule without application");
     }
     Rule newRule = new Rule(rule);
@@ -60,14 +61,14 @@ public class RulesManager implements IRulesManager {
             .setParameter("appid", application.getId())
             .getResultList();
   }
-  
+
   @Override
   public List<Rule> findAllForAction(AppAction action) {
     return em.createNamedQuery("findAllRulesForAction")
             .setParameter("actionid", action.getId())
             .getResultList();
   }
-  
+
   @Override
   public void checkRights(Rule rule, Application app) throws UnauthorizedException {
     if (rule.getApplication() == null || !rule.getApplication().equals(app)) {

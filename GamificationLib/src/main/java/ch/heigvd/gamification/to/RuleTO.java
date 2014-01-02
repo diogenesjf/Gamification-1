@@ -3,6 +3,8 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Rule transfert object. This class is used to transfer to the api user, create
+ * or update rules remotly or via jax-rs api.
  *
  * @author Gaël Jobin
  */

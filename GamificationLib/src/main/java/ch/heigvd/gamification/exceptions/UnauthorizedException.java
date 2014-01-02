@@ -3,8 +3,10 @@ package ch.heigvd.gamification.exceptions;
 import javax.ejb.ApplicationException;
 
 /**
+ * Exception thrown when trying to access an entity of another application thant
+ * the current application (id of the application is passed as an http header).
  *
- * @author Olivier Liechti
+ * @author Alexandre Perusset
  */
 @ApplicationException(rollback = true)
 public class UnauthorizedException extends Exception {
@@ -15,5 +17,4 @@ public class UnauthorizedException extends Exception {
   public UnauthorizedException(String message) {
     super(message);
   }
-
 }

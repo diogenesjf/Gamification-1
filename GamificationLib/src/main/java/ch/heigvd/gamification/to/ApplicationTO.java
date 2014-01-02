@@ -3,6 +3,8 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Application transfert object. This class is used to transfer to the api user,
+ * create or update applications remotly or via jax-rs api.
  *
  * @author Thomas Moegli
  */

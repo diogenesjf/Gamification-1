@@ -8,6 +8,8 @@ import ch.heigvd.gamification.to.RuleTO;
 import javax.ejb.Local;
 
 /**
+ * This interface provides methods for converting rules to transfert object or
+ * update rules from transfert object.
  *
  * @author Gaël Jobin
  */

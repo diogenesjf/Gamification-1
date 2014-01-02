@@ -8,6 +8,8 @@ import ch.heigvd.gamification.to.RankedAppUserTO;
 import javax.ejb.Local;
 
 /**
+ * This interface provides methods for converting users to transfert object or
+ * update users from transfert object.
  *
  * @author Alexandre Perusset
  */

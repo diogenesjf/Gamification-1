@@ -3,6 +3,8 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Action transfert object. This class is used to add or update users remotly or
+ * via jax-rs api.
  *
  * @author Alexandre Perusset
  */

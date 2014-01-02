@@ -7,7 +7,9 @@ import ch.heigvd.gamification.to.SuccessTO;
 import javax.ejb.Stateless;
 
 /**
+ * Implementation of the success transfert object management interface.
  *
+ * @see ISuccessesTOService
  * @author Gaël Jobin
  */
 @Stateless

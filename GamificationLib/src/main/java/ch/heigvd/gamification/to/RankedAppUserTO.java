@@ -3,6 +3,10 @@ package ch.heigvd.gamification.to;
 import java.io.Serializable;
 
 /**
+ * Ranked user transfert object. This class is used to transfer to the api user
+ * users remotly or via jax-rs api. The users are ranked, that means the total
+ * number of acquired points is computed. This transfert object is typically
+ * used with the leaderboard.
  *
  * @author Alexandre Perusset
  */

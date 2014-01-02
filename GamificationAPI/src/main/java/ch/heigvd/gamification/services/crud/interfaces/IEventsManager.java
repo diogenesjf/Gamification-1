@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
+ * This interface provides method to create, update, delete and get events.
  *
  * @author Alexandre Perusset
  */
