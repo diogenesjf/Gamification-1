@@ -1,11 +1,13 @@
 --
 Rules Resource
-To manage the rules that will give success to your users.
+To manage the rules that will give success to your users. A rule is linked to one and only one action.
+When the user obtain the number of points defined by the rule for a given action, the rule is completed.
+If all the rules linked to a given success are completed by the user (see success documentation), the user obtain the success.
 
 + **name** (string): The name of the rule.
 + **description** (string): The description of the rule to know what it does.
-+ **acquiredPoints** (integer): The number of points that need to be reached to trig the rule.
-+ **actionTypeId** (integer): The id of an ActionType entity.
++ **goalPoints** (integer): The number of points that need to be acquired with the action to trig the rule.
++ **actionId** (long): The id of an action.
 --
 
 List of your rules.
@@ -13,14 +15,14 @@ GET /rules
 < 200
 < Content-Type: application/json
 [
-  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 3 },
-  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250, "actionTypeId": 4 }
+  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100, "actionId": 3 },
+  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "goalPoints": 250, "actionId": 4 }
 ]
 
 Save a new rule by passing its representation.
 POST /rules
 > Accept: application/json
-{ "name": "Level 3", "description": "This rule describe the requirement for the third level.", "acquiredPoints": 700, "actionTypeId": 4 }
+{ "name": "Level 3", "description": "This rule describe the requirement for the third level.", "goalPoints": 700, "actionId": 4 }
 < 201
 < Location: /rules/3
 
@@ -28,12 +30,12 @@ Get a rule through its id.
 GET /rules/{id}
 < 200
 < Content-Type: application/json
-{ "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 4 }
+{ "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100, "actionId": 4 }
 
 Update a rule through its id and a new representation.
 PUT /rules/{id}
 > Accept: application/json
-{ "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100  }
+{ "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100  }
 < 204
 
 Delete a rule through its id.

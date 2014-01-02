@@ -8,7 +8,7 @@ To manage the users of your application.
 + **password** (string) : User's password (only for PUT and POST).
 --
 
-List of your gamified application users.
+List of your users.
 GET /users
 < 200
 < Content-Type: application/json
@@ -17,31 +17,31 @@ GET /users
     { "id": 2, "name": "Stark", "nickname": "tony.stark", "surname": "Tony" }
 ]
 
-Save a new application user by passing his representation.
+Save a new user by passing his representation.
 POST /users
 > Accept: application/json
 { "name": "doe", "surname": "john", "nickname": "john.doe", "password": "john.doe$6" }
 < 201
 < Location: /users/3
 
-Get an application user through his id.
+Get a user through his id.
 GET /users/{id}
 < 200
 < Content-Type: application/xml
 { "id": 1, "name": "Doe", "nickname": "john.doe", "surname": "John" }
 
-Update an application user with a new representation through its id.
+Update a user with a new representation through its id.
 PUT /users/{id}
 > Accept: application/json
 { "name": "Doe", "surname": "John", "nickname": "john.doe", "password": "john.doe$6" }
 < 204
 
-Delete an application user through his id.
+Delete a user through his id.
 DELETE /users/{id}
 < 204
 
-Get success aquired by an application user.
-GET /users/{id}/success
+Get successes aquired by an user.
+GET /users/{id}/successes
 < 200
 < Content-Type: application/json
 [
@@ -52,8 +52,8 @@ GET /users/{id}/success
 Get events preformed by an application user. They are ordered from newest to oldest.
 GET /users/{id}/events
 < 200
-< Content-Type: application/xml
+< Content-Type: application/json
 [
-    { "id": 2, "timestamp": 2348327219, "user": "John Doe (john.doe)", "description": "Delete a comment from a thread", "points": -100 },
-    { "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }   
+    { "id": 2, "userId": 3, "actionId": 1, "points": -100, "timestamp": 2348327219 },
+    { "id": 1, "userId": 2, "actionId": 1, "points": -100, "timestamp": 1458923839 }   
 ]

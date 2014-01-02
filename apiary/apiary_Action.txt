@@ -1,0 +1,41 @@
+--
+Actions Resources
+To manage the action that can occure in the application.
+
++ **title** (string) : Action's title.
++ **points** (int) : Number of points that an action provide (can be negative).
++ **description** (string) : More complete description of the action.
+--
+
+Get all actions types.
+GET /actions
+< 200
+< Content-Type: application/json
+[
+  { "id": 1, "title": "Add a comment", "points": 100, "description": "Add a comment to a thread" },
+  { "id": 2, "title": "Delete a comment", "points": -100, "description": "Delete a comment from a thread" }
+]
+
+Create an new action type.
+POST /actions
+> Accept: application/json
+{ "title": "New Action", "points": 250, "description": "This is a very funny new Action !" }
+< 201
+< Location: /actions/3
+
+
+Get an action type identified by its id.
+GET /actions/{id}
+< 200
+< Content-Type: application/json
+{ "id": 1, "title": "Add a comment", "points": 100, "description": "Add a comment to a thread" }
+
+Update an action type with a new representation through its id.
+PUT /actions/{id}
+> Accept: application/json
+{ "title": "Modified title", "points": 0, "description": "Modified description" }
+< 204
+
+Delete an action by passing its id.
+DELETE /actions/{id}
+< 204

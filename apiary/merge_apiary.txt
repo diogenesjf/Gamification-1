@@ -1,9 +1,65 @@
---- Gamification API v1 ---
+--- Gamification API v2 ---
 ---
 Welcome to our Gamification API documentation.
 
-Your application id/key/passphrase is passed as an http header.
+This API include a couple of resources, that we can list :
+
++ *Application :* an application is the main resource of the api. Each other resource is linked to an application. This is the first thing you need to create. 
++ *User :* your gamified application can have some users.
++ *Action :* an action defined what an user can do in the application. For exemple, we can define an action as "The user post a comment on a thread". An action give points, and they can be positive or negative.
++ *Event :* an event occured when a user perform an action. An event is symbolized with a user, an action and a unix timestamp (when it occured). An event can be "User A post a comment on a thread at 31.12.2013 midnight".
++ *Rule :* a rule define, for an action, a number of points to acquire (goal points). When the goal points are reached, the rule is completed. For exemple, we can define a rule that say "User have accumulated 1000 points by posting comments on threads".
++ *Success :* a success is composed of a description and a badge (typically, path to an image). A success is linked to one or more rules. When the whole rules of the success are completed by the user, he gets the success definitly (users cannot loose successes).
+
+The whole requests must be preceded by http(s)://url_to_server/GamificationAPI (we do not mention it in documentation to simplify)
+
+Once you have created your application, its id must be passed as an http header for all the forwards requests (user, action, event, rule and success resources). The header must be called 'appid'.
+If you don't give it, the api will say that you can't get the resource you want (http code 403 not authorized). The same http code will be send if you try to get a resource which is not linked with your application (the id of the application you provided).
+
+If you try to get an inexisting resource, you'll get an http error code 404 (not found).
+
+Our API ca be used remotly through JNDI. If you want more documentation about it, go to our github repository :
+https://github.com/aperusset/Gamification
 ---
+
+--
+Applications Resources
+To manage the applications of the Gamification API.
+
++ **name** (string) : Application's name.
+--
+
+List of the Gamification API applications.
+GET /applications
+< 200
+< Content-Type: application/json
+[
+    { "id": 1, "name": "My StackOverflow" },
+    { "id": 2, "name": "Random Application" }
+]
+
+Save a new application by passing his representation.
+POST /applications
+> Accept: application/json
+{ "name": "My Favourite application" }
+< 201
+< Location: /applications/3
+
+Get an application through his id.
+GET /applications/{id}
+< 200
+< Content-Type: application/json
+{ "id": 1, "name": "My StackOverflow" }
+
+Update a user with a new representation through its id.
+PUT /applications/{id}
+> Accept: application/json
+{ "name": "Updated application" }
+< 204
+
+Delete an application user through his id.
+DELETE /applications/{id}
+< 204
 
 -- 
 Users Resources 
@@ -15,7 +71,7 @@ To manage the users of your application.
 + **password** (string) : User's password (only for PUT and POST).
 --
 
-List of your gamified application users.
+List of your users.
 GET /users
 < 200
 < Content-Type: application/json
@@ -24,31 +80,31 @@ GET /users
     { "id": 2, "name": "Stark", "nickname": "tony.stark", "surname": "Tony" }
 ]
 
-Save a new application user by passing his representation.
+Save a new user by passing his representation.
 POST /users
 > Accept: application/json
 { "name": "doe", "surname": "john", "nickname": "john.doe", "password": "john.doe$6" }
 < 201
 < Location: /users/3
 
-Get an application user through his id.
+Get a user through his id.
 GET /users/{id}
 < 200
 < Content-Type: application/xml
 { "id": 1, "name": "Doe", "nickname": "john.doe", "surname": "John" }
 
-Update an application user with a new representation through its id.
+Update a user with a new representation through its id.
 PUT /users/{id}
 > Accept: application/json
 { "name": "Doe", "surname": "John", "nickname": "john.doe", "password": "john.doe$6" }
 < 204
 
-Delete an application user through his id.
+Delete a user through his id.
 DELETE /users/{id}
 < 204
 
-Get success aquired by an application user.
-GET /users/{id}/success
+Get successes aquired by an user.
+GET /users/{id}/successes
 < 200
 < Content-Type: application/json
 [
@@ -59,23 +115,23 @@ GET /users/{id}/success
 Get events preformed by an application user. They are ordered from newest to oldest.
 GET /users/{id}/events
 < 200
-< Content-Type: application/xml
+< Content-Type: application/json
 [
-    { "id": 2, "timestamp": 2348327219, "user": "John Doe (john.doe)", "description": "Delete a comment from a thread", "points": -100 },
-    { "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }   
+    { "id": 2, "userId": 3, "actionId": 1, "points": -100, "timestamp": 2348327219 },
+    { "id": 1, "userId": 2, "actionId": 1, "points": -100, "timestamp": 1458923839 }   
 ]
 
 --
-ActionType Resources
-To manage the action types that can occure in the application.
+Actions Resources
+To manage the action that can occure in the application.
 
-+ **title** (string) : ActionType's title.
++ **title** (string) : Action's title.
 + **points** (int) : Number of points that an action provide (can be negative).
-+ **description** (string) : More complete description of the ActionType.
++ **description** (string) : More complete description of the action.
 --
 
 Get all actions types.
-GET /actionstypes
+GET /actions
 < 200
 < Content-Type: application/json
 [
@@ -84,37 +140,38 @@ GET /actionstypes
 ]
 
 Create an new action type.
-POST /actionstypes
+POST /actions
 > Accept: application/json
-{ "title": "New ActionType", "points": 250, "description": "This is a very funny new ActionType !" }
+{ "title": "New Action", "points": 250, "description": "This is a very funny new Action !" }
 < 201
-< Location: /actiontype/3
+< Location: /actions/3
 
 
 Get an action type identified by its id.
-GET /actionstypes/{id}
+GET /actions/{id}
 < 200
 < Content-Type: application/json
 { "id": 1, "title": "Add a comment", "points": 100, "description": "Add a comment to a thread" }
 
 Update an action type with a new representation through its id.
-PUT /actionstypes/{id}
+PUT /actions/{id}
 > Accept: application/json
 { "title": "Modified title", "points": 0, "description": "Modified description" }
 < 204
 
-Delete an action type by passing its id.
-DELETE /actionstypes/{id}
+Delete an action by passing its id.
+DELETE /actions/{id}
 < 204
 
 -- 
-Event Resources 
-To manage the events that occured when a user do somes action types.
+Events Resources 
+To manage the events that occured when a user do somes actions. An event represent that a user do an action at a given time.
 
-+ **user** (string) : The user that provides the event.
-+ **description** (string) : A description of what happens (in case, the description of the event's action type).
+This is not possible to update or delete an event.
+
++ **userId** (long) : The id of the user that provides the event.
++ **actionId** (long) : The id of the action the user provides.
 + **timestamp** (long) : Unix timestamp, when the event occured.
-+ **points** (integer) : How many points provided the event (in case, the points of the event's action type).
 --
 
 Get all the events that occured in the application. They are ordered form newest to oldest.
@@ -122,16 +179,16 @@ GET /events
 < 200
 < Content-Type: application/json
 [
-    { "id": 3, "timestamp": 3243121234, "user": "Tony Stark (tony.stark)", "description": "Add a comment to a thread", "points": 100 },
-    { "id": 2, "timestamp": 2348327219, "user": "John Doe (john.doe)", "description": "Delete a comment from a thread", "points": -100 },
-    { "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }
+    { "id": 3, "timestamp": 3243121234, "userId": 2, "actionId": 1 },
+    { "id": 2, "timestamp": 2348327219, "userId": 3, "actionId": 2 },
+    { "id": 1, "timestamp": 1458923839, "userId": 3, "actionId": 1 }
 ]
 
-Save a new event (an action type has been performed by an user) in your application.
-The api detect automaticly if user has aquired new success and add/remove to/from him.
+Save a new event (an action has been performed by an user) in your application.
+The api detect automaticly if user has aquired new success and add to him (see rule and success resources documentation).
 POST /events
 > Accept: application/json
-{ "userId": 2, "actionTypeId": 1, "timestamp": 2348327219 }
+{ "userId": 2, "actionId": 1, "timestamp": 2348327219 }
 < 201
 < Location: /events/3
 
@@ -139,16 +196,18 @@ Get the informations of a particular event through his id.
 GET /events/{id}
 < 200
 < Content-Type: application/json
-{ "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }
+{ "id": 1, "timestamp": 1458923839, "userId": 3, "actionId": 1 }
 
 --
 Rules Resource
-To manage the rules that will give success to your users.
+To manage the rules that will give success to your users. A rule is linked to one and only one action.
+When the user obtain the number of points defined by the rule for a given action, the rule is completed.
+If all the rules linked to a given success are completed by the user (see success documentation), the user obtain the success.
 
 + **name** (string): The name of the rule.
 + **description** (string): The description of the rule to know what it does.
-+ **acquiredPoints** (integer): The number of points that need to be reached to trig the rule.
-+ **actionTypeId** (integer): The id of an ActionType entity.
++ **goalPoints** (integer): The number of points that need to be acquired with the action to trig the rule.
++ **actionId** (long): The id of an action.
 --
 
 List of your rules.
@@ -156,14 +215,14 @@ GET /rules
 < 200
 < Content-Type: application/json
 [
-  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 3 },
-  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250, "actionTypeId": 4 }
+  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100, "actionId": 3 },
+  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "goalPoints": 250, "actionId": 4 }
 ]
 
 Save a new rule by passing its representation.
 POST /rules
 > Accept: application/json
-{ "name": "Level 3", "description": "This rule describe the requirement for the third level.", "acquiredPoints": 700, "actionTypeId": 4 }
+{ "name": "Level 3", "description": "This rule describe the requirement for the third level.", "goalPoints": 700, "actionId": 4 }
 < 201
 < Location: /rules/3
 
@@ -171,12 +230,12 @@ Get a rule through its id.
 GET /rules/{id}
 < 200
 < Content-Type: application/json
-{ "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 4 }
+{ "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100, "actionId": 4 }
 
 Update a rule through its id and a new representation.
 PUT /rules/{id}
 > Accept: application/json
-{ "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100  }
+{ "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100  }
 < 204
 
 Delete a rule through its id.
@@ -184,14 +243,14 @@ DELETE /rules/{id}
 < 204
 
 --
-Success Resources
-To manage the successes that can be won by users.
+Successes Resources
+To manage the successes that can be won by users. A success is linked to some rules. When a user complete all these rules (see rules documentation), he obtains the success.
 
 + **name** (string): The name of the success.
 + **badge** (string): An URL to the picture representing the success.
 --
 
-List of the success.
+List of the successes.
 GET /successes
 < 200
 < Content-Type: application/json
@@ -211,7 +270,7 @@ Get success through its id.
 GET /successes/{id}
 < 200
 < Content-Type: application/json
-{ "id": 1, "name": "get 1000 points", "badge": "badges/cool.png" }
+{ "id": 1, "name": "Get 1000 points", "badge": "badges/cool.png" }
 
 Update a success throught its id and a new representation.
 PUT /successes/{id}
@@ -231,16 +290,16 @@ GET /successes/{id}/users
   {"id":1,"name":"doe","nickname":"john.doe","surname":"john"}
 ]
 
-Get all the rules needed to be achieved to obtain a specific success.
+Get all the rules needed to be completed to obtain a specific success.
 GET /successes/{id}/rules
 < 200
 < Content-Type: application/json
 [
-  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 2 },
-  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250, "actionTypeId": 3 }
+  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100, "actionId": 2 },
+  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "goalPoints": 250, "actionId": 3 }
 ]
 
-Add one or more rules to a specific success.
+Add one rule to a specific success.
 POST /successes/{id}/rules
 > Accept: application/json
 { "id": 1 }
@@ -251,8 +310,10 @@ DELETE /successes/{id}/rules/{ruleid}
 < 204
 
 -- LeaderBoard Resources --
+The Leaderboard contains all users of your application ordered (ranked) by the total value of their acquired points.
+The total points is simply the sum of the action that the user performed.
 
-Get the Leaderboard of your application. The Leaderboard contains all users of your application ordered (ranked) by the total value of their acquired points.
+Get the Leaderboard of your application. 
 GET /leaderboard
 < 200
 < Content-Type: application/json

@@ -1,12 +1,12 @@
 --
-Success Resources
-To manage the successes that can be won by users.
+Successes Resources
+To manage the successes that can be won by users. A success is linked to some rules. When a user complete all these rules (see rules documentation), he obtains the success.
 
 + **name** (string): The name of the success.
 + **badge** (string): An URL to the picture representing the success.
 --
 
-List of the success.
+List of the successes.
 GET /successes
 < 200
 < Content-Type: application/json
@@ -26,7 +26,7 @@ Get success through its id.
 GET /successes/{id}
 < 200
 < Content-Type: application/json
-{ "id": 1, "name": "get 1000 points", "badge": "badges/cool.png" }
+{ "id": 1, "name": "Get 1000 points", "badge": "badges/cool.png" }
 
 Update a success throught its id and a new representation.
 PUT /successes/{id}
@@ -46,16 +46,16 @@ GET /successes/{id}/users
   {"id":1,"name":"doe","nickname":"john.doe","surname":"john"}
 ]
 
-Get all the rules needed to be achieved to obtain a specific success.
+Get all the rules needed to be completed to obtain a specific success.
 GET /successes/{id}/rules
 < 200
 < Content-Type: application/json
 [
-  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "acquiredPoints": 100, "actionTypeId": 2 },
-  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "acquiredPoints": 250, "actionTypeId": 3 }
+  { "id": 1, "name": "Level 1", "description": "This rule describe the requirement for the first level.", "goalPoints": 100, "actionId": 2 },
+  { "id": 2, "name": "Level 2", "description": "This rule describe the requirement for the second level.", "goalPoints": 250, "actionId": 3 }
 ]
 
-Add one or more rules to a specific success.
+Add one rule to a specific success.
 POST /successes/{id}/rules
 > Accept: application/json
 { "id": 1 }

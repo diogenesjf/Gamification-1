@@ -1,0 +1,38 @@
+--
+Applications Resources
+To manage the applications of the Gamification API.
+
++ **name** (string) : Application's name.
+--
+
+List of the Gamification API applications.
+GET /applications
+< 200
+< Content-Type: application/json
+[
+    { "id": 1, "name": "My StackOverflow" },
+    { "id": 2, "name": "Random Application" }
+]
+
+Save a new application by passing his representation.
+POST /applications
+> Accept: application/json
+{ "name": "My Favourite application" }
+< 201
+< Location: /applications/3
+
+Get an application through his id.
+GET /applications/{id}
+< 200
+< Content-Type: application/json
+{ "id": 1, "name": "My StackOverflow" }
+
+Update a user with a new representation through its id.
+PUT /applications/{id}
+> Accept: application/json
+{ "name": "Updated application" }
+< 204
+
+Delete an application user through his id.
+DELETE /applications/{id}
+< 204

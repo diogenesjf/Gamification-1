@@ -1,11 +1,12 @@
 -- 
-Event Resources 
-To manage the events that occured when a user do somes action types.
+Events Resources 
+To manage the events that occured when a user do somes actions. An event represent that a user do an action at a given time.
 
-+ **user** (string) : The user that provides the event.
-+ **description** (string) : A description of what happens (in case, the description of the event's action type).
+This is not possible to update or delete an event.
+
++ **userId** (long) : The id of the user that provides the event.
++ **actionId** (long) : The id of the action the user provides.
 + **timestamp** (long) : Unix timestamp, when the event occured.
-+ **points** (integer) : How many points provided the event (in case, the points of the event's action type).
 --
 
 Get all the events that occured in the application. They are ordered form newest to oldest.
@@ -13,16 +14,16 @@ GET /events
 < 200
 < Content-Type: application/json
 [
-    { "id": 3, "timestamp": 3243121234, "user": "Tony Stark (tony.stark)", "description": "Add a comment to a thread", "points": 100 },
-    { "id": 2, "timestamp": 2348327219, "user": "John Doe (john.doe)", "description": "Delete a comment from a thread", "points": -100 },
-    { "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }
+    { "id": 3, "timestamp": 3243121234, "userId": 2, "actionId": 1 },
+    { "id": 2, "timestamp": 2348327219, "userId": 3, "actionId": 2 },
+    { "id": 1, "timestamp": 1458923839, "userId": 3, "actionId": 1 }
 ]
 
-Save a new event (an action type has been performed by an user) in your application.
-The api detect automaticly if user has aquired new success and add/remove to/from him.
+Save a new event (an action has been performed by an user) in your application.
+The api detect automaticly if user has aquired new success and add to him (see rule and success resources documentation).
 POST /events
 > Accept: application/json
-{ "userId": 2, "actionTypeId": 1, "timestamp": 2348327219 }
+{ "userId": 2, "actionId": 1, "timestamp": 2348327219 }
 < 201
 < Location: /events/3
 
@@ -30,4 +31,4 @@ Get the informations of a particular event through his id.
 GET /events/{id}
 < 200
 < Content-Type: application/json
-{ "id": 1, "timestamp": 1458923839, "user": "John Doe (john.doe)", "description": "Add a comment to a thread", "points": 100 }
+{ "id": 1, "timestamp": 1458923839, "userId": 3, "actionId": 1 }
