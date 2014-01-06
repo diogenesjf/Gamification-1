@@ -67,7 +67,8 @@ Enjoy and dont hesitate to comment our work !
 
 When you request our API to give you a JSON payload to big (for example, when you have more than 2000 users for one application and try to retrieve the leaderboards), Glassfish will return a HTTP 500 Internal Error.
 Here's a piece of the stacktrace:
-'''
+
+```
 StandardWrapperValve[ch.heigvd.gamification.services.exposed.RESTAPI]:
 Servlet.service() for servlet
 ch.heigvd.gamification.services.exposed.RESTAPI threw exception
@@ -89,13 +90,13 @@ org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl$ClassFieldCopi
     at
 org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl.doCopy(ClassCopierOrdinaryImpl.java:1128)
 ...
-'''
+```
 
 The "solution" found is to increase the stack size of the JVM for glassfish (-Xss512m for example). No more exception.
 
 But if you set the stack size too low (-Xss160k), it will appear another exception, different from the previous one.
 
-'''
+```
 WARNING:   StandardWrapperValve[ch.heigvd.gamification.services.exposed.RESTAPI]: Servlet.service() for servlet ch.heigvd.gamification.services.exposed.RESTAPI threw exception
 java.lang.StackOverflowError
 	at java.security.AccessController.doPrivileged(Native Method)
@@ -105,6 +106,6 @@ java.lang.StackOverflowError
 	at java.lang.ClassLoader.loadClass(ClassLoader.java:410)
 ...
 
-'''
+```
 
 
