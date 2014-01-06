@@ -62,3 +62,49 @@ Currently, we have three differents documentations:
 3. Comments in the code :-)
 
 Enjoy and dont hesitate to comment our work !
+
+## Known bugs
+
+When you request our API to give you a JSON payload to big (for example, when you have more than 2000 users for one application and try to retrieve the leaderboards), Glassfish will return a HTTP 500 Internal Error.
+Here's a piece of the stacktrace:
+'''
+StandardWrapperValve[ch.heigvd.gamification.services.exposed.RESTAPI]:
+Servlet.service() for servlet
+ch.heigvd.gamification.services.exposed.RESTAPI threw exception
+java.lang.NullPointerException
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierBase.copy(ClassCopierBase.java:131)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl$ClassFieldCopierUnsafeImpl$17.copy(ClassCopierOrdinaryImpl.java:810)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl$ClassFieldCopierUnsafeImpl.copy(ClassCopierOrdinaryImpl.java:1008)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl.doCopy(ClassCopierOrdinaryImpl.java:1128)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierBase.copy(ClassCopierBase.java:129)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl$ClassFieldCopierUnsafeImpl$17.copy(ClassCopierOrdinaryImpl.java:810)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl$ClassFieldCopierUnsafeImpl.copy(ClassCopierOrdinaryImpl.java:1008)
+    at
+org.glassfish.pfl.dynamic.copyobject.impl.ClassCopierOrdinaryImpl.doCopy(ClassCopierOrdinaryImpl.java:1128)
+...
+'''
+
+The "solution" found is to increase the stack size of the JVM for glassfish (-Xss512m for example). No more exception.
+
+But if you set the stack size too low (-Xss160k), it will appear another exception, different from the previous one.
+
+'''
+WARNING:   StandardWrapperValve[ch.heigvd.gamification.services.exposed.RESTAPI]: Servlet.service() for servlet ch.heigvd.gamification.services.exposed.RESTAPI threw exception
+java.lang.StackOverflowError
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.jvnet.hk2.osgiadapter.OSGiModuleImpl$4.loadClass(OSGiModuleImpl.java:430)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:356)
+	at com.sun.enterprise.v3.server.APIClassLoaderServiceImpl$APIClassLoader.loadClass(APIClassLoaderServiceImpl.java:238)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:410)
+...
+
+'''
+
+
