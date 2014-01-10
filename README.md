@@ -12,6 +12,15 @@ The goal is to implement a Gamification API with Java EE and the architectural s
 2. Gaël Jobin gael.jobin@master.hes-so.ch
 3. Thomas Moegli thomas.moegli@master.hes-so.ch
 
+## Changelog
+
+Since the first presentation, we've done some modifications and improvement (due to our Technical POC project and professor comments), listed below :
+
+* Integration of application notion and security checks for the whole entities (only with application id, an application has no secret for the moment).
+* Add remote access to the services.
+* Split into two main projects : a jar packaged library and the web application.
+* The APIary document has been updated, completed and is now more comprehensive.
+
 ## Codes and projects structure
 
 To get a working copy of the current version of our code, simply clone it with Git:
@@ -107,5 +116,3 @@ java.lang.StackOverflowError
 ...
 
 ```
-
-
