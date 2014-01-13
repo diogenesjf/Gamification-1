@@ -309,9 +309,11 @@ Delete a rule from a specific success. The rule is NOT deleted, just unlinked fr
 DELETE /successes/{id}/rules/{ruleid}
 < 204
 
--- LeaderBoard Resources --
+-- 
+LeaderBoard Resources
 The Leaderboard contains all users of your application ordered (ranked) by the total value of their acquired points.
-The total points is simply the sum of the action that the user performed.
+The total points is simply the sum of the points of the actions that the user performed.
+--
 
 Get the Leaderboard of your application. 
 GET /leaderboard
