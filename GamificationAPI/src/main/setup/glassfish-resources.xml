@@ -8,8 +8,8 @@
     <property name="URL" value="jdbc:derby://localhost:1527/gamification"/>
     <property name="serverName" value="localhost"/>
     <property name="PortNumber" value="1527"/>
-    <property name="DatabaseName" value="gamification"/>
+    <property name="DatabaseName" value="GAMIFICATION"/>
     <property name="User" value="gamification"/>
     <property name="Password" value="gamificationpw"/>
-  </jdbc-connection-pool>
+  </jdbc-connection-pool> 
 </resources>

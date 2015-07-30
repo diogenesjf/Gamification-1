@@ -1,4 +1,4 @@
-package ch.heigvd.gamificationclient;
+package br.com.funlife.gamificationclient;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
